@@ -2,24 +2,756 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>总部端页面中心</title>
-  <link rel="stylesheet" href="./assets/css/site.css">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>RMS-零售管理系统 - 目标绩效</title>
+  <style>
+    :root {
+      --primary: #1677ff;
+      --primary-2: #409eff;
+      --white: #fff;
+      --text: #303133;
+      --regular: #606266;
+      --secondary: #909399;
+      --placeholder: #c0c4cc;
+      --border: #dcdfe6;
+      --border-light: #ebeef5;
+      --header: 64px;
+      --aside: 220px;
+      --gap: 16px;
+      font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+    body { min-width: 1280px; color: var(--text); font-size: 14px; background: linear-gradient(180deg, #eff5ff 0, #f2f6fd 55%, #f5f8fd 100%); }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    a { text-decoration: none; }
+    [hidden] { display: none !important; }
+    .app { height: 100vh; overflow: hidden; position: relative; }
+    .header { position: fixed; z-index: 50; left: 0; right: 0; top: 0; height: var(--header); display: flex; align-items: center; padding: 0 32px; background: rgba(245, 248, 255, .72); overflow: hidden; }
+    .header::after { content: ""; position: absolute; z-index: -1; right: -5px; top: -65px; width: 430px; height: 175px; background: linear-gradient(118deg, transparent 5%, rgba(83, 130, 255, .11) 5% 18%, transparent 18% 28%, rgba(83, 130, 255, .12) 28% 42%, transparent 42% 54%, rgba(83, 130, 255, .15) 54% 72%, transparent 72%), linear-gradient(180deg, rgba(255, 255, 255, .2), rgba(92, 137, 255, .08)); transform: skewX(-6deg); }
+    .brand { width: var(--aside); flex: 0 0 var(--aside); display: flex; align-items: center; gap: 10px; }
+    .brand-logo { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: #1976ff; overflow: hidden; box-shadow: 0 2px 6px rgba(25, 102, 255, .18); }
+    .brand-logo img { width: 27px; height: 27px; object-fit: contain; }
+    .brand-name { font-size: 16px; font-weight: 700; color: #0b1a35; white-space: nowrap; }
+    .top-nav { height: 100%; display: flex; align-items: center; gap: 7px; padding: 0 30px; flex: 1; min-width: 0; }
+    .top-nav-item { height: 64px; min-width: 84px; padding: 0 16px; border: 0; background: transparent; display: flex; align-items: center; justify-content: center; position: relative; color: #4f535a; font-size: 15px; font-weight: 500; white-space: nowrap; }
+    .top-nav-item.active { color: var(--primary); }
+    .top-nav-item.active::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 11px; height: 2px; background: var(--primary); border-radius: 2px; }
+    .head-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .annotation-toggle { height: 32px; padding: 0 14px; border: 1px solid #dbe7ff; border-radius: 4px; background: #fff; color: #1677ff; font-size: 13px; font-weight: 600; box-shadow: 0 2px 7px rgba(25, 102, 255, .08); }
+    .annotation-toggle.off { color: #606266; border-color: #e5e7eb; box-shadow: none; }
+    .head-circle { width: 32px; height: 32px; border: 0; border-radius: 50%; display: grid; place-items: center; color: #69718c; background: rgba(255, 255, 255, .92); position: relative; }
+    .head-circle.text { font-size: 12px; font-weight: 700; color: #424b63; }
+    .user-box { display: flex; align-items: center; gap: 8px; margin-left: 4px; color: #4c5058; }
+    .user-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
+    .user-name { white-space: nowrap; }
+    .user-arrow { font-size: 12px; color: #a8abb2; }
+    .layout { position: absolute; inset: var(--header) 0 0 0; display: flex; gap: var(--gap); padding: 16px; }
+    .sidebar { position: relative; width: var(--aside); flex: 0 0 var(--aside); height: 100%; padding: 16px 16px 12px; background: #fff; border-radius: 10px; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+    .sidebar::-webkit-scrollbar { display: none; }
+    .menu-search { height: 36px; border: 1px solid #e5e7eb; border-radius: 4px; background: #f8f9fb; display: flex; align-items: center; gap: 8px; padding: 0 11px; color: #c0c4cc; margin-bottom: 24px; }
+    .menu-search input { width: 100%; border: 0; outline: 0; background: transparent; color: #606266; font-size: 12px; }
+    .favorite { height: 40px; display: flex; align-items: center; justify-content: space-between; padding: 0 5px; margin-bottom: 8px; font-weight: 600; }
+    .favorite-left { display: flex; align-items: center; gap: 8px; }
+    .star { color: #b8bdc6; font-size: 18px; }
+    .side-section { margin-bottom: 12px; }
+    .side-title { height: 38px; display: flex; align-items: center; justify-content: space-between; padding: 0 5px; font-size: 14px; font-weight: 600; }
+    .side-arrow { color: #c0c4cc; font-size: 12px; }
+    .side-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 10px; row-gap: 0; padding: 0 5px; }
+    .side-link { height: 34px; border: 0; background: transparent; padding: 0; display: flex; align-items: center; text-align: left; min-width: 0; color: #606266; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .side-link.active { color: var(--primary); font-weight: 500; }
+    .side-divider { position: relative; height: 24px; margin-top: 2px; display: flex; align-items: center; justify-content: center; color: #c0c4cc; font-size: 10px; }
+    .side-divider::before, .side-divider::after { content: ""; height: 1px; background: #eef0f3; flex: 1; }
+    .side-divider span { padding: 0 7px; white-space: nowrap; }
+    .collapse-handle { position: fixed; left: calc(16px + var(--aside) - 8px); top: 47%; width: 28px; height: 52px; border: 0; border-radius: 0 26px 26px 0; background: #fff; color: #c0c4cc; box-shadow: 3px 0 8px rgba(31, 42, 68, .05); z-index: 30; }
+    .content { flex: 1; min-width: 0; height: 100%; overflow: hidden; display: flex; flex-direction: column; }
+    .work-tabs { height: 40px; flex: 0 0 40px; display: flex; align-items: center; gap: 6px; padding: 4px 12px; background: rgba(255, 255, 255, .72); border-radius: 8px; margin-bottom: 8px; }
+    .work-tab { height: 32px; padding: 0 13px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: #4f535a; display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .work-tab.active { color: var(--primary); background: #fff; border-color: #dbe7ff; box-shadow: 0 2px 7px rgba(25, 102, 255, .08); }
+    .work-tab .close { font-size: 15px; color: #bdc2cb; }
+    .work-tabs-spacer { flex: 1; }
+    .tabs-collapse { width: 28px; height: 28px; border: 1px solid #eef0f3; border-radius: 4px; background: #fff; color: #c0c4cc; }
+    .view-stack { flex: 1; min-height: 0; overflow: hidden; border-radius: 4px; }
+    .page { height: 100%; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+    .search-panel { padding: 16px 20px; background: #fff; border-radius: 4px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; flex: 0 0 auto; }
+    .search-grid { display: grid; grid-template-columns: repeat(3, minmax(220px, 1fr)); gap: 8px; }
+    .field { height: 36px; border: 1px solid #ddd; border-radius: 2px; background: #fff; display: flex; align-items: center; min-width: 0; position: relative; }
+    .field-label { padding-left: 12px; color: #1c1d1e; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+    .field input { min-width: 0; flex: 1; height: 34px; border: 0; outline: 0; padding: 0 28px 0 14px; background: transparent; color: #606266; }
+    .field input::placeholder { color: #b8bbc1; }
+    .select-arrow { position: absolute; right: 12px; color: #b8bbc1; pointer-events: none; }
+    .date-range { flex: 1; display: flex; align-items: center; gap: 9px; min-width: 0; padding: 0 12px; color: #b8bbc1; cursor: default; }
+    .date-range.has-value { color: #606266; }
+    .date-range span { white-space: nowrap; }
+    .search-actions { height: 36px; display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+    .icon-btn { width: 36px; height: 36px; border: 1px solid var(--primary-2); border-radius: 2px; background: #fff; color: var(--primary-2); display: grid; place-items: center; }
+    .icon-btn.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .table-panel { background: #fff; border-radius: 4px; padding: 16px 20px 10px; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    .table-toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex: 0 0 auto; }
+    .toolbar-btn { height: 36px; padding: 0 16px; border: 1px solid #409eff; border-radius: 2px; background: #fff; color: #409eff; display: flex; align-items: center; gap: 7px; }
+    .toolbar-btn.warning { color: #e6a23c; border-color: #f5dab1; background: #fdf6ec; }
+    .toolbar-btn.success { color: #67c23a; border-color: #c2e7b0; background: #f0f9eb; }
+    .table-scroller { flex: 1; min-height: 0; overflow: auto; border-top: 1px solid var(--border-light); }
+    table { width: max-content; border-collapse: collapse; table-layout: fixed; }
+    .month-table { min-width: 2480px; }
+    .day-table { min-width: 3480px; }
+    th, td { height: 48px; border-right: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); padding: 0 12px; text-align: left; color: #606266; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    th { height: 48px; background: #f5f7fa; color: #303133; font-weight: 600; }
+    .metric-title { display: inline-flex; align-items: center; justify-content: flex-end; gap: 4px; max-width: 100%; vertical-align: middle; }
+    .metric-title.annotated { position: relative; padding-left: 4px; }
+    .metric-title.annotated::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #ff8a00; flex: 0 0 6px; box-shadow: 0 0 0 3px rgba(255, 138, 0, .12); }
+    .metric-title.annotated::after { content: "新增"; flex: 0 0 auto; padding: 1px 4px; border-radius: 2px; background: #fff7e8; color: #d46b08; border: 1px solid #ffd591; font-size: 10px; font-weight: 600; line-height: 14px; }
+    body.annotation-off .metric-title.annotated::before, body.annotation-off .metric-title.annotated::after { display: none; }
+    body.annotation-off th.annotated-col { box-shadow: none; }
+    th.annotated-col { box-shadow: inset 0 0 0 1px #ffd591; }
+    .metric-help { width: 15px; height: 15px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 15px; border: 1px solid #a9cfff; background: #ecf5ff; color: #409eff; font-size: 10px; line-height: 1; cursor: pointer; user-select: none; outline: 0; }
+    .metric-help:hover, .metric-help.active { background: #409eff; border-color: #409eff; color: #fff; }
+    .metric-popover { position: fixed; z-index: 360; max-width: 260px; padding: 8px 10px; border-radius: 4px; background: #303133; color: #fff; font-size: 12px; line-height: 18px; box-shadow: 0 6px 18px rgba(0, 0, 0, .18); white-space: normal; }
+    .metric-popover::before { content: ""; position: absolute; left: 18px; top: -5px; width: 10px; height: 10px; background: #303133; transform: rotate(45deg); }
+    .metric-popover.above::before { top: auto; bottom: -5px; }
+    .group-row th { height: 38px; text-align: center; border-bottom: 1px solid #e4e7ed; }
+    .group-base { background: #f5f7fa; }
+    .group-summary { background: #fdf6ec; color: #b88230; }
+    .group-store { background: #ecf5ff; color: #1d73c9; }
+    .group-ecom { background: #f0f9eb; color: #4f9d36; }
+    .group-private { background: #f4f4ff; color: #5b62d6; }
+    .group-instant { background: #fff4ed; color: #c46a27; }
+    tbody tr:hover td { background: #f5faff; }
+    tbody tr.selected td { background: #eaf5ff; }
+    .check-col { width: 50px; text-align: center; }
+    .checkbox { width: 15px; height: 15px; accent-color: #409eff; }
+    .action-link { border: 0; background: transparent; padding: 0; color: #1683ed; }
+    .action-col { width: 100px; }
+    .date-col { width: 120px; }
+    .code-col { width: 130px; }
+    .name-col { width: 200px; }
+    .brand-col { width: 110px; }
+    .dept-col { width: 120px; }
+    .supervisor-col { width: 120px; }
+    .money-col { width: 150px; text-align: right; }
+    .ratio-col { width: 170px; text-align: right; }
+    .user-col { width: 120px; }
+    .time-col { width: 180px; }
+    .gear-col { width: 42px; text-align: center; }
+    .empty-row td { height: 180px; text-align: center; color: #909399; }
+    .table-footer { height: 58px; flex: 0 0 58px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; }
+    .selected-count { color: #303133; }
+    .pager-wrap { display: flex; align-items: center; gap: 7px; color: #606266; }
+    .page-size { height: 36px; min-width: 108px; border: 1px solid var(--border); border-radius: 2px; padding: 0 10px; color: #606266; background: #fff; }
+    .page-btn { min-width: 36px; height: 36px; border: 1px solid var(--border); background: #fff; color: #606266; border-radius: 2px; }
+    .page-btn.active { color: #409eff; border-color: #409eff; }
+    .jump { width: 64px; height: 36px; border: 1px solid var(--border); border-radius: 2px; text-align: center; color: #606266; }
+    .modal-mask { position: fixed; z-index: 200; inset: 0; background: rgba(0, 0, 0, .36); display: grid; place-items: center; }
+    .modal { width: 400px; background: #fff; border-radius: 4px; box-shadow: 0 12px 42px rgba(0, 0, 0, .22); overflow: hidden; }
+    .modal-head { min-height: 54px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ebeef5; font-size: 16px; font-weight: 600; }
+    .modal-close { border: 0; background: transparent; color: #909399; font-size: 22px; line-height: 1; }
+    .modal-body { padding: 20px; }
+    .upload-drop { height: 180px; border: 1px dashed #d9d9d9; border-radius: 6px; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #606266; cursor: pointer; }
+    .upload-drop:hover { border-color: #409eff; }
+    .upload-icon { font-size: 44px; line-height: 48px; color: #a8abb2; }
+    .upload-text { margin-top: 8px; }
+    .upload-text em { color: #409eff; font-style: normal; }
+    .upload-tip { margin-top: 9px; color: #606266; font-size: 12px; text-align: center; }
+    .upload-tip button { border: 0; background: transparent; color: #409eff; padding: 0 0 0 6px; font-size: 12px; }
+    .upload-file { min-height: 24px; margin-top: 10px; color: #409eff; font-size: 13px; text-align: center; }
+    .modal-foot { height: 56px; border-top: 1px solid #ebeef5; display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding: 0 20px; }
+    .modal-btn { height: 32px; padding: 0 16px; border-radius: 3px; border: 1px solid #dcdfe6; background: #fff; color: #606266; }
+    .modal-btn.primary { background: #409eff; border-color: #409eff; color: #fff; }
+    .toast-wrap { position: fixed; z-index: 300; left: 50%; top: 78px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
+    .toast { min-width: 220px; padding: 11px 18px; border-radius: 4px; background: #f0f9eb; border: 1px solid #e1f3d8; color: #67c23a; box-shadow: 0 4px 14px rgba(0, 0, 0, .08); }
+    .toast.error { background: #fef0f0; border-color: #fde2e2; color: #f56c6c; }
+    @media(max-width: 1550px) {
+      .top-nav { padding: 0 12px; gap: 0; }
+      .top-nav-item { min-width: 73px; padding: 0 10px; }
+      .search-panel { padding: 12px 16px; }
+      .table-panel { padding: 14px 16px 8px; }
+      .toolbar-btn { padding: 0 12px; }
+    }
+  </style>
 </head>
 <body>
-  <main class="shell">
-    <header class="masthead">
-      <p class="eyebrow">HQ Pages</p>
-      <h1>总部端页面中心</h1>
-      <p>用于集中发布总部端各业务模块的 HTML 原型、说明页和操作手册。</p>
+  <div class="app">
+    <header class="header">
+      <div class="brand"><div class="brand-logo"><img src="./总部端-assets/logo.png" alt=""></div><div class="brand-name">RMS-零售管理系统</div></div>
+      <nav class="top-nav">
+        <button class="top-nav-item active">门店营运</button><a class="top-nav-item" href="./总部端-空间陈列-道具管理.html">空间陈列</a><button class="top-nav-item">交易中心</button><button class="top-nav-item">商品管理</button><button class="top-nav-item">库存管理</button><button class="top-nav-item">营销管理</button><button class="top-nav-item">财务管理</button><button class="top-nav-item">铺补调</button>
+      </nav>
+      <div class="head-actions"><button class="annotation-toggle" id="annotationToggle" data-action="toggle-annotation">标注：开</button><button class="head-circle">⌕</button><button class="head-circle">?</button><button class="head-circle">↻</button><button class="head-circle">⌂</button><button class="head-circle">!</button><button class="head-circle text">开发</button><div class="user-box"><img class="user-avatar" src="./总部端-assets/profile.jpg" alt=""><span class="user-name">超级管理员</span><span class="user-arrow">⌄</span></div></div>
     </header>
-
-    <section class="section">
-      <h2>模块目录</h2>
-      <div class="module-grid">
-        <a class="module-card" href="./modules/">modules/</a>
+    <main class="layout">
+      <aside class="sidebar">
+        <div class="menu-search">⌕<input placeholder="请输入菜单名称"></div>
+        <div class="favorite"><span class="favorite-left"><span class="star">☆</span>我的收藏</span><span class="side-arrow">⌄</span></div>
+        <section class="side-section"><div class="side-title"><span>门店管理</span><span class="side-arrow">⌄</span></div><div class="side-grid"><button class="side-link">门店地图</button><button class="side-link">开店申请</button><button class="side-link">报店申请</button><button class="side-link">已开业门店</button><button class="side-link">门店批量变更</button><button class="side-link">即时零售营...</button><button class="side-link">闭店申请</button></div></section>
+        <section class="side-section"><div class="side-title"><span>店务协同</span><span class="side-arrow">⌄</span></div><div class="side-divider"><span>目标绩效</span></div><div class="side-grid"><button class="side-link">目标配置</button><button class="side-link">提成配置</button><button class="side-link">店员绩效</button><button class="side-link active" data-page="month">门店月目标</button><button class="side-link" data-page="day">门店日目标</button><button class="side-link">导购销售目标</button><button class="side-link">导购销售报表</button></div><div class="side-divider"><span>服务管理</span></div><div class="side-grid"><button class="side-link">每日一晒</button><button class="side-link">体验亮灯</button><button class="side-link">门店客诉服务</button><button class="side-link">线上巡店</button><button class="side-link">巡店配置</button><button class="side-link">门店体验分</button><button class="side-link">现场巡店</button></div><div class="side-divider"><span>门店任务</span></div><div class="side-grid"><button class="side-link">门店任务</button></div><div class="side-divider"><span>任务报表</span></div><div class="side-grid"><button class="side-link">推广内容报表</button><button class="side-link">人员推广报表</button><button class="side-link">推广完成报表</button><button class="side-link">打卡完成报表</button><button class="side-link">检核完成报表</button></div></section>
+      </aside>
+      <button class="collapse-handle">‹</button>
+      <section class="content">
+        <div class="work-tabs"><button class="work-tab">首页</button><button class="work-tab active" data-page="month">门店月目标 <span class="close">×</span></button><button class="work-tab" data-page="day">门店日目标 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button></div>
+        <div class="view-stack">
+          <section class="page" id="monthPage">
+            <div class="search-panel">
+              <div class="search-grid">
+                <label class="field"><span class="field-label">门店编码</span><input data-field="month.storeCode"></label>
+                <label class="field"><span class="field-label">门店名称</span><input data-field="month.storeName" placeholder="请选择"><span class="select-arrow">⌄</span></label>
+                <label class="field"><span class="field-label">考核月份</span><div class="date-range" data-field="month.assessmentMonth" data-start="" data-end=""><span>开始月份</span><span>-</span><span>结束月份</span></div></label>
+                <label class="field"><span class="field-label">品牌</span><input data-field="month.brandCode" placeholder="请选择"><span class="select-arrow">⌄</span></label>
+                <label class="field"><span class="field-label">区域</span><input data-field="month.deptCodeList" placeholder="请先选择品牌"><span class="select-arrow">⌄</span></label>
+                <label class="field"><span class="field-label">区经</span><input data-field="month.supervisor"></label>
+              </div>
+              <div class="search-actions"><button class="icon-btn primary" data-action="query" data-scope="month">⌕</button><button class="icon-btn" data-action="reset" data-scope="month">↻</button></div>
+            </div>
+            <div class="table-panel">
+              <div class="table-toolbar"><button class="toolbar-btn warning" data-action="export" data-scope="month">⬇ 导出</button></div>
+              <div class="table-scroller">
+                <table class="month-table">
+                  <thead>
+                    <tr class="group-row"><th class="check-col group-base" rowspan="2"><input class="checkbox" data-check-all="month" type="checkbox"></th><th class="group-base" colspan="6">基础信息</th><th class="group-summary" colspan="1">汇总目标</th><th class="group-store" colspan="1">POS销售目标</th><th class="group-ecom" colspan="2">新电商目标</th><th class="group-private" colspan="2">私域目标</th><th class="group-instant" colspan="2">即时零售目标</th><th class="group-base" colspan="3">操作信息</th></tr>
+                    <tr><th class="date-col">考核月份</th><th class="code-col">门店编码</th><th class="name-col">门店名称</th><th class="brand-col">品牌</th><th class="dept-col">区域</th><th class="supervisor-col">区经</th><th class="money-col"><span class="metric-title">汇总月目标<span class="metric-help" role="button" tabindex="0" data-tip="POS销售月目标 + 新电商月目标">?</span></span></th><th class="money-col"><span class="metric-title">POS销售月目标<span class="metric-help" role="button" tabindex="0" data-tip="门店当月 POS 销售目标">?</span></span></th><th class="money-col"><span class="metric-title">新电商月目标<span class="metric-help" role="button" tabindex="0" data-tip="私域月目标 + 即时零售月目标">?</span></span></th><th class="ratio-col"><span class="metric-title">新电商月占比目标<span class="metric-help" role="button" tabindex="0" data-tip="新电商月目标 / POS销售月目标 * 100%">?</span></span></th><th class="money-col"><span class="metric-title">私域月目标<span class="metric-help" role="button" tabindex="0" data-tip="私域渠道当月目标">?</span></span></th><th class="ratio-col"><span class="metric-title">私域月占比目标<span class="metric-help" role="button" tabindex="0" data-tip="私域月目标 / POS销售月目标 * 100%">?</span></span></th><th class="money-col"><span class="metric-title">即时零售月目标<span class="metric-help" role="button" tabindex="0" data-tip="即时零售渠道当月目标">?</span></span></th><th class="ratio-col"><span class="metric-title">即时零售月占比目标<span class="metric-help" role="button" tabindex="0" data-tip="即时零售月目标 / POS销售月目标 * 100%">?</span></span></th><th class="user-col">更新人</th><th class="time-col">更新时间</th><th class="action-col">操作</th></tr>
+                  </thead>
+                  <tbody id="monthBody"></tbody>
+                </table>
+              </div>
+              <div class="table-footer"><div class="selected-count" id="monthSelected">已选择 0 条</div><div class="pager-wrap"><span id="monthTotal">共 1 条</span><select class="page-size"><option>10条/页</option></select><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">›</button><span>前往</span><input class="jump" value="1"><span>页</span></div></div>
+            </div>
+          </section>
+          <section class="page" id="dayPage" hidden>
+            <div class="search-panel">
+              <div class="search-grid">
+                <label class="field"><span class="field-label">门店编码</span><input data-field="day.storeCode"></label>
+                <label class="field"><span class="field-label">门店名称</span><input data-field="day.storeName" placeholder="请选择"><span class="select-arrow">⌄</span></label>
+                <label class="field"><span class="field-label">考核日期</span><div class="date-range" data-field="day.assessmentDay" data-start="" data-end=""><span>开始日期</span><span>-</span><span>结束日期</span></div></label>
+                <label class="field"><span class="field-label">品牌</span><input data-field="day.brandCode" placeholder="请选择"><span class="select-arrow">⌄</span></label>
+                <label class="field"><span class="field-label">区域</span><input data-field="day.deptCodeList" placeholder="请先选择品牌"><span class="select-arrow">⌄</span></label>
+                <label class="field"><span class="field-label">区经</span><input data-field="day.supervisor"></label>
+              </div>
+              <div class="search-actions"><button class="icon-btn primary" data-action="query" data-scope="day">⌕</button><button class="icon-btn" data-action="reset" data-scope="day">↻</button></div>
+            </div>
+            <div class="table-panel">
+              <div class="table-toolbar"><button class="toolbar-btn success" data-action="import" data-import-type="posDay">⬆ 导入POS销售日目标</button><button class="toolbar-btn success" data-action="import" data-import-type="privateDay">⬆ 导入私域日目标</button><button class="toolbar-btn success" data-action="import" data-import-type="instantRetailDay">⬆ 导入即时零售日目标</button><button class="toolbar-btn warning" data-action="export" data-scope="day">⬇ 导出</button></div>
+              <div class="table-scroller">
+                <table class="day-table">
+                  <thead>
+                    <tr class="group-row"><th class="check-col group-base" rowspan="2"><input class="checkbox" data-check-all="day" type="checkbox"></th><th class="group-base" colspan="6">基础信息</th><th class="group-summary" colspan="2">汇总目标</th><th class="group-store" colspan="2">POS销售目标</th><th class="group-ecom" colspan="4">新电商目标</th><th class="group-private" colspan="4">私域目标</th><th class="group-instant" colspan="4">即时零售目标</th><th class="group-base" colspan="2">操作信息</th></tr>
+                    <tr><th class="date-col">考核日期</th><th class="code-col">门店编码</th><th class="name-col">门店名称</th><th class="brand-col">品牌</th><th class="dept-col">区域</th><th class="supervisor-col">区经</th><th class="money-col"><span class="metric-title">汇总月目标<span class="metric-help" role="button" tabindex="0" data-tip="POS销售月目标 + 新电商月目标">?</span></span></th><th class="money-col"><span class="metric-title">汇总日目标<span class="metric-help" role="button" tabindex="0" data-tip="POS销售日目标 + 新电商日目标">?</span></span></th><th class="money-col"><span class="metric-title">POS销售月目标<span class="metric-help" role="button" tabindex="0" data-tip="门店当月 POS 销售目标">?</span></span></th><th class="money-col"><span class="metric-title">POS销售日目标<span class="metric-help" role="button" tabindex="0" data-tip="门店当天 POS 销售目标">?</span></span></th><th class="money-col"><span class="metric-title">新电商月目标<span class="metric-help" role="button" tabindex="0" data-tip="私域月目标 + 即时零售月目标">?</span></span></th><th class="ratio-col"><span class="metric-title">新电商月占比目标<span class="metric-help" role="button" tabindex="0" data-tip="新电商月目标 / POS销售月目标 * 100%">?</span></span></th><th class="money-col"><span class="metric-title">新电商日目标<span class="metric-help" role="button" tabindex="0" data-tip="私域日目标 + 即时零售日目标">?</span></span></th><th class="ratio-col"><span class="metric-title">新电商日占比目标<span class="metric-help" role="button" tabindex="0" data-tip="新电商日目标 / POS销售日目标 * 100%">?</span></span></th><th class="money-col"><span class="metric-title">私域月目标<span class="metric-help" role="button" tabindex="0" data-tip="私域渠道当月目标">?</span></span></th><th class="ratio-col"><span class="metric-title">私域月占比目标<span class="metric-help" role="button" tabindex="0" data-tip="私域月目标 / POS销售月目标 * 100%">?</span></span></th><th class="money-col"><span class="metric-title">私域日目标<span class="metric-help" role="button" tabindex="0" data-tip="私域渠道当天目标">?</span></span></th><th class="ratio-col"><span class="metric-title">私域日占比目标<span class="metric-help" role="button" tabindex="0" data-tip="私域日目标 / POS销售日目标 * 100%">?</span></span></th><th class="money-col"><span class="metric-title">即时零售月目标<span class="metric-help" role="button" tabindex="0" data-tip="即时零售渠道当月目标">?</span></span></th><th class="ratio-col"><span class="metric-title">即时零售月占比目标<span class="metric-help" role="button" tabindex="0" data-tip="即时零售月目标 / POS销售月目标 * 100%">?</span></span></th><th class="money-col"><span class="metric-title">即时零售日目标<span class="metric-help" role="button" tabindex="0" data-tip="即时零售渠道当天目标">?</span></span></th><th class="ratio-col"><span class="metric-title">即时零售日占比目标<span class="metric-help" role="button" tabindex="0" data-tip="即时零售日目标 / POS销售日目标 * 100%">?</span></span></th><th class="user-col">更新人</th><th class="time-col">更新时间</th></tr>
+                  </thead>
+                  <tbody id="dayBody"></tbody>
+                </table>
+              </div>
+              <div class="table-footer"><div class="selected-count" id="daySelected">已选择 0 条</div><div class="pager-wrap"><span id="dayTotal">共 1 条</span><select class="page-size"><option>10条/页</option></select><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">›</button><span>前往</span><input class="jump" value="1"><span>页</span></div></div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="modal-mask" id="uploadModal" hidden>
+    <div class="modal">
+      <div class="modal-head"><span id="uploadTitle">导入POS销售日目标数据</span><button class="modal-close" data-action="close-upload">×</button></div>
+      <div class="modal-body">
+        <label class="upload-drop" for="uploadInput">
+          <span class="upload-icon">☁</span>
+          <span class="upload-text">将文件拖到此处，或<em>点击上传</em></span>
+        </label>
+        <div class="upload-tip">仅允许导入xlsx、xls格式文件。<button data-action="download-template">下载模板</button></div>
+        <div class="upload-file" id="uploadFileName"></div>
+        <input id="uploadInput" type="file" accept=".xlsx,.xls" hidden>
       </div>
-    </section>
-  </main>
+      <div class="modal-foot"><button class="modal-btn primary" data-action="confirm-upload">确 定</button><button class="modal-btn" data-action="close-upload">取 消</button></div>
+    </div>
+  </div>
+  <div class="toast-wrap" id="toastWrap"></div>
+  <script>
+    const $ = selector => document.querySelector(selector);
+    const $$ = selector => Array.from(document.querySelectorAll(selector));
+    const state = {
+      page: 'month',
+      monthRows: [
+        {
+          id: 1,
+          monthGoalNo: 'MG202608DP96325',
+          assessmentMonth: '202608',
+          storeCode: 'DP96325',
+          storeName: '华南区-蕉下测试门店',
+          brandCode: '蕉下',
+          brandName: '蕉下',
+          deptCode: '华南区',
+          supervisor: '张三',
+          storeMonthGoal: 120000,
+          privateMonthGoal: 18000,
+          instantRetailMonthGoal: 12000,
+          updateUser: 'admin',
+          updateTime: '2026-08-14 10:20:36'
+        }
+      ],
+      dayRows: [
+        {
+          id: 11,
+          assessmentDay: '20260814',
+          storeCode: 'DP96325',
+          storeName: '华南区-蕉下测试门店',
+          brandCode: '蕉下',
+          deptCode: '华南区',
+          supervisor: '张三',
+          storeMonthGoal: 120000,
+          storeDayGoal: 3871,
+          privateMonthGoal: 18000,
+          privateDayGoal: 581,
+          instantRetailMonthGoal: 12000,
+          instantRetailDayGoal: 387,
+          updateUser: 'admin',
+          updateTime: '2026-08-14 10:20:36'
+        }
+      ],
+      filtered: { month: [], day: [] },
+      selected: { month: new Set(), day: new Set() },
+      uploadType: '',
+      uploadFile: null
+    };
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+    }
+
+    function formatMoney(value) {
+      const number = Number(value || 0);
+      return number.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function formatRatio(numerator, denominator) {
+      const base = Number(denominator || 0);
+      if (!base) return '0.00%';
+      return `${((Number(numerator || 0) / base) * 100).toFixed(2)}%`;
+    }
+
+    function enrichGoalRow(row) {
+      const ecomMonthGoal = Number(row.privateMonthGoal || 0) + Number(row.instantRetailMonthGoal || 0);
+      const ecomDayGoal = Number(row.privateDayGoal || 0) + Number(row.instantRetailDayGoal || 0);
+      const summaryMonthGoal = Number(row.storeMonthGoal || 0) + ecomMonthGoal;
+      const summaryDayGoal = Number(row.storeDayGoal || 0) + ecomDayGoal;
+      return {
+        ...row,
+        ecomMonthGoal,
+        ecomDayGoal,
+        summaryMonthGoal,
+        summaryDayGoal,
+        ecomMonthRatio: formatRatio(ecomMonthGoal, row.storeMonthGoal),
+        ecomDayRatio: formatRatio(ecomDayGoal, row.storeDayGoal),
+        privateMonthRatio: formatRatio(row.privateMonthGoal, row.storeMonthGoal),
+        privateDayRatio: formatRatio(row.privateDayGoal, row.storeDayGoal),
+        instantRetailMonthRatio: formatRatio(row.instantRetailMonthGoal, row.storeMonthGoal),
+        instantRetailDayRatio: formatRatio(row.instantRetailDayGoal, row.storeDayGoal)
+      };
+    }
+
+    function toast(message, error = false) {
+      const item = document.createElement('div');
+      item.className = `toast${error ? ' error' : ''}`;
+      item.textContent = message;
+      $('#toastWrap').appendChild(item);
+      setTimeout(() => item.remove(), 2200);
+    }
+
+    function monthToRange(month) {
+      const year = month.slice(0, 4);
+      const monthNum = month.slice(4);
+      const endDay = new Date(Number(year), Number(monthNum), 0).getDate();
+      return [`${year}${monthNum}01`, `${year}${monthNum}${String(endDay).padStart(2, '0')}`];
+    }
+
+    function setDateRange(scope, start, end) {
+      const el = $(`[data-field="${scope}.${scope === 'month' ? 'assessmentMonth' : 'assessmentDay'}"]`);
+      el.dataset.start = start || '';
+      el.dataset.end = end || '';
+      el.classList.toggle('has-value', Boolean(start || end));
+      const labels = scope === 'month' ? ['开始月份', '结束月份'] : ['开始日期', '结束日期'];
+      el.innerHTML = `<span>${escapeHtml(start || labels[0])}</span><span>-</span><span>${escapeHtml(end || labels[1])}</span>`;
+    }
+
+    function getQuery(scope) {
+      const query = {};
+      $$(`[data-field^="${scope}."]`).forEach(field => {
+        const prop = field.dataset.field.split('.')[1];
+        if (field.classList.contains('date-range')) {
+          if (field.dataset.start || field.dataset.end) query[prop] = [field.dataset.start, field.dataset.end];
+        } else if (field.value.trim()) {
+          query[prop] = field.value.trim();
+        }
+      });
+      return query;
+    }
+
+    function queryRows(scope) {
+      const query = getQuery(scope);
+      const source = scope === 'month' ? state.monthRows : state.dayRows;
+      return source.filter(row => {
+        if (query.storeCode && !row.storeCode.includes(query.storeCode)) return false;
+        if (query.storeName && !row.storeName.includes(query.storeName)) return false;
+        if (query.brandCode && !row.brandCode.includes(query.brandCode)) return false;
+        if (query.deptCodeList && !row.deptCode.includes(query.deptCodeList)) return false;
+        if (query.supervisor && !row.supervisor.includes(query.supervisor)) return false;
+        if (scope === 'month' && query.assessmentMonth) {
+          const [start, end] = query.assessmentMonth;
+          if (start && row.assessmentMonth < start) return false;
+          if (end && row.assessmentMonth > end) return false;
+        }
+        if (scope === 'day' && query.assessmentDay) {
+          const [start, end] = query.assessmentDay;
+          if (start && row.assessmentDay < start) return false;
+          if (end && row.assessmentDay > end) return false;
+        }
+        return true;
+      });
+    }
+
+    function renderMonth() {
+      const body = $('#monthBody');
+      const rows = state.filtered.month.map(enrichGoalRow);
+      if (!rows.length) {
+        body.innerHTML = '<tr class="empty-row"><td colspan="18">暂无数据</td></tr>';
+      } else {
+        body.innerHTML = rows.map(row => `
+          <tr class="${state.selected.month.has(row.id) ? 'selected' : ''}" data-month-id="${row.id}">
+            <td class="check-col"><input class="checkbox" data-row-check="month" data-id="${row.id}" type="checkbox" ${state.selected.month.has(row.id) ? 'checked' : ''}></td>
+            <td>${escapeHtml(row.assessmentMonth)}</td>
+            <td>${escapeHtml(row.storeCode)}</td>
+            <td>${escapeHtml(row.storeName)}</td>
+            <td>${escapeHtml(row.brandCode)}</td>
+            <td>${escapeHtml(row.deptCode)}</td>
+            <td>${escapeHtml(row.supervisor)}</td>
+            <td class="money-col">${formatMoney(row.summaryMonthGoal)}</td>
+            <td class="money-col">${formatMoney(row.storeMonthGoal)}</td>
+            <td class="money-col">${formatMoney(row.ecomMonthGoal)}</td>
+            <td class="ratio-col">${escapeHtml(row.ecomMonthRatio)}</td>
+            <td class="money-col">${formatMoney(row.privateMonthGoal)}</td>
+            <td class="ratio-col">${escapeHtml(row.privateMonthRatio)}</td>
+            <td class="money-col">${formatMoney(row.instantRetailMonthGoal)}</td>
+            <td class="ratio-col">${escapeHtml(row.instantRetailMonthRatio)}</td>
+            <td>${escapeHtml(row.updateUser)}</td>
+            <td>${escapeHtml(row.updateTime)}</td>
+            <td><button class="action-link" data-action="jump-day" data-id="${row.id}">门店日目标</button></td>
+          </tr>`).join('');
+      }
+      $('#monthSelected').textContent = `已选择 ${state.selected.month.size} 条`;
+      $('#monthTotal').textContent = `共 ${rows.length} 条`;
+      $('[data-check-all="month"]').checked = rows.length > 0 && rows.every(row => state.selected.month.has(row.id));
+      bindDynamicButtons(body);
+    }
+
+    function renderDay() {
+      const body = $('#dayBody');
+      const rows = state.filtered.day.map(enrichGoalRow);
+      if (!rows.length) {
+        body.innerHTML = '<tr class="empty-row"><td colspan="25">暂无数据</td></tr>';
+      } else {
+        body.innerHTML = rows.map(row => `
+          <tr class="${state.selected.day.has(row.id) ? 'selected' : ''}">
+            <td class="check-col"><input class="checkbox" data-row-check="day" data-id="${row.id}" type="checkbox" ${state.selected.day.has(row.id) ? 'checked' : ''}></td>
+            <td>${escapeHtml(row.assessmentDay)}</td>
+            <td>${escapeHtml(row.storeCode)}</td>
+            <td>${escapeHtml(row.storeName)}</td>
+            <td>${escapeHtml(row.brandCode)}</td>
+            <td>${escapeHtml(row.deptCode)}</td>
+            <td>${escapeHtml(row.supervisor)}</td>
+            <td class="money-col">${formatMoney(row.summaryMonthGoal)}</td>
+            <td class="money-col">${formatMoney(row.summaryDayGoal)}</td>
+            <td class="money-col">${formatMoney(row.storeMonthGoal)}</td>
+            <td class="money-col">${formatMoney(row.storeDayGoal)}</td>
+            <td class="money-col">${formatMoney(row.ecomMonthGoal)}</td>
+            <td class="ratio-col">${escapeHtml(row.ecomMonthRatio)}</td>
+            <td class="money-col">${formatMoney(row.ecomDayGoal)}</td>
+            <td class="ratio-col">${escapeHtml(row.ecomDayRatio)}</td>
+            <td class="money-col">${formatMoney(row.privateMonthGoal)}</td>
+            <td class="ratio-col">${escapeHtml(row.privateMonthRatio)}</td>
+            <td class="money-col">${formatMoney(row.privateDayGoal)}</td>
+            <td class="ratio-col">${escapeHtml(row.privateDayRatio)}</td>
+            <td class="money-col">${formatMoney(row.instantRetailMonthGoal)}</td>
+            <td class="ratio-col">${escapeHtml(row.instantRetailMonthRatio)}</td>
+            <td class="money-col">${formatMoney(row.instantRetailDayGoal)}</td>
+            <td class="ratio-col">${escapeHtml(row.instantRetailDayRatio)}</td>
+            <td>${escapeHtml(row.updateUser)}</td>
+            <td>${escapeHtml(row.updateTime)}</td>
+          </tr>`).join('');
+      }
+      $('#daySelected').textContent = `已选择 ${state.selected.day.size} 条`;
+      $('#dayTotal').textContent = `共 ${rows.length} 条`;
+      $('[data-check-all="day"]').checked = rows.length > 0 && rows.every(row => state.selected.day.has(row.id));
+      bindDynamicButtons(body);
+    }
+
+    function showGoalPage(page) {
+      state.page = page;
+      $('#monthPage').hidden = page !== 'month';
+      $('#dayPage').hidden = page !== 'day';
+      $$('[data-page]').forEach(item => item.classList.toggle('active', item.dataset.page === page));
+    }
+
+    function runQuery(scope) {
+      state.filtered[scope] = queryRows(scope);
+      state.selected[scope].clear();
+      scope === 'month' ? renderMonth() : renderDay();
+    }
+
+    function resetQuery(scope) {
+      $$(`[data-field^="${scope}."]`).forEach(field => {
+        if (field.classList.contains('date-range')) setDateRange(scope, '', '');
+        else field.value = '';
+      });
+      runQuery(scope);
+    }
+
+    function getExportRows(scope) {
+      const rows = state.filtered[scope];
+      const selectedIds = state.selected[scope];
+      return selectedIds.size ? rows.filter(row => selectedIds.has(row.id)) : rows;
+    }
+
+    function downloadFile(filename, rows, scope) {
+      const headers = scope === 'month'
+        ? ['考核月份', '门店编码', '门店名称', '品牌', '区域', '区经', '汇总月目标', 'POS销售月目标', '新电商月目标', '新电商月占比目标', '私域月目标', '私域月占比目标', '即时零售月目标', '即时零售月占比目标', '更新人', '更新时间']
+        : ['考核日期', '门店编码', '门店名称', '品牌', '区域', '区经', '汇总月目标', '汇总日目标', 'POS销售月目标', 'POS销售日目标', '新电商月目标', '新电商月占比目标', '新电商日目标', '新电商日占比目标', '私域月目标', '私域月占比目标', '私域日目标', '私域日占比目标', '即时零售月目标', '即时零售月占比目标', '即时零售日目标', '即时零售日占比目标', '更新人', '更新时间'];
+      const body = rows.map(row => {
+        const item = enrichGoalRow(row);
+        return scope === 'month'
+          ? [item.assessmentMonth, item.storeCode, item.storeName, item.brandCode, item.deptCode, item.supervisor, formatMoney(item.summaryMonthGoal), formatMoney(item.storeMonthGoal), formatMoney(item.ecomMonthGoal), item.ecomMonthRatio, formatMoney(item.privateMonthGoal), item.privateMonthRatio, formatMoney(item.instantRetailMonthGoal), item.instantRetailMonthRatio, item.updateUser, item.updateTime]
+          : [item.assessmentDay, item.storeCode, item.storeName, item.brandCode, item.deptCode, item.supervisor, formatMoney(item.summaryMonthGoal), formatMoney(item.summaryDayGoal), formatMoney(item.storeMonthGoal), formatMoney(item.storeDayGoal), formatMoney(item.ecomMonthGoal), item.ecomMonthRatio, formatMoney(item.ecomDayGoal), item.ecomDayRatio, formatMoney(item.privateMonthGoal), item.privateMonthRatio, formatMoney(item.privateDayGoal), item.privateDayRatio, formatMoney(item.instantRetailMonthGoal), item.instantRetailMonthRatio, formatMoney(item.instantRetailDayGoal), item.instantRetailDayRatio, item.updateUser, item.updateTime];
+      }
+      );
+      const table = [headers, ...body].map(cols => `<tr>${cols.map(col => `<td>${escapeHtml(col)}</td>`).join('')}</tr>`).join('');
+      const blob = new Blob(['\ufeff', `<html><head><meta charset="utf-8"></head><body><table>${table}</table></body></html>`], { type: 'application/vnd.ms-excel' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 800);
+    }
+
+    function exportRows(scope) {
+      const filename = scope === 'month' ? `门店月目标-${Date.now()}.xlsx` : `门店日目标-${Date.now()}.xlsx`;
+      downloadFile(filename, getExportRows(scope), scope);
+    }
+
+    function jumpToDay(rowId) {
+      const row = state.monthRows.find(item => item.id === Number(rowId));
+      if (!row) return;
+      const [start, end] = monthToRange(row.assessmentMonth);
+      $('[data-field="day.storeCode"]').value = row.storeCode;
+      $('[data-field="day.brandCode"]').value = row.brandName;
+      setDateRange('day', start, end);
+      showGoalPage('day');
+      runQuery('day');
+    }
+
+    function openUpload(type) {
+      state.uploadType = type;
+      state.uploadFile = null;
+      $('#uploadTitle').textContent = `导入${getImportTypeName(type)}数据`;
+      $('#uploadFileName').textContent = '';
+      $('#uploadInput').value = '';
+      $('#uploadModal').hidden = false;
+    }
+
+    function closeUpload() {
+      state.uploadFile = null;
+      $('#uploadModal').hidden = true;
+      $('#uploadInput').value = '';
+      $('#uploadFileName').textContent = '';
+    }
+
+    function getImportTypeName(type) {
+      const names = {
+        posDay: 'POS销售日目标',
+        privateDay: '私域日目标',
+        instantRetailDay: '即时零售日目标'
+      };
+      return names[type] || 'POS销售日目标';
+    }
+
+    function downloadTemplate() {
+      const typeName = getImportTypeName(state.uploadType);
+      const templateSources = {
+        posDay: './总部端-assets/POS销售日目标导入模板.xlsx',
+        privateDay: './总部端-assets/私域日目标导入模板.xlsx',
+        instantRetailDay: './总部端-assets/即时零售日目标导入模板.xlsx'
+      };
+      const link = document.createElement('a');
+      link.href = templateSources[state.uploadType] || templateSources.posDay;
+      link.download = `${typeName}导入模板_${Date.now()}.xlsx`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+
+    function confirmUpload() {
+      if (!state.uploadFile) {
+        toast('文件不能为空!', true);
+        return;
+      }
+      toast('导入成功');
+      closeUpload();
+      runQuery('day');
+    }
+
+    function bindDynamicButtons(root = document) {
+      root.querySelectorAll('[data-row-check]').forEach(input => {
+        input.onchange = event => {
+          const scope = input.dataset.rowCheck;
+          const id = Number(input.dataset.id);
+          event.target.checked ? state.selected[scope].add(id) : state.selected[scope].delete(id);
+          scope === 'month' ? renderMonth() : renderDay();
+        };
+      });
+      root.querySelectorAll('[data-action="jump-day"]').forEach(button => {
+        button.onclick = () => jumpToDay(button.dataset.id);
+      });
+    }
+
+    const annotatedMetricNames = new Set([
+      '新电商月目标',
+      '新电商月占比目标',
+      '新电商日目标',
+      '新电商日占比目标',
+      '私域月目标',
+      '私域月占比目标',
+      '私域日目标',
+      '私域日占比目标',
+      '即时零售月目标',
+      '即时零售月占比目标',
+      '即时零售日目标',
+      '即时零售日占比目标'
+    ]);
+
+    function initAnnotations() {
+      $$('.metric-title').forEach(title => {
+        const name = Array.from(title.childNodes)
+          .filter(node => node.nodeType === Node.TEXT_NODE)
+          .map(node => node.textContent.trim())
+          .join('');
+        if (!annotatedMetricNames.has(name)) return;
+        title.classList.add('annotated');
+        title.closest('th')?.classList.add('annotated-col');
+      });
+      document.body.classList.remove('annotation-off');
+    }
+
+    function toggleAnnotations() {
+      const off = document.body.classList.toggle('annotation-off');
+      const button = $('#annotationToggle');
+      button.textContent = `标注：${off ? '关' : '开'}`;
+      button.classList.toggle('off', off);
+    }
+
+    let metricPopover = null;
+
+    function closeMetricTip() {
+      $$('.metric-help.active').forEach(item => item.classList.remove('active'));
+      if (metricPopover) metricPopover.hidden = true;
+    }
+
+    function showMetricTip(trigger) {
+      const text = trigger.dataset.tip;
+      if (!text) return;
+      if (!metricPopover) {
+        metricPopover = document.createElement('div');
+        metricPopover.className = 'metric-popover';
+        document.body.appendChild(metricPopover);
+      }
+      const isOpen = trigger.classList.contains('active') && metricPopover.textContent === text && !metricPopover.hidden;
+      closeMetricTip();
+      if (isOpen) return;
+
+      trigger.classList.add('active');
+      metricPopover.textContent = text;
+      metricPopover.hidden = false;
+      metricPopover.classList.remove('above');
+
+      const rect = trigger.getBoundingClientRect();
+      const gap = 8;
+      const width = metricPopover.offsetWidth;
+      const height = metricPopover.offsetHeight;
+      let left = rect.left + rect.width / 2 - 18;
+      let top = rect.bottom + gap;
+      left = Math.max(12, Math.min(left, window.innerWidth - width - 12));
+      if (top + height + 12 > window.innerHeight) {
+        top = rect.top - height - gap;
+        metricPopover.classList.add('above');
+      }
+      metricPopover.style.left = `${left}px`;
+      metricPopover.style.top = `${Math.max(12, top)}px`;
+    }
+
+    $$('[data-page]').forEach(item => item.addEventListener('click', event => {
+      event.preventDefault();
+      if (item.dataset.page) showGoalPage(item.dataset.page);
+    }));
+    $('[data-action="toggle-annotation"]').addEventListener('click', toggleAnnotations);
+    $$('.metric-help').forEach(item => {
+      item.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        showMetricTip(item);
+      });
+      item.addEventListener('keydown', event => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        event.stopPropagation();
+        showMetricTip(item);
+      });
+    });
+    document.addEventListener('click', closeMetricTip);
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeMetricTip();
+    });
+    window.addEventListener('resize', closeMetricTip);
+    document.addEventListener('scroll', closeMetricTip, true);
+    $$('[data-action="query"]').forEach(button => button.addEventListener('click', () => runQuery(button.dataset.scope)));
+    $$('[data-action="reset"]').forEach(button => button.addEventListener('click', () => resetQuery(button.dataset.scope)));
+    $$('[data-action="export"]').forEach(button => button.addEventListener('click', () => exportRows(button.dataset.scope)));
+    $$('[data-action="import"]').forEach(button => button.addEventListener('click', () => openUpload(button.dataset.importType)));
+    $$('[data-check-all]').forEach(input => input.addEventListener('change', event => {
+      const scope = input.dataset.checkAll;
+      state.selected[scope].clear();
+      if (event.target.checked) state.filtered[scope].forEach(row => state.selected[scope].add(row.id));
+      scope === 'month' ? renderMonth() : renderDay();
+    }));
+    $$('[data-action="close-upload"]').forEach(button => button.addEventListener('click', closeUpload));
+    $('[data-action="download-template"]').addEventListener('click', downloadTemplate);
+    $('[data-action="confirm-upload"]').addEventListener('click', confirmUpload);
+    $('#uploadModal').addEventListener('click', event => {
+      if (event.target === $('#uploadModal')) return;
+    });
+    $('.upload-drop').addEventListener('dragover', event => event.preventDefault());
+    $('.upload-drop').addEventListener('drop', event => {
+      event.preventDefault();
+      const file = event.dataTransfer.files[0];
+      if (!file) return;
+      if (!/\.(xlsx|xls)$/i.test(file.name)) {
+        toast('文件格式不正确, 请上传xlsx/xls格式文件!', true);
+        return;
+      }
+      state.uploadFile = file;
+      $('#uploadFileName').textContent = file.name;
+    });
+    $('#uploadInput').addEventListener('change', event => {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (!/\.(xlsx|xls)$/i.test(file.name)) {
+        toast('文件格式不正确, 请上传xlsx/xls格式文件!', true);
+        event.target.value = '';
+        return;
+      }
+      state.uploadFile = file;
+      $('#uploadFileName').textContent = file.name;
+    });
+
+    initAnnotations();
+    state.filtered.month = [...state.monthRows];
+    state.filtered.day = [...state.dayRows];
+    renderMonth();
+    renderDay();
+    showGoalPage('month');
+  </script>
 </body>
 </html>
