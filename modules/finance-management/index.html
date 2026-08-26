@@ -710,9 +710,9 @@
     <header class="header">
       <div class="brand"><div class="brand-logo"><img src="./总部端-assets/logo.png" alt=""></div><div class="brand-name">RMS-零售管理系统</div></div>
       <nav class="top-nav">
-        <a class="top-nav-item" href="../../index.html">门店营运</a><a class="top-nav-item" href="../fixture-management/">空间陈列</a><button class="top-nav-item">交易中心</button><button class="top-nav-item">商品管理</button><button class="top-nav-item">库存管理</button><button class="top-nav-item">营销管理</button><button class="top-nav-item active" data-module="finance">财务管理</button><button class="top-nav-item">铺补调</button>
+        <a class="top-nav-item" href="../../index.html?v=space-navigation-20260826">门店营运</a><a class="top-nav-item" href="../fixture-management/">空间陈列</a><button class="top-nav-item">交易中心</button><button class="top-nav-item">商品管理</button><button class="top-nav-item">库存管理</button><button class="top-nav-item">营销管理</button><button class="top-nav-item active" data-module="finance">财务管理</button><button class="top-nav-item">铺补调</button>
       </nav>
-      <div class="head-actions"><button class="head-circle">⌕</button><button class="head-circle">?</button><button class="head-circle">↻</button><a class="head-circle" href="../../index.html">⌂</a><button class="head-circle">!</button><button class="head-circle text">开发</button><div class="user-box"><img class="user-avatar" src="./总部端-assets/profile.jpg" alt=""><span class="user-name">超级管理员</span><span>⌄</span></div></div>
+      <div class="head-actions"><button class="head-circle">⌕</button><button class="head-circle">?</button><button class="head-circle">↻</button><a class="head-circle" href="../../index.html?v=space-navigation-20260826">⌂</a><button class="head-circle">!</button><button class="head-circle text">开发</button><div class="user-box"><img class="user-avatar" src="./总部端-assets/profile.jpg" alt=""><span class="user-name">超级管理员</span><span>⌄</span></div></div>
     </header>
     <main class="layout">
       <aside class="sidebar">
@@ -789,7 +789,7 @@
       </aside>
       <button class="collapse-handle">‹</button>
       <section class="content">
-        <div class="work-tabs"><a class="work-tab" href="../../index.html">首页</a><button class="work-tab active" data-tab="propRebate">道具返款申请 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button></div>
+        <div class="work-tabs"><a class="work-tab" href="../../index.html?v=space-navigation-20260826">首页</a><button class="work-tab active" data-tab="propRebate">道具返款申请 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button></div>
         <div class="view-stack" id="viewStack"></div>
       </section>
     </main>
@@ -1379,7 +1379,7 @@
       const enabledCount = allRows.filter(row => row.status === '1').length;
       const allVisibleSelected = visibleRows.length > 0 && visibleRows.every(row => state.selected.displaySpec.has(row.id));
       $$('.side-link').forEach(item => item.classList.toggle('active', item.dataset.page === 'displaySpec'));
-      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html">首页</a><button class="work-tab active" data-tab="displaySpec">陈列规格管理 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
+      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html?v=space-navigation-20260826">首页</a><button class="work-tab active" data-tab="displaySpec">陈列规格管理 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
       $('#viewStack').innerHTML = `<section class="page display-spec-page">
         <div class="spec-summary-grid">
           ${renderSpecSummaryCard('陈列规格', `${allRows.length} 套`, `${enabledCount} 套启用`, '▰')}
@@ -1441,7 +1441,7 @@
       const allVisibleSelected = visibleRows.length > 0 && visibleRows.every(row => state.selected.fixtureBase.has(row.id));
       const categoryOptions = ['DP道具', '墙面器架', '地面器架', '功能区道具'].map(value => `<option value="${value}" ${state.fixtureFilters.category === value ? 'selected' : ''}>${value}</option>`).join('');
       $$('.side-link').forEach(item => item.classList.toggle('active', item.dataset.page === 'fixtureBase'));
-      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html">首页</a><button class="work-tab active" data-tab="fixtureBase">基础器架管理 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
+      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html?v=space-navigation-20260826">首页</a><button class="work-tab active" data-tab="fixtureBase">基础器架管理 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
       $('#viewStack').innerHTML = `
         <section class="page fixture-master-page">
           <div class="fixture-master-kpis">
@@ -1559,7 +1559,7 @@
       const fixtureTypes = [...new Set(allRows.map(row => row.fixtureType))];
       const filters = state.storeFixtureFilters;
       $$('.side-link').forEach(item => item.classList.toggle('active', item.dataset.page === 'storeFixtureArchive'));
-      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html">首页</a><button class="work-tab active" data-tab="storeFixtureArchive">门店器架档案 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
+      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html?v=space-navigation-20260826">首页</a><button class="work-tab active" data-tab="storeFixtureArchive">门店器架档案 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
       $('#viewStack').innerHTML = `
         <section class="page fixture-master-page store-fixture-page">
           <div class="fixture-master-kpis">
@@ -1625,7 +1625,7 @@
       const filters = state.storeDisplayGuideFilters;
       $$('.side-link').forEach(item => item.classList.toggle('active', item.dataset.page === 'storeDisplayGuide'));
       const allVisibleSelected = rows.length > 0 && rows.every(row => state.selected.storeDisplayGuide.has(row.id));
-      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html">首页</a><button class="work-tab active" data-tab="storeDisplayGuide">陈列指引档案 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
+      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html?v=space-navigation-20260826">首页</a><button class="work-tab active" data-tab="storeDisplayGuide">陈列指引档案 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
       $('#viewStack').innerHTML = `<section class="page display-spec-page display-guide-page">
         <div class="spec-summary-grid">
           ${renderSpecSummaryCard('陈列指引', `${allRows.length} 套`, `${allRows.filter(row => row.status === '1').length} 套启用`, '▰')}
@@ -1662,7 +1662,7 @@
       const totalFaces = rows.reduce((sum, row) => sum + Number(row.displayFaces || 0), 0);
       const configuredFaces = rows.reduce((sum, row) => sum + Array.from({ length: Number(row.displayFaces || 0) }, (_, index) => storeDisplayOverviewFace(row, index + 1).guideName ? 1 : 0).filter(Boolean).length, 0);
       $$('.side-link').forEach(item => item.classList.toggle('active', item.dataset.page === 'storeDisplayOverview'));
-      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html">首页</a><button class="work-tab active" data-tab="storeDisplayOverview">门店陈列总览 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
+      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html?v=space-navigation-20260826">首页</a><button class="work-tab active" data-tab="storeDisplayOverview">门店陈列总览 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
       $('#viewStack').innerHTML = `<section class="page display-spec-page store-display-overview-page">
         <div class="spec-summary-grid">${renderSpecSummaryCard('当前门店', store ? store.storeName : '-', store ? `${store.region} · ${store.storeImage || '-'}` : '暂无门店数据', '⌂')}${renderSpecSummaryCard('器架数量', `${rows.length} 个`, '当前门店器架实例', '▤')}${renderSpecSummaryCard('陈列面', `${totalFaces} 面`, '按器架展面汇总', '▰')}${renderSpecSummaryCard('指引完成', `${configuredFaces} / ${totalFaces}`, totalFaces ? `完成率 ${Math.round(configuredFaces / totalFaces * 100)}%` : '暂无陈列面', '✓', configuredFaces === totalFaces ? 'good' : '')}</div>
         <div class="store-display-overview-filter"><label for="storeDisplayOverviewStore">查看门店</label><select id="storeDisplayOverviewStore" data-store-overview><option value="">请选择门店</option>${stores.map(item => `<option value="${escapeHtml(item.storeCode)}" ${item.storeCode === store?.storeCode ? 'selected' : ''}>${escapeHtml(item.storeName)} / ${escapeHtml(item.storeCode)} · ${escapeHtml(item.region)}</option>`).join('')}</select><span class="spec-result-count">陈列总览 · ${escapeHtml(store?.storeName || '暂无门店')}</span></div>
@@ -1718,7 +1718,7 @@
       const rows = financeRows();
       const columns = financeColumns();
       const allChecked = rows.length > 0 && rows.every(row => state.financeSelected.has(row.id));
-      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html">首页</a><button class="work-tab active" data-tab="propConfig">道具配置 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
+      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html?v=space-navigation-20260826">首页</a><button class="work-tab active" data-tab="propConfig">道具配置 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
       $('#viewStack').innerHTML = `<section class="finance-page"><div class="finance-head"><div class="finance-title">道具配置</div><div class="finance-breadcrumb">财务管理 / 联营对账 / 道具配置</div><div class="finance-filter"><label class="finance-filter-field"><span>联营商名称</span><input id="financeMerchantName" value="${escapeHtml(state.financeFilters.merchantName)}" placeholder="请输入联营商名称"></label><label class="finance-filter-field"><span>门店名称</span><input id="financeStoreName" value="${escapeHtml(state.financeFilters.storeName)}" placeholder="请选择门店，可多选"></label><div class="finance-filter-actions"><button class="toolbar-btn primary" data-finance-action="query">⌕ 搜索</button><button class="toolbar-btn" data-finance-action="reset">↻ 重置</button></div></div></div><div class="finance-panel"><div class="finance-tabs"><button class="finance-tab ${state.financeTab === 'SUCCESS' ? 'active' : ''}" data-finance-tab="SUCCESS">已确认数据</button><button class="finance-tab ${state.financeTab === 'EXPIRE' ? 'active' : ''}" data-finance-tab="EXPIRE">已失效数据</button><button class="finance-tab ${state.financeTab === 'INGs' ? 'active' : ''}" data-finance-tab="INGs">待审核抵扣率<span class="finance-tab-badge">${financeTabCount('INGs')}</span></button><button class="finance-tab ${state.financeTab === 'ING' ? 'active' : ''}" data-finance-tab="ING">待审核道具金额<span class="finance-tab-badge">${financeTabCount('ING')}</span></button></div><div class="finance-toolbar"><button class="toolbar-btn warning" data-finance-action="export">⬇ 导出</button>${financeToolbar()}<span class="finance-toolbar-spacer"></span><span style="color:#909399">共 ${rows.length} 条</span></div><div class="finance-table-wrap"><table class="finance-table"><thead><tr><th style="width:44px;text-align:center"><input class="checkbox" data-finance-check-all type="checkbox" ${allChecked ? 'checked' : ''}></th>${columns.map(column => `<th style="width:${column[2]}px">${column[1]}</th>`).join('')}<th style="width:${state.financeTab === 'SUCCESS' ? 260 : 110}px">操作</th></tr></thead><tbody>${rows.length ? rows.map(row => `<tr><td style="text-align:center"><input class="checkbox" data-finance-check="${row.id}" type="checkbox" ${state.financeSelected.has(row.id) ? 'checked' : ''}></td>${columns.map(column => `<td style="width:${column[2]}px">${financeCell(column[0], row)}</td>`).join('')}<td class="finance-action">${financeRowActions(row)}</td></tr>`).join('') : `<tr><td colspan="${columns.length + 2}" style="height:120px;text-align:center;color:#909399">暂无数据</td></tr>`}</tbody></table></div><div class="finance-page-footer"><span>已选择 ${state.financeSelected.size} 条</span><div class="finance-pager"><span>共 ${rows.length} 条</span><select><option>10条/页</option><option>20条/页</option><option>30条/页</option><option>50条/页</option><option>100条/页</option><option>200条/页</option></select><button>‹</button><button class="active">1</button><button>›</button><span>前往</span><input class="jump" value="1" style="width:38px;height:28px;border:1px solid #dcdfe6;border-radius:3px;text-align:center"><span>页</span></div></div></div></section>`;
       $$('.side-link').forEach(item => item.classList.toggle('active', item.dataset.page === 'propConfig'));
       bindFinancePageEvents();
@@ -1845,7 +1845,7 @@
       state.page = 'propRebate';
       setModule('finance');
       $$('.side-link').forEach(item => item.classList.toggle('active', item.dataset.page === 'propRebate'));
-      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html">首页</a><button class="work-tab active" data-tab="propRebate">道具返款申请 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
+      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html?v=space-navigation-20260826">首页</a><button class="work-tab active" data-tab="propRebate">道具返款申请 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
       if (state.propRebateView === 'form') return renderPropRebateForm();
       if (state.propRebateView === 'detail') return renderPropRebateDetail();
       const rows = propRebateRows();
@@ -2110,7 +2110,7 @@
       state.page = page;
       setModule('finance');
       $$('.side-link').forEach(item => item.classList.toggle('active', item.dataset.page === page));
-      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html">首页</a><button class="work-tab active" data-tab="${page}">${pageNames[page]} <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
+      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html?v=space-navigation-20260826">首页</a><button class="work-tab active" data-tab="${page}">${pageNames[page]} <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
       $('#viewStack').innerHTML = `<section class="finance-page"><div class="finance-head"><div class="finance-title">${pageNames[page]}</div><div class="finance-breadcrumb">财务管理 / ${pageNames[page]}</div><div class="finance-filter"><label class="finance-filter-field"><span>门店名称</span><input placeholder="请选择门店"></label><label class="finance-filter-field"><span>单据编号</span><input placeholder="请输入单据编号"></label><div class="finance-filter-actions"><button class="toolbar-btn primary" data-framework-action="query">⌕ 搜索</button><button class="toolbar-btn" data-framework-action="reset">↻ 重置</button></div></div></div><div class="finance-panel"><div class="finance-toolbar"><button class="toolbar-btn warning" data-framework-action="export">⬇ 导出</button><span class="finance-toolbar-spacer"></span><span style="color:#909399">共 0 条</span></div><div class="finance-table-wrap"><table class="finance-table"><thead><tr><th style="width:60px">序号</th><th style="width:220px">单据编号</th><th style="width:220px">门店名称</th><th style="width:150px">金额</th><th style="width:150px">状态</th><th style="width:180px">更新时间</th><th style="width:100px">操作</th></tr></thead><tbody><tr><td colspan="7" style="height:160px;text-align:center;color:#909399">暂无数据</td></tr></tbody></table></div><div class="finance-page-footer"><span>已选择 0 条</span><div class="finance-pager"><span>共 0 条</span><select><option>10条/页</option></select><button>‹</button><button class="active">1</button><button>›</button></div></div></div></section>`;
       $$('[data-framework-action]').forEach(button => button.addEventListener('click', () => toast(button.dataset.frameworkAction === 'export' ? '导出任务已提交' : button.dataset.frameworkAction === 'reset' ? '重置成功' : '查询成功')));
     }
@@ -2136,7 +2136,7 @@
             ? filteredDisplaySpecRows()
             : state.rows[page];
       $$('.side-link').forEach(item => item.classList.toggle('active', item.dataset.page === page));
-      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html">首页</a><button class="work-tab active" data-tab="${page}">${pageNames[page]} <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
+      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html?v=space-navigation-20260826">首页</a><button class="work-tab active" data-tab="${page}">${pageNames[page]} <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
       $('#viewStack').innerHTML = `
         <section class="page">
           ${pagePrelude(page)}
@@ -3401,7 +3401,7 @@
       state.page = routeKey;
       const activeMenu = options.activeMenu || (routeKey.includes('purchaseOrder') ? 'purchaseOrder' : routeKey.includes('purchaseSubOrder') ? 'purchaseSubOrder' : 'originalStoreOrders');
       $$('.side-link').forEach(item => item.classList.toggle('active', item.dataset.page === activeMenu));
-      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html">首页</a><button class="work-tab" data-page="${activeMenu}">${pageNames[activeMenu]} <span class="close">×</span></button><button class="work-tab active" data-tab="${routeKey}">${title} <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
+      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html?v=space-navigation-20260826">首页</a><button class="work-tab" data-page="${activeMenu}">${pageNames[activeMenu]} <span class="close">×</span></button><button class="work-tab active" data-tab="${routeKey}">${title} <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
       $('#viewStack').innerHTML = `<section class="route-page">${body}</section>`;
       hydrateEmbeddedFrame($('#viewStack'));
       $$('[data-page]', $('.work-tabs')).forEach(item => item.addEventListener('click', () => renderPage(item.dataset.page)));
@@ -3449,7 +3449,7 @@
     function renderOpenedStoreDrawing(storeCode = 'CQ001') {
       state.page = 'openedStoreDrawing';
       $$('.side-link').forEach(item => item.classList.toggle('active', item.dataset.page === 'originalStoreOrders'));
-      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html">首页</a><button class="work-tab" data-opened-tab="orders">门店原始订单 <span class="close">×</span></button><button class="work-tab" data-opened-tab="confirm">确认下单 <span class="close">×</span></button><button class="work-tab active" data-opened-tab="drawing">已开业门店详情 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
+      $('.work-tabs').innerHTML = `<a class="work-tab" href="../../index.html?v=space-navigation-20260826">首页</a><button class="work-tab" data-opened-tab="orders">门店原始订单 <span class="close">×</span></button><button class="work-tab" data-opened-tab="confirm">确认下单 <span class="close">×</span></button><button class="work-tab active" data-opened-tab="drawing">已开业门店详情 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button>`;
       $('#viewStack').innerHTML = `<section class="route-page"><div class="strict-embed-page" aria-label="已开业门店详情-设计图纸"><iframe class="strict-embed-frame" title="已开业门店详情-设计图纸"></iframe></div></section>`;
       const frame = $('.strict-embed-frame', $('#viewStack'));
       frame.onload = () => {
