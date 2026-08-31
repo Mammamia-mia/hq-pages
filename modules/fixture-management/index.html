@@ -4586,7 +4586,7 @@
             <div class="spec-field"><label class="spec-field-label"><span class="required">*</span>陈列大类</label><div class="spec-search-control"><input id="displaySpecCategory" list="displaySpecCategoryOptions" autocomplete="off" value="${escapeHtml(row?.displayCategory || '')}" placeholder="输入关键词搜索或选择陈列大类"></div>${displaySpecDatalist('displaySpecCategoryOptions', displayCategories)}</div>
             <div class="spec-field"><label class="spec-field-label">陈列中类</label><div class="spec-search-control"><input id="displaySpecMiddleCategory" autocomplete="off" value="${escapeHtml(row?.middleCategory || '')}" placeholder="请输入陈列中类（非必填）"></div></div>
             <div class="spec-field"><label class="spec-field-label"><span class="required">*</span>季节</label><select id="displaySpecSeason"><option value="">请选择季节</option>${displaySpecSelectOptions(seasons, row?.season || '')}</select></div>
-            <div class="spec-field"><label class="spec-field-label"><span class="required">*</span>性别</label><select id="displaySpecGender"><option value="">请选择性别</option>${displaySpecSelectOptions(genders, row?.gender || '')}</select></div>
+            <div class="spec-field"><label class="spec-field-label">性别</label><select id="displaySpecGender"><option value="">请选择性别</option>${displaySpecSelectOptions(genders, row?.gender || '')}</select></div>
             <div class="spec-field"><label class="spec-field-label"><span class="required">*</span>出样形式</label><div class="display-form-input"><input id="displaySpecForm" type="number" min="0" step="1" value="${escapeHtml(String(row?.displayForm || '').match(/^\d+/)?.[0] || '')}" placeholder="请输入数量"><span class="display-form-suffix">件/SKC</span></div></div>
           </div>
           <section class="capacity-card">
@@ -4626,10 +4626,10 @@
           capacityPcsMax: Number($('#displaySpecPcsMax').value)
         };
         values.specName = row?.specName || `${values.season}${values.gender}${values.displayCategory}${values.middleCategory || ''}${values.positionType}标准`;
-        if (!values.linkedFixture || !values.displayCategory || !values.season || !values.gender || !values.displayForm || capacityInputs.some(input => input.value === '')) return toast('请完整填写必填项', 'error');
+        if (!values.linkedFixture || !values.displayCategory || !values.season || !values.displayForm || capacityInputs.some(input => input.value === '')) return toast('请完整填写必填项', 'error');
         if (!linkedOptions.includes(values.linkedFixture)) return toast('请从候选项中选择关联器架/道具', 'error');
         if (!displayCategories.includes(values.displayCategory)) return toast('请从候选项中选择陈列大类', 'error');
-        if (!genders.includes(values.gender)) return toast('请选择性别', 'error');
+        if (values.gender && !genders.includes(values.gender)) return toast('请选择性别', 'error');
         if (!Number.isInteger(Number($('#displaySpecForm').value)) || Number($('#displaySpecForm').value) < 0) return toast('出样形式请输入大于等于 0 的整数', 'error');
         const capacityValues = capacityInputs.map(input => Number(input.value));
         if (capacityValues.some(value => !Number.isInteger(value) || value < 0)) return toast('建议承载量请输入大于等于 0 的整数', 'error');
@@ -5501,10 +5501,10 @@
       const warehouseLevels = ['一级仓位', '二级仓位', '三级仓位', '一仓', '两仓', '三仓'];
       const guideMduGender = value => ({ 男士: '男', 女士: '女', 其它: '其他' }[String(value || '')] || inspectionGender(value));
       const guideMduOptions = (displayCategory, gender, currentValue = '') => {
-        if (!displayCategory || !gender) return [];
+        if (!displayCategory) return [];
         ensureMduManagementState();
         return [...new Set([
-          ...state.rows.mduManagement.filter(item => item.displayCategory === displayCategory && (!item.gender || guideMduGender(item.gender) === guideMduGender(gender))).map(item => item.mdu),
+          ...state.rows.mduManagement.filter(item => item.displayCategory === displayCategory && (!gender || !item.gender || guideMduGender(item.gender) === guideMduGender(gender))).map(item => item.mdu),
           currentValue
         ].filter(Boolean))];
       };
@@ -5516,7 +5516,7 @@
         <datalist id="guideFixtureList">${fixtures.map(item => `<option value="${escapeHtml(`${item.fixtureName} / ${item.fixtureCode}`)}"></option>`).join('')}</datalist>
         <div class="form-row"><label><span class="required">*</span>大类</label><input id="guideDisplayCategory" list="guideDisplayCategoryList" value="${escapeHtml(row?.displayCategory || '')}" placeholder="请输入或选择大类"><datalist id="guideDisplayCategoryList">${categories.map(value => `<option value="${escapeHtml(value)}"></option>`).join('')}</datalist></div>
         <div class="form-row"><label><span class="required">*</span>季节</label><select id="guideSeason"><option value="">请选择季节</option>${seasons.map(value => `<option value="${value}" ${row?.season === value ? 'selected' : ''}>${value}</option>`).join('')}</select></div>
-        <div class="form-row"><label><span class="required">*</span>性别</label><select id="guideGender"><option value="">请选择性别</option>${genders.map(value => `<option value="${value}" ${row?.gender === value ? 'selected' : ''}>${value}</option>`).join('')}</select></div>
+        <div class="form-row"><label>性别</label><select id="guideGender"><option value="">请选择性别</option>${genders.map(value => `<option value="${value}" ${row?.gender === value ? 'selected' : ''}>${value}</option>`).join('')}</select></div>
         <div class="form-row"><label>仓位级别</label><select id="guideWarehouseLevel"><option value="">请选择仓位级别</option>${warehouseLevels.map(value => `<option value="${value}" ${row?.warehouseLevel === value ? 'selected' : ''}>${value}</option>`).join('')}</select></div>
         <div class="form-row"><label>MDU</label><select id="guideWarehouseCategory"><option value="">请选择 MDU</option></select></div>
         <div class="form-row"><label><span class="required">*</span>出样形式</label><div class="display-form-input"><input id="guideDisplayForm" type="number" min="0" step="1" value="${escapeHtml(String(row?.displayForm || '').match(/^\d+/)?.[0] || '')}" placeholder="请输入数量"><span class="display-form-suffix">件/SKC</span></div></div>
@@ -5532,8 +5532,8 @@
       const refreshGuideMduOptions = (preferredValue = guideMduSelect.value || row?.warehouseCategory || '') => {
         const displayCategory = $('#guideDisplayCategory').value.trim();
         const gender = $('#guideGender').value;
-        if (!displayCategory || !gender) {
-          guideMduSelect.innerHTML = '<option value="">请先选择大类及性别</option>';
+        if (!displayCategory) {
+          guideMduSelect.innerHTML = '<option value="">请先选择大类</option>';
           return;
         }
         const options = guideMduOptions(displayCategory, gender, preferredValue);
@@ -5544,9 +5544,9 @@
       $('#guideDisplayCategory').addEventListener('change', () => refreshGuideMduOptions(''));
       $('#guideGender').addEventListener('change', () => refreshGuideMduOptions(''));
       guideMduSelect.addEventListener('mousedown', event => {
-        if (!$('#guideDisplayCategory').value.trim() || !$('#guideGender').value) {
+        if (!$('#guideDisplayCategory').value.trim()) {
           event.preventDefault();
-          toast('请先选择大类及性别', 'warning');
+          toast('请先选择大类', 'warning');
         }
       });
       const renderGuideFormDrafts = () => {
@@ -5584,7 +5584,7 @@
         const displayFormValue = Number($('#guideDisplayForm').value);
         const displayForm = `${displayFormValue}件/SKC`;
         const presentationForms = guideFormDrafts.map((form, index) => ({ ...form, name: `呈现方案${index + 1}` }));
-        if (!applicableRegions.length || !displayCategory || !season || !gender || !Number.isInteger(displayFormValue) || displayFormValue < 0 || !presentationForms.length) return toast('请完整填写必填项', 'error');
+        if (!applicableRegions.length || !displayCategory || !season || !Number.isInteger(displayFormValue) || displayFormValue < 0 || !presentationForms.length) return toast('请完整填写必填项', 'error');
         if (!categories.includes(displayCategory)) return toast('请选择已有的大类', 'error');
         if (presentationForms.some(form => !form.fixtureCode || !form.fixtureName)) return toast('请为每个呈现方案选择关联器架/道具', 'error');
         if (presentationForms.some(form => !form.guideImage)) return toast('请为每个呈现方案上传陈列指引图', 'error');
