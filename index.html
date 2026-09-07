@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="prototype-project" content="RMS-零售管理系统">
+  <meta name="prototype-generated-at" content="2026-09-07 15:07:28">
   <title>RMS-零售管理系统 - 目标绩效</title>
   <style>
     :root {
@@ -161,6 +163,25 @@
     .toast-wrap { position: fixed; z-index: 300; left: 50%; top: 78px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
     .toast { min-width: 220px; padding: 11px 18px; border-radius: 4px; background: #f0f9eb; border: 1px solid #e1f3d8; color: #67c23a; box-shadow: 0 4px 14px rgba(0, 0, 0, .08); }
     .toast.error { background: #fef0f0; border-color: #fde2e2; color: #f56c6c; }
+
+    .assistant-goal-table { min-width: 2780px; }
+    .assistant-report-table { min-width: 2920px; }
+    .period-panel { height: 48px; flex: 0 0 auto; padding: 6px 20px; background: #fff; border-radius: 4px; display: flex; align-items: center; gap: 12px; }
+    .period-group { display: inline-flex; align-items: center; border: 1px solid #dcdfe6; border-radius: 3px; overflow: hidden; background: #fff; }
+    .period-btn { height: 32px; min-width: 74px; padding: 0 15px; border: 0; border-right: 1px solid #dcdfe6; background: #fff; color: #606266; }
+    .period-btn:last-child { border-right: 0; }
+    .period-btn.active { background: #409eff; color: #fff; }
+    .period-date { width: 238px; height: 32px; border: 1px solid #dcdfe6; border-radius: 3px; display: flex; align-items: center; justify-content: center; color: #909399; background: #fff; }
+    .tag { display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: 3px; font-size: 12px; border: 1px solid transparent; }
+    .tag.success { color: #67c23a; background: #f0f9eb; border-color: #e1f3d8; }
+    .tag.warning { color: #e6a23c; background: #fdf6ec; border-color: #faecd8; }
+    .tag.info { color: #909399; background: #f4f4f5; border-color: #e9e9eb; }
+    .store-col { width: 190px; }
+    .phone-col { width: 140px; }
+    .status-col { width: 110px; }
+    .reason-col { width: 160px; }
+    .table-summary { height: 32px; margin-left: auto; color: #909399; font-size: 13px; display: flex; align-items: center; gap: 14px; }
+
     @media(max-width: 1550px) {
       .top-nav { padding: 0 12px; gap: 0; }
       .top-nav-item { min-width: 73px; padding: 0 10px; }
@@ -175,7 +196,7 @@
     <header class="header">
       <div class="brand"><div class="brand-logo"><img src="./总部端-assets/logo.png" alt=""></div><div class="brand-name">RMS-零售管理系统</div></div>
       <nav class="top-nav">
-        <button class="top-nav-item active">门店营运</button><a class="top-nav-item" href="./modules/fixture-management/">空间陈列</a><button class="top-nav-item">交易中心</button><button class="top-nav-item">商品管理</button><button class="top-nav-item">库存管理</button><button class="top-nav-item">营销管理</button><button class="top-nav-item">财务管理</button><button class="top-nav-item">铺补调</button>
+        <button class="top-nav-item active">门店营运</button><a class="top-nav-item" href="./总部端-空间陈列-道具管理.html">空间陈列</a><button class="top-nav-item">交易中心</button><button class="top-nav-item">商品管理</button><button class="top-nav-item">库存管理</button><button class="top-nav-item">营销管理</button><button class="top-nav-item">财务管理</button><button class="top-nav-item">铺补调</button>
       </nav>
       <div class="head-actions"><button class="annotation-toggle" id="annotationToggle" data-action="toggle-annotation">标注：开</button><button class="head-circle">⌕</button><button class="head-circle">?</button><button class="head-circle">↻</button><button class="head-circle">⌂</button><button class="head-circle">!</button><button class="head-circle text">开发</button><div class="user-box"><img class="user-avatar" src="./总部端-assets/profile.jpg" alt=""><span class="user-name">超级管理员</span><span class="user-arrow">⌄</span></div></div>
     </header>
@@ -184,11 +205,11 @@
         <div class="menu-search">⌕<input placeholder="请输入菜单名称"></div>
         <div class="favorite"><span class="favorite-left"><span class="star">☆</span>我的收藏</span><span class="side-arrow">⌄</span></div>
         <section class="side-section"><div class="side-title"><span>门店管理</span><span class="side-arrow">⌄</span></div><div class="side-grid"><button class="side-link">门店地图</button><button class="side-link">开店申请</button><button class="side-link">报店申请</button><button class="side-link">已开业门店</button><button class="side-link">门店批量变更</button><button class="side-link">即时零售营...</button><button class="side-link">闭店申请</button></div></section>
-        <section class="side-section"><div class="side-title"><span>店务协同</span><span class="side-arrow">⌄</span></div><div class="side-divider"><span>目标绩效</span></div><div class="side-grid"><button class="side-link">目标配置</button><button class="side-link">提成配置</button><button class="side-link">店员绩效</button><button class="side-link active" data-page="month">门店月目标</button><button class="side-link" data-page="day">门店日目标</button><button class="side-link">导购销售目标</button><button class="side-link">导购销售报表</button></div><div class="side-divider"><span>服务管理</span></div><div class="side-grid"><button class="side-link">每日一晒</button><button class="side-link">体验亮灯</button><button class="side-link">门店客诉服务</button><button class="side-link">线上巡店</button><button class="side-link">巡店配置</button><button class="side-link">门店体验分</button><button class="side-link">现场巡店</button></div><div class="side-divider"><span>门店任务</span></div><div class="side-grid"><button class="side-link">门店任务</button></div><div class="side-divider"><span>任务报表</span></div><div class="side-grid"><button class="side-link">推广内容报表</button><button class="side-link">人员推广报表</button><button class="side-link">推广完成报表</button><button class="side-link">打卡完成报表</button><button class="side-link">检核完成报表</button></div></section>
+        <section class="side-section"><div class="side-title"><span>店务协同</span><span class="side-arrow">⌄</span></div><div class="side-divider"><span>目标绩效</span></div><div class="side-grid"><button class="side-link">目标配置</button><button class="side-link">提成配置</button><button class="side-link">店员绩效</button><button class="side-link active" data-page="month">门店月目标</button><button class="side-link" data-page="day">门店日目标</button><button class="side-link" data-page="assistantGoalItem">导购销售目标</button><button class="side-link" data-page="assistantPerformanceReport">导购销售报表</button></div><div class="side-divider"><span>服务管理</span></div><div class="side-grid"><button class="side-link">每日一晒</button><button class="side-link">体验亮灯</button><button class="side-link">门店客诉服务</button><button class="side-link">线上巡店</button><button class="side-link">巡店配置</button><button class="side-link">门店体验分</button><button class="side-link">现场巡店</button></div><div class="side-divider"><span>门店任务</span></div><div class="side-grid"><button class="side-link">门店任务</button></div><div class="side-divider"><span>任务报表</span></div><div class="side-grid"><button class="side-link">推广内容报表</button><button class="side-link">人员推广报表</button><button class="side-link">推广完成报表</button><button class="side-link">打卡完成报表</button><button class="side-link">检核完成报表</button></div></section>
       </aside>
       <button class="collapse-handle">‹</button>
       <section class="content">
-        <div class="work-tabs"><button class="work-tab">首页</button><button class="work-tab active" data-page="month">门店月目标 <span class="close">×</span></button><button class="work-tab" data-page="day">门店日目标 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button></div>
+        <div class="work-tabs"><button class="work-tab">首页</button><button class="work-tab active" data-page="month">门店月目标 <span class="close">×</span></button><button class="work-tab" data-page="day">门店日目标 <span class="close">×</span></button><button class="work-tab" data-page="assistantGoalItem">导购销售目标 <span class="close">×</span></button><button class="work-tab" data-page="assistantPerformanceReport">导购销售报表 <span class="close">×</span></button><span class="work-tabs-spacer"></span><button class="tabs-collapse">⌃</button></div>
         <div class="view-stack">
           <section class="page" id="monthPage">
             <div class="search-panel">
@@ -240,6 +261,74 @@
                 </table>
               </div>
               <div class="table-footer"><div class="selected-count" id="daySelected">已选择 0 条</div><div class="pager-wrap"><span id="dayTotal">共 1 条</span><select class="page-size"><option>10条/页</option></select><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">›</button><span>前往</span><input class="jump" value="1"><span>页</span></div></div>
+            </div>
+          </section>
+
+          <section class="page" id="assistantGoalItemPage" data-prototype-page="assistant-goal-item" hidden>
+            <div class="search-panel">
+              <div class="search-grid">
+                <label class="field"><span class="field-label">门店</span><input data-field="assistantGoalItem.storeCodeList" placeholder="请选择门店"><span class="select-arrow">⌄</span></label>
+                <label class="field"><span class="field-label">区域</span><input data-field="assistantGoalItem.deptCodeList" placeholder="请选择区域"><span class="select-arrow">⌄</span></label>
+                <label class="field"><span class="field-label">区经</span><input data-field="assistantGoalItem.supervisor" placeholder="请输入区经"></label>
+                <label class="field"><span class="field-label">门店类型</span><input data-field="assistantGoalItem.storeTypeList" placeholder="请选择门店类型"><span class="select-arrow">⌄</span></label>
+                <label class="field"><span class="field-label">门店状态</span><input data-field="assistantGoalItem.storeStatusList" placeholder="请选择门店状态"><span class="select-arrow">⌄</span></label>
+                <label class="field"><span class="field-label">导购编号</span><input data-field="assistantGoalItem.assistantCode" placeholder="请输入导购编号"></label>
+                <label class="field"><span class="field-label">导购姓名</span><input data-field="assistantGoalItem.assistantName" placeholder="请输入导购姓名"></label>
+                <label class="field"><span class="field-label">导购手机号</span><input data-field="assistantGoalItem.phoneNumber" placeholder="请输入导购手机号"></label>
+                <label class="field"><span class="field-label">状态</span><input data-field="assistantGoalItem.statusList" placeholder="请选择"><span class="select-arrow">⌄</span></label>
+                <label class="field"><span class="field-label">考核日期</span><div class="date-range" data-field="assistantGoalItem.assessmentDayList" data-start="2026-09-01" data-end="2026-09-30"><span>2026-09-01</span><span>-</span><span>2026-09-30</span></div></label>
+              </div>
+              <div class="search-actions"><button class="icon-btn primary" data-action="query" data-scope="assistantGoalItem">⌕</button><button class="icon-btn" data-action="reset" data-scope="assistantGoalItem">↻</button></div>
+            </div>
+            <div class="table-panel">
+              <div class="table-toolbar"><button class="toolbar-btn warning" data-action="export" data-scope="assistantGoalItem">⬇ 导出</button><div class="table-summary"><span>接口：/pos/assistantGoalItem/page</span><span>权限：pos:assistantGoalItem:export</span></div></div>
+              <div class="table-scroller">
+                <table class="assistant-goal-table">
+                  <thead>
+                    <tr class="group-row"><th class="check-col group-base" rowspan="2"><input class="checkbox" data-check-all="assistantGoalItem" type="checkbox"></th><th class="date-col group-base" rowspan="2">考核日期</th><th class="group-base" colspan="5">门店信息</th><th class="group-store" colspan="3">门店目标</th><th class="group-ecom" colspan="4">导购信息</th><th class="group-private" colspan="3">导购目标</th><th class="group-base" rowspan="2">状态</th><th class="group-base" rowspan="2">是否归档</th><th class="group-base" rowspan="2">失效原因</th><th class="group-base" rowspan="2">更新人</th><th class="group-base" rowspan="2">更新时间</th></tr>
+                    <tr><th class="store-col">门店名称</th><th class="dept-col">区域</th><th class="supervisor-col">区经</th><th class="status-col">门店类型</th><th class="status-col">门店状态</th><th class="money-col">门店总目标</th><th class="money-col">POS销售日目标</th><th class="money-col">私域销售日目标</th><th class="code-col">导购编号</th><th class="name-col">导购姓名</th><th class="phone-col">导购手机号</th><th class="status-col">岗位</th><th class="money-col">导购总目标</th><th class="money-col">导购POS销售目标</th><th class="money-col">导购私域销售目标</th></tr>
+                  </thead>
+                  <tbody id="assistantGoalItemBody"></tbody>
+                </table>
+              </div>
+              <div class="table-footer"><div class="selected-count" id="assistantGoalItemSelected">已选择 0 条</div><div class="pager-wrap"><span id="assistantGoalItemTotal">共 0 条</span><select class="page-size"><option>10条/页</option></select><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">›</button><span>前往</span><input class="jump" value="1"><span>页</span></div></div>
+            </div>
+          </section>
+          <section class="page" id="assistantPerformanceReportPage" data-prototype-page="assistant-performance-report" hidden>
+            <div class="period-panel">
+              <div class="period-group" data-field="assistantPerformanceReport.period">
+                <button class="period-btn active" data-period="today">今日</button>
+                <button class="period-btn" data-period="yesterday">昨日</button>
+                <button class="period-btn" data-period="thisMonth">本月</button>
+                <button class="period-btn" data-period="other">自定义</button>
+              </div>
+              <div class="period-date" id="reportPeriodDate" hidden>开始日期 - 结束日期</div>
+            </div>
+            <div class="search-panel">
+              <div class="search-grid">
+                <label class="field"><span class="field-label">门店</span><input data-field="assistantPerformanceReport.storeCodeList" placeholder="请选择门店"><span class="select-arrow">⌄</span></label>
+                <label class="field"><span class="field-label">区域</span><input data-field="assistantPerformanceReport.deptCodeList" placeholder="请选择区域"><span class="select-arrow">⌄</span></label>
+                <label class="field"><span class="field-label">区经</span><input data-field="assistantPerformanceReport.supervisor" placeholder="请输入区经"></label>
+                <label class="field"><span class="field-label">门店类型</span><input data-field="assistantPerformanceReport.storeTypeList" placeholder="请选择门店类型"><span class="select-arrow">⌄</span></label>
+                <label class="field"><span class="field-label">门店状态</span><input data-field="assistantPerformanceReport.storeStatusList" placeholder="请选择门店状态"><span class="select-arrow">⌄</span></label>
+                <label class="field"><span class="field-label">导购编号</span><input data-field="assistantPerformanceReport.assistantCode" placeholder="请输入导购编号"></label>
+                <label class="field"><span class="field-label">导购名称</span><input data-field="assistantPerformanceReport.assistantName" placeholder="请输入导购名称"></label>
+                <label class="field"><span class="field-label">导购手机号</span><input data-field="assistantPerformanceReport.phoneNumber" placeholder="请输入导购手机号"></label>
+              </div>
+              <div class="search-actions"><button class="icon-btn primary" data-action="query" data-scope="assistantPerformanceReport">⌕</button><button class="icon-btn" data-action="reset" data-scope="assistantPerformanceReport">↻</button></div>
+            </div>
+            <div class="table-panel">
+              <div class="table-toolbar"><button class="toolbar-btn warning" data-action="export" data-scope="assistantPerformanceReport">⬇ 导出</button><button class="toolbar-btn warning" data-action="export-daily" data-scope="assistantPerformanceReport">⬇ 导出每日明细</button><div class="table-summary"><span>接口：/pos/assistantPerformanceReport/page</span><span>默认周期：今日</span></div></div>
+              <div class="table-scroller">
+                <table class="assistant-report-table">
+                  <thead>
+                    <tr class="group-row"><th class="group-base" colspan="5">门店信息</th><th class="group-store" colspan="3">门店目标</th><th class="group-ecom" colspan="3">导购信息</th><th class="group-summary" colspan="3">导购总目标</th><th class="group-store" colspan="3">POS销售</th><th class="group-private" colspan="3">私域销售</th></tr>
+                    <tr><th class="store-col">门店名称</th><th class="dept-col">区域</th><th class="supervisor-col">区经</th><th class="status-col">门店类型</th><th class="status-col">门店状态</th><th class="money-col">门店总目标</th><th class="money-col"><span class="metric-title">门店总销售<span class="metric-help" role="button" tabindex="0" data-tip="POS销售和团购销售之和。">?</span></span></th><th class="ratio-col">门店完成率</th><th class="code-col">导购编号</th><th class="name-col">导购名称</th><th class="phone-col">导购手机号</th><th class="money-col">导购总目标</th><th class="money-col">导购总销售</th><th class="ratio-col">导购总完成率</th><th class="money-col">导购POS销售目标</th><th class="money-col"><span class="metric-title">导购POS销售<span class="metric-help" role="button" tabindex="0" data-tip="销售单的实际应收款与售后单的实际售后金额按导购人数分摊后计算净额。">?</span></span></th><th class="ratio-col">导购POS完成率</th><th class="money-col">导购私域销售目标</th><th class="money-col">导购私域销售</th><th class="ratio-col">导购私域完成率</th></tr>
+                  </thead>
+                  <tbody id="assistantPerformanceReportBody"></tbody>
+                </table>
+              </div>
+              <div class="table-footer"><div class="selected-count">已选择 0 条</div><div class="pager-wrap"><span id="assistantPerformanceReportTotal">共 0 条</span><select class="page-size"><option>10条/页</option></select><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">›</button><span>前往</span><input class="jump" value="1"><span>页</span></div></div>
             </div>
           </section>
         </div>
@@ -304,10 +393,135 @@
           updateTime: '2026-08-14 10:20:36'
         }
       ],
-      filtered: { month: [], day: [] },
-      selected: { month: new Set(), day: new Set() },
+      filtered: { month: [], day: [], assistantGoalItem: [], assistantPerformanceReport: [] },
+      selected: { month: new Set(), day: new Set(), assistantGoalItem: new Set() },
       uploadType: '',
-      uploadFile: null
+      uploadFile: null,
+      assistantGoalItemRows: [
+        {
+          id: 201,
+          assessmentDay: '2026-09-03',
+          storeName: '华南区-蕉下测试门店',
+          deptCode: '华南一区',
+          supervisor: '张三',
+          storeType: '直营',
+          storeStatus: '营业中',
+          storeTotalGoal: 4452,
+          storePosDayGoal: 3871,
+          storeDomainDayGoal: 581,
+          assistantCode: 'DG0001',
+          assistantName: '李晴',
+          phoneNumber: '138****1024',
+          roleName: '店长',
+          totalDayGoal: 1250,
+          assistantDayGoal: 1000,
+          domainDayGoal: 250,
+          status: 'SUBMIT',
+          statusName: '已提交',
+          isArchived: '0',
+          invalidReason: '-',
+          updateUser: 'admin',
+          updateTime: '2026-09-03 10:18:42'
+        },
+        {
+          id: 202,
+          assessmentDay: '2026-09-03',
+          storeName: '华南区-蕉下测试门店',
+          deptCode: '华南一区',
+          supervisor: '张三',
+          storeType: '直营',
+          storeStatus: '营业中',
+          storeTotalGoal: 4452,
+          storePosDayGoal: 3871,
+          storeDomainDayGoal: 581,
+          assistantCode: 'DG0002',
+          assistantName: '王岚',
+          phoneNumber: '139****6721',
+          roleName: '导购',
+          totalDayGoal: 0,
+          assistantDayGoal: 0,
+          domainDayGoal: 0,
+          status: 'UNSUBMIT',
+          statusName: '未提交',
+          isArchived: '0',
+          invalidReason: '-',
+          updateUser: 'system',
+          updateTime: '2026-09-03 04:10:00'
+        },
+        {
+          id: 203,
+          assessmentDay: '2026-08-29',
+          storeName: '华东区-上海样例门店',
+          deptCode: '华东一区',
+          supervisor: '赵宁',
+          storeType: '联营',
+          storeStatus: '营业中',
+          storeTotalGoal: 3900,
+          storePosDayGoal: 3400,
+          storeDomainDayGoal: 500,
+          assistantCode: 'DG0098',
+          assistantName: '陈一',
+          phoneNumber: '137****3188',
+          roleName: '导购',
+          totalDayGoal: 980,
+          assistantDayGoal: 820,
+          domainDayGoal: 160,
+          status: 'EXPIRED',
+          statusName: '已失效',
+          isArchived: '1',
+          invalidReason: '人员调岗后自动失效',
+          updateUser: 'system',
+          updateTime: '2026-08-30 05:45:20'
+        }
+      ],
+      assistantPerformanceReportRows: [
+        {
+          id: 301,
+          storeName: '华南区-蕉下测试门店',
+          deptCode: '华南一区',
+          supervisor: '张三',
+          storeType: '直营',
+          storeStatus: '营业中',
+          storeTotalGoal: 4452,
+          storeTotalSales: 4680,
+          storeCompletionRate: '105.12',
+          assistantCode: 'DG0001',
+          assistantName: '李晴',
+          phoneNumber: '138****1024',
+          totalGoal: 1250,
+          totalSales: 1398,
+          totalCompletionRate: '111.84',
+          posGoal: 1000,
+          posSales: 1120,
+          posCompletionRate: '112.00',
+          domainGoal: 250,
+          domainSales: 278,
+          domainCompletionRate: '111.20'
+        },
+        {
+          id: 302,
+          storeName: '华南区-蕉下测试门店',
+          deptCode: '华南一区',
+          supervisor: '张三',
+          storeType: '直营',
+          storeStatus: '营业中',
+          storeTotalGoal: 4452,
+          storeTotalSales: 4680,
+          storeCompletionRate: '105.12',
+          assistantCode: 'DG0002',
+          assistantName: '王岚',
+          phoneNumber: '139****6721',
+          totalGoal: 980,
+          totalSales: 866,
+          totalCompletionRate: '88.37',
+          posGoal: 780,
+          posSales: 730,
+          posCompletionRate: '93.59',
+          domainGoal: 200,
+          domainSales: 136,
+          domainCompletionRate: '68.00'
+        }
+      ]
     };
 
     function escapeHtml(value) {
@@ -375,7 +589,7 @@
         const prop = field.dataset.field.split('.')[1];
         if (field.classList.contains('date-range')) {
           if (field.dataset.start || field.dataset.end) query[prop] = [field.dataset.start, field.dataset.end];
-        } else if (field.value.trim()) {
+        } else if ('value' in field && field.value.trim()) {
           query[prop] = field.value.trim();
         }
       });
@@ -594,13 +808,224 @@
       runQuery('day');
     }
 
+
+
+    function formatPercentValue(value, denominatorValue) {
+      if (value === undefined || value === null || value === '') {
+        return Number(denominatorValue || 0) === 0 ? '-' : '-';
+      }
+      const text = String(value);
+      return text.includes('%') ? text : `${text}%`;
+    }
+
+    function statusTag(statusName) {
+      const text = escapeHtml(statusName || '-');
+      const cls = text === '已提交' ? 'success' : (text === '未提交' ? 'warning' : 'info');
+      return `<span class="tag ${cls}">${text}</span>`;
+    }
+
+    function renderAssistantGoalItem() {
+      const body = $('#assistantGoalItemBody');
+      const rows = state.filtered.assistantGoalItem;
+      if (!rows.length) {
+        body.innerHTML = '<tr class="empty-row"><td colspan="23">暂无数据</td></tr>';
+      } else {
+        body.innerHTML = rows.map(row => `
+          <tr class="${state.selected.assistantGoalItem.has(row.id) ? 'selected' : ''}">
+            <td class="check-col"><input class="checkbox" data-row-check="assistantGoalItem" data-id="${row.id}" type="checkbox" ${state.selected.assistantGoalItem.has(row.id) ? 'checked' : ''}></td>
+            <td>${escapeHtml(row.assessmentDay)}</td>
+            <td>${escapeHtml(row.storeName)}</td>
+            <td>${escapeHtml(row.deptCode)}</td>
+            <td>${escapeHtml(row.supervisor)}</td>
+            <td>${escapeHtml(row.storeType)}</td>
+            <td>${escapeHtml(row.storeStatus)}</td>
+            <td class="money-col">${formatMoney(row.storeTotalGoal)}</td>
+            <td class="money-col">${formatMoney(row.storePosDayGoal)}</td>
+            <td class="money-col">${formatMoney(row.storeDomainDayGoal)}</td>
+            <td>${escapeHtml(row.assistantCode)}</td>
+            <td>${escapeHtml(row.assistantName)}</td>
+            <td>${escapeHtml(row.phoneNumber)}</td>
+            <td>${escapeHtml(row.roleName)}</td>
+            <td class="money-col">${formatMoney(row.totalDayGoal)}</td>
+            <td class="money-col">${formatMoney(row.assistantDayGoal)}</td>
+            <td class="money-col">${formatMoney(row.domainDayGoal)}</td>
+            <td>${statusTag(row.statusName)}</td>
+            <td>${row.isArchived === '1' ? '是' : '否'}</td>
+            <td>${escapeHtml(row.invalidReason)}</td>
+            <td>${escapeHtml(row.updateUser)}</td>
+            <td>${escapeHtml(row.updateTime)}</td>
+          </tr>`).join('');
+      }
+      $('#assistantGoalItemSelected').textContent = `已选择 ${state.selected.assistantGoalItem.size} 条`;
+      $('#assistantGoalItemTotal').textContent = `共 ${rows.length} 条`;
+      $('[data-check-all="assistantGoalItem"]').checked = rows.length > 0 && rows.every(row => state.selected.assistantGoalItem.has(row.id));
+      bindDynamicButtons(body);
+    }
+
+    function renderAssistantPerformanceReport() {
+      const body = $('#assistantPerformanceReportBody');
+      const rows = state.filtered.assistantPerformanceReport;
+      if (!rows.length) {
+        body.innerHTML = '<tr class="empty-row"><td colspan="20">暂无数据</td></tr>';
+      } else {
+        body.innerHTML = rows.map(row => `
+          <tr>
+            <td>${escapeHtml(row.storeName)}</td>
+            <td>${escapeHtml(row.deptCode)}</td>
+            <td>${escapeHtml(row.supervisor)}</td>
+            <td>${escapeHtml(row.storeType)}</td>
+            <td>${escapeHtml(row.storeStatus)}</td>
+            <td class="money-col">${formatMoney(row.storeTotalGoal)}</td>
+            <td class="money-col">${formatMoney(row.storeTotalSales)}</td>
+            <td class="ratio-col">${formatPercentValue(row.storeCompletionRate, row.storeTotalGoal)}</td>
+            <td>${escapeHtml(row.assistantCode)}</td>
+            <td>${escapeHtml(row.assistantName)}</td>
+            <td>${escapeHtml(row.phoneNumber)}</td>
+            <td class="money-col">${formatMoney(row.totalGoal)}</td>
+            <td class="money-col">${formatMoney(row.totalSales)}</td>
+            <td class="ratio-col">${formatPercentValue(row.totalCompletionRate, row.totalGoal)}</td>
+            <td class="money-col">${formatMoney(row.posGoal)}</td>
+            <td class="money-col">${formatMoney(row.posSales)}</td>
+            <td class="ratio-col">${formatPercentValue(row.posCompletionRate, row.totalGoal)}</td>
+            <td class="money-col">${formatMoney(row.domainGoal)}</td>
+            <td class="money-col">${formatMoney(row.domainSales)}</td>
+            <td class="ratio-col">${formatPercentValue(row.domainCompletionRate, row.totalGoal)}</td>
+          </tr>`).join('');
+      }
+      $('#assistantPerformanceReportTotal').textContent = `共 ${rows.length} 条`;
+    }
+
+    function matchText(row, fields, value) {
+      if (!value) return true;
+      return fields.some(field => String(row[field] ?? '').includes(value));
+    }
+
+    function queryRows(scope) {
+      const query = getQuery(scope);
+      const sourceMap = {
+        month: state.monthRows,
+        day: state.dayRows,
+        assistantGoalItem: state.assistantGoalItemRows,
+        assistantPerformanceReport: state.assistantPerformanceReportRows
+      };
+      const source = sourceMap[scope] || [];
+      return source.filter(row => {
+        if (scope === 'month' || scope === 'day') {
+          if (query.storeCode && !row.storeCode.includes(query.storeCode)) return false;
+          if (query.storeName && !row.storeName.includes(query.storeName)) return false;
+          if (query.brandCode && !row.brandCode.includes(query.brandCode)) return false;
+          if (query.deptCodeList && !row.deptCode.includes(query.deptCodeList)) return false;
+          if (query.supervisor && !row.supervisor.includes(query.supervisor)) return false;
+          if (scope === 'month' && query.assessmentMonth) {
+            const [start, end] = query.assessmentMonth;
+            if (start && row.assessmentMonth < start) return false;
+            if (end && row.assessmentMonth > end) return false;
+          }
+          if (scope === 'day' && query.assessmentDay) {
+            const [start, end] = query.assessmentDay;
+            if (start && row.assessmentDay < start) return false;
+            if (end && row.assessmentDay > end) return false;
+          }
+          return true;
+        }
+        if (!matchText(row, ['storeName'], query.storeCodeList)) return false;
+        if (!matchText(row, ['deptCode'], query.deptCodeList)) return false;
+        if (!matchText(row, ['supervisor'], query.supervisor)) return false;
+        if (!matchText(row, ['storeType'], query.storeTypeList)) return false;
+        if (!matchText(row, ['storeStatus'], query.storeStatusList)) return false;
+        if (!matchText(row, ['assistantCode'], query.assistantCode)) return false;
+        if (!matchText(row, ['assistantName'], query.assistantName)) return false;
+        if (!matchText(row, ['phoneNumber'], query.phoneNumber)) return false;
+        if (scope === 'assistantGoalItem') {
+          if (!matchText(row, ['statusName', 'status'], query.statusList)) return false;
+          if (query.assessmentDayList) {
+            const [start, end] = query.assessmentDayList;
+            const day = String(row.assessmentDay || '').replaceAll('-', '');
+            const startDay = String(start || '').replaceAll('-', '');
+            const endDay = String(end || '').replaceAll('-', '');
+            if (startDay && day < startDay) return false;
+            if (endDay && day > endDay) return false;
+          }
+        }
+        return true;
+      });
+    }
+
+    function setDateRange(scope, start, end) {
+      const fieldNameMap = {
+        month: 'assessmentMonth',
+        day: 'assessmentDay',
+        assistantGoalItem: 'assessmentDayList'
+      };
+      const el = $(`[data-field="${scope}.${fieldNameMap[scope]}"]`);
+      if (!el) return;
+      el.dataset.start = start || '';
+      el.dataset.end = end || '';
+      el.classList.toggle('has-value', Boolean(start || end));
+      const labels = scope === 'month' ? ['开始月份', '结束月份'] : ['开始日期', '结束日期'];
+      el.innerHTML = `<span>${escapeHtml(start || labels[0])}</span><span>-</span><span>${escapeHtml(end || labels[1])}</span>`;
+    }
+
+    function showGoalPage(page) {
+      state.page = page;
+      const pages = {
+        month: '#monthPage',
+        day: '#dayPage',
+        assistantGoalItem: '#assistantGoalItemPage',
+        assistantPerformanceReport: '#assistantPerformanceReportPage'
+      };
+      Object.entries(pages).forEach(([key, selector]) => {
+        const pageEl = $(selector);
+        if (pageEl) pageEl.hidden = key !== page;
+      });
+      $$('[data-page]').forEach(item => item.classList.toggle('active', item.dataset.page === page));
+    }
+
+    function renderScope(scope) {
+      if (scope === 'month') renderMonth();
+      else if (scope === 'day') renderDay();
+      else if (scope === 'assistantGoalItem') renderAssistantGoalItem();
+      else if (scope === 'assistantPerformanceReport') renderAssistantPerformanceReport();
+    }
+
+    function runQuery(scope) {
+      state.filtered[scope] = queryRows(scope);
+      if (state.selected[scope]) state.selected[scope].clear();
+      renderScope(scope);
+    }
+
+    function resetQuery(scope) {
+      $$(`[data-field^="${scope}."]`).forEach(field => {
+        if (field.classList.contains('date-range')) setDateRange(scope, '', '');
+        else if ('value' in field) field.value = '';
+      });
+      if (scope === 'assistantPerformanceReport') {
+        $$('.period-btn').forEach(button => button.classList.toggle('active', button.dataset.period === 'today'));
+        $('#reportPeriodDate').hidden = true;
+      }
+      runQuery(scope);
+    }
+
+    function exportRows(scope, daily = false) {
+      if (scope === 'assistantPerformanceReport') {
+        toast(daily ? '已创建导购销售报表每日明细导出任务' : '已创建导购销售报表导出任务');
+        return;
+      }
+      if (scope === 'assistantGoalItem') {
+        toast('已创建导购日目标导出任务');
+        return;
+      }
+      const filename = scope === 'month' ? `门店月目标-${Date.now()}.xlsx` : `门店日目标-${Date.now()}.xlsx`;
+      downloadFile(filename, getExportRows(scope), scope);
+    }
+
     function bindDynamicButtons(root = document) {
       root.querySelectorAll('[data-row-check]').forEach(input => {
         input.onchange = event => {
           const scope = input.dataset.rowCheck;
           const id = Number(input.dataset.id);
           event.target.checked ? state.selected[scope].add(id) : state.selected[scope].delete(id);
-          scope === 'month' ? renderMonth() : renderDay();
+          renderScope(scope);
         };
       });
       root.querySelectorAll('[data-action="jump-day"]').forEach(button => {
@@ -709,12 +1134,19 @@
     $$('[data-action="query"]').forEach(button => button.addEventListener('click', () => runQuery(button.dataset.scope)));
     $$('[data-action="reset"]').forEach(button => button.addEventListener('click', () => resetQuery(button.dataset.scope)));
     $$('[data-action="export"]').forEach(button => button.addEventListener('click', () => exportRows(button.dataset.scope)));
+    $$('[data-action="export-daily"]').forEach(button => button.addEventListener('click', () => exportRows(button.dataset.scope, true)));
+    $$('.period-btn').forEach(button => button.addEventListener('click', () => {
+      $$('.period-btn').forEach(item => item.classList.remove('active'));
+      button.classList.add('active');
+      $('#reportPeriodDate').hidden = button.dataset.period !== 'other';
+      runQuery('assistantPerformanceReport');
+    }));
     $$('[data-action="import"]').forEach(button => button.addEventListener('click', () => openUpload(button.dataset.importType)));
     $$('[data-check-all]').forEach(input => input.addEventListener('change', event => {
       const scope = input.dataset.checkAll;
       state.selected[scope].clear();
       if (event.target.checked) state.filtered[scope].forEach(row => state.selected[scope].add(row.id));
-      scope === 'month' ? renderMonth() : renderDay();
+      renderScope(scope);
     }));
     $$('[data-action="close-upload"]').forEach(button => button.addEventListener('click', closeUpload));
     $('[data-action="download-template"]').addEventListener('click', downloadTemplate);
@@ -749,8 +1181,12 @@
     initAnnotations();
     state.filtered.month = [...state.monthRows];
     state.filtered.day = [...state.dayRows];
+    state.filtered.assistantGoalItem = [...state.assistantGoalItemRows];
+    state.filtered.assistantPerformanceReport = [...state.assistantPerformanceReportRows];
     renderMonth();
     renderDay();
+    renderAssistantGoalItem();
+    renderAssistantPerformanceReport();
     showGoalPage('month');
   </script>
 </body>
