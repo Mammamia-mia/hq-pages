@@ -1,0 +1,5291 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="prototype-project" content="门店道具管理" />
+  <meta name="prototype-generated-at" content="2026-09-11T14:13:19+08:00" />
+  <title>仓位采购 - 复原页</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: #1f2937;
+      background: #f2f4f7;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .position-purchase-page {
+      height: 100vh;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .selected-stores-bar,
+    .left-section,
+    .right-section {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+    }
+
+    .selected-stores-bar {
+      padding: 12px 16px;
+      margin-bottom: 12px;
+    }
+
+    .mode-tabs-bar {
+      margin: -2px 0 10px;
+      padding: 0 2px;
+      border-bottom: 1px solid #dcdfe6;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .selected-count-top {
+      font-size: 14px;
+      color: #99999a;
+    }
+
+    .btn {
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      min-height: 32px;
+      padding: 6px 14px;
+      cursor: pointer;
+      background: #fff;
+      color: #606266;
+      transition: 0.16s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      border-color: #527DF7;
+      color: #527DF7;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: #527DF7;
+      border-color: #527DF7;
+    }
+
+    .btn-primary:hover {
+      background: #527DF7;
+      border-color: #527DF7;
+      color: #fff;
+    }
+
+    .btn-primary:disabled {
+      cursor: not-allowed;
+      background: #527DF7;
+      border-color: #527DF7;
+      color: #fff;
+      opacity: 0.45;
+    }
+
+    .btn-link {
+      border: 0;
+      background: transparent;
+      color: #527DF7;
+      padding: 0;
+      min-height: auto;
+    }
+
+    .danger-link {
+      color: #f56c6c;
+    }
+
+    .required-star {
+      color: #f56c6c;
+      margin-right: 2px;
+      font-weight: 700;
+    }
+
+    .btn-small {
+      position: relative;
+      min-height: 28px;
+      padding: 4px 10px;
+      font-size: 13px;
+    }
+
+    .table-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+    }
+
+    .purchase-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 9px;
+      background: #f56c6c;
+      color: #fff;
+      border: 1px solid #fff;
+      font-size: 12px;
+      line-height: 18px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(245, 108, 108, 0.35);
+    }
+
+    .tags-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-height: 66px;
+      overflow: auto;
+    }
+
+    .tag-item {
+      display: flex;
+      align-items: center;
+      background: #f5f6f7;
+      border-radius: 4px;
+      padding: 4px 8px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      padding: 0 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      border: 1px solid;
+    }
+
+    .tag-danger {
+      color: #f56c6c;
+      background: #fef0f0;
+      border-color: #fde2e2;
+    }
+
+    .tag-success {
+      color: #67c23a;
+      background: #f0f9eb;
+      border-color: #e1f3d8;
+    }
+
+    .tag-info {
+      color: #909399;
+      background: #f4f4f5;
+      border-color: #e9e9eb;
+    }
+
+    .tag-primary {
+      color: #527DF7;
+      background: #eef3ff;
+      border-color: #d7e1ff;
+    }
+
+    .tag-store-name {
+      margin: 0 10px;
+      font-size: 14px;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      gap: 12px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .main-content.non-standard-mode {
+      display: block;
+    }
+
+    .main-content.non-standard-mode .left-section {
+      display: none;
+    }
+
+    .main-content.non-standard-mode .right-section {
+      height: 100%;
+    }
+
+    .left-section {
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 22px;
+      padding: 0 12px;
+      margin-top: -4px;
+      margin-bottom: 8px;
+      border-top: 1px solid #f2f3f5;
+      border-bottom: 1px solid #edf0f5;
+    }
+
+    .mode-tabs {
+      display: flex;
+      gap: 24px;
+    }
+
+    .mode-tab {
+      position: relative;
+      height: 32px;
+      padding: 0 4px;
+      border: 0;
+      background: transparent;
+      color: #606266;
+      cursor: pointer;
+    }
+
+    .mode-tab.active {
+      color: #527DF7;
+      font-weight: 600;
+    }
+
+    .mode-tab.active::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+      left: 0;
+      height: 2px;
+      background: #527DF7;
+      border-radius: 2px 2px 0 0;
+    }
+
+    .tab {
+      position: relative;
+      padding: 14px 0 12px;
+      color: #606266;
+      cursor: pointer;
+      background: none;
+      border: 0;
+    }
+
+    .tab.active {
+      color: #527DF7;
+      font-weight: 500;
+    }
+
+    .tab.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      border-radius: 2px;
+      background: #527DF7;
+    }
+
+    .filter-toolbar {
+      padding: 12px;
+    }
+
+    .input-wrap {
+      display: flex;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .input,
+    .select {
+      width: 100%;
+      height: 34px;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      padding: 0 10px;
+      outline: none;
+      background: #fff;
+      color: #606266;
+    }
+
+    .input:focus,
+    .select:focus {
+      border-color: #527DF7;
+    }
+
+    .search-button {
+      width: 42px;
+      border-radius: 0 4px 4px 0;
+      margin-left: -1px;
+      padding: 0;
+    }
+
+    .input-wrap .input {
+      border-radius: 4px 0 0 4px;
+    }
+
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-row .select {
+      flex: 1 1 calc(50% - 4px);
+      min-width: calc(50% - 4px);
+    }
+
+    .prop-type-filter {
+      position: relative;
+      margin-top: 10px;
+    }
+
+    .type-filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .type-filter-row .prop-type-filter {
+      flex: 1 1 calc(50% - 4px);
+      max-width: calc(50% - 4px);
+      min-width: 0;
+      margin-top: 0;
+    }
+
+    .type-filter-row .applicable-area-filter {
+      flex-basis: 100%;
+      max-width: 100%;
+    }
+
+    .multi-select-trigger {
+      width: 100%;
+      min-height: 34px;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      padding: 0 10px;
+      background: #fff;
+      color: #606266;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .multi-select-trigger.open {
+      border-color: #527DF7;
+    }
+
+    .multi-select-label {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .multi-select-arrow {
+      color: #909399;
+      transition: transform 0.2s ease;
+    }
+
+    .multi-select-trigger.open .multi-select-arrow {
+      transform: rotate(180deg);
+    }
+
+    .multi-select-panel {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 4px);
+      z-index: 10;
+      padding: 8px 10px;
+      border: 1px solid #e4e7ed;
+      border-radius: 4px;
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(16, 24, 40, 0.12);
+      display: none;
+    }
+
+    .multi-select-panel.open {
+      display: block;
+    }
+
+    .multi-select-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 30px;
+      color: #606266;
+      cursor: pointer;
+    }
+
+    .position-list {
+      flex: 1;
+      min-height: 0;
+      margin: 0 12px;
+      overflow: auto;
+    }
+
+    .position-item {
+      display: flex;
+      gap: 12px;
+      padding: 10px;
+      border: 1px solid transparent;
+      border-bottom-color: #f5f5f5;
+      background: #efefef;
+      margin-top: 5px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .position-item:hover {
+      background: #fafafa;
+    }
+
+    .position-item.active {
+      background: #eef3ff;
+      border-color: #527DF7;
+    }
+
+    .pos-image,
+    .prop-image {
+      flex: 0 0 auto;
+      width: 50px;
+      height: 50px;
+      border-radius: 4px;
+      background: linear-gradient(135deg, #eef6ff, #f6f8fb);
+      border: 1px solid #edf0f5;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .pos-image svg,
+    .prop-image svg {
+      width: 34px;
+      height: 34px;
+    }
+
+    .pos-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .pos-name {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-weight: 500;
+    }
+
+    .position-item.active .pos-name {
+      color: #0b7ff5;
+    }
+
+    .pos-location {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #999;
+    }
+
+    .pos-meta-tags {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+      min-width: 0;
+      max-width: 100%;
+      overflow: visible;
+    }
+
+    .pos-meta-tag {
+      flex: 0 0 auto;
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .pos-area-tag {
+      flex: 0 0 auto;
+      max-width: 100%;
+      cursor: help;
+    }
+
+    .pos-area-row {
+      flex: 0 0 100%;
+      display: flex;
+      min-width: 0;
+    }
+
+    .area-tooltip-floating {
+      position: fixed;
+      z-index: 99999;
+      max-width: 280px;
+      padding: 8px 10px;
+      border-radius: 4px;
+      background: rgba(28, 35, 48, 0.94);
+      color: #fff;
+      font-size: 12px;
+      line-height: 1.5;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
+      pointer-events: none;
+      word-break: break-all;
+      display: none;
+    }
+
+    .left-footer {
+      flex: none;
+      padding: 0 6px 12px;
+      background: #fff;
+    }
+
+    .selected-count {
+      line-height: 44px;
+      text-align: center;
+      border-top: 1px solid #eee;
+    }
+
+    .selected-count-num {
+      color: #0b7ff5;
+      font-weight: 600;
+    }
+
+    .right-section {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .position-detail {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      padding: 12px;
+      position: relative;
+    }
+
+    .detail-header {
+      flex: none;
+      font-size: 16px;
+      font-weight: 600;
+      padding-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .detail-header-title {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .detail-header-code {
+      color: #909399;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 18px;
+    }
+
+    .detail-header-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      min-width: 0;
+      margin-left: auto;
+    }
+
+    .global-non-standard {
+      flex: 1;
+      min-height: 0;
+      margin-bottom: 72px;
+      border: 1px solid #ebeef5;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .custom-list-filter {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 0 1 360px;
+      min-width: 260px;
+    }
+
+    .custom-list-filter label {
+      flex: none;
+      color: #606266;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .custom-list-filter .input {
+      max-width: 260px;
+    }
+
+    .detail-scroll {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      padding-bottom: 72px;
+      padding-right: 2px;
+    }
+
+    .prop-group {
+      margin-bottom: 12px;
+      border: 1px solid #ebeef5;
+      border-radius: 4px;
+      background: #fff;
+      overflow: visible;
+    }
+
+    .group-header {
+      padding: 12px 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .estimated-price {
+      font-weight: 600;
+    }
+
+    .price-label {
+      color: #999;
+    }
+
+    .price-value {
+      color: #f56c6c;
+    }
+
+    .collapse-icon {
+      margin-left: auto;
+      color: #999;
+      transition: transform 0.2s ease;
+    }
+
+    .collapse-icon.expanded {
+      transform: rotate(180deg);
+    }
+
+    .selection-header {
+      padding: 6px 12px;
+      background: #fafafa;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .selection-header label,
+    .store-checkboxes label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      color: #606266;
+      white-space: nowrap;
+    }
+
+    .store-purchase-qty {
+      width: 58px;
+      height: 26px;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      padding: 0 6px;
+      outline: none;
+      color: #606266;
+    }
+
+    .store-purchase-qty:focus {
+      border-color: #527DF7;
+    }
+
+    .store-purchase-qty:disabled {
+      background: #f5f7fa;
+      color: #c0c4cc;
+      cursor: not-allowed;
+    }
+
+    .toggle-config-btn {
+      margin-left: auto;
+    }
+
+    .selection-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .selection-actions .toggle-config-btn {
+      margin-left: 0;
+    }
+
+    .store-checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      padding: 12px;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+      background: #fff;
+    }
+
+    .store-checkboxes label.disabled {
+      color: #c0c4cc;
+      cursor: not-allowed;
+    }
+
+    .prop-table-wrap {
+      padding: 12px;
+      overflow: visible;
+    }
+
+    .warehouse-prop-table-wrap {
+      overflow-x: auto;
+    }
+
+    .warehouse-prop-table {
+      min-width: 950px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid #ebeef5;
+      padding: 10px 8px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      color: #909399;
+      font-weight: 500;
+      background: #f5f7fa;
+    }
+
+    td {
+      color: #606266;
+    }
+
+    .text-ellipsis {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .prop-spec-tooltip {
+      position: relative;
+      display: block;
+      max-width: 100%;
+      cursor: help;
+      outline: none;
+    }
+
+    .prop-spec-tooltip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      z-index: 20;
+      left: 50%;
+      bottom: calc(100% + 8px);
+      width: max-content;
+      max-width: min(460px, calc(100vw - 32px));
+      padding: 9px 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      background: #fff;
+      color: #303133;
+      box-shadow: 0 7px 18px rgba(15, 23, 42, 0.14);
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.5;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transform: translate(-50%, -3px);
+      transition: opacity 0.14s ease, transform 0.14s ease, visibility 0.14s ease;
+    }
+
+    .prop-spec-tooltip::before {
+      content: "";
+      position: absolute;
+      z-index: 21;
+      left: 50%;
+      bottom: calc(100% + 2px);
+      border: 6px solid transparent;
+      border-top-color: #fff;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-50%);
+      transition: opacity 0.14s ease, visibility 0.14s ease;
+    }
+
+    .prop-spec-tooltip:hover::before,
+    .prop-spec-tooltip:hover::after,
+    .prop-spec-tooltip:focus-visible::before,
+    .prop-spec-tooltip:focus-visible::after {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .prop-spec-tooltip:hover::after,
+    .prop-spec-tooltip:focus-visible::after {
+      transform: translate(-50%, 0);
+    }
+
+    .prop-name-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .prop-name-with-type {
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: nowrap;
+    }
+
+    .prop-name-with-type .text-ellipsis {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .prop-name-with-type .prop-type-tag {
+      flex: 0 0 auto;
+    }
+
+    .custom-image-cell {
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      border: 1px solid #edf0f5;
+      background: linear-gradient(135deg, #eef6ff, #f8fbff);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .custom-image-cell svg {
+      width: 60%;
+      height: 60%;
+    }
+
+    .prop-type-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 20px;
+      padding: 0 7px;
+      border-radius: 4px;
+      border: 1px solid;
+      font-size: 12px;
+      line-height: 20px;
+    }
+
+    .prop-type-standard {
+      color: #527df7;
+      background: #eef3ff;
+      border-color: #d7e1ff;
+    }
+
+    .prop-type-non-standard {
+      color: #e6a23c;
+      background: #fdf6ec;
+      border-color: #faecd8;
+    }
+
+    .prop-type-optional {
+      color: #606266;
+      background: #f4f4f5;
+      border-color: #dcdfe6;
+    }
+
+    .detail-footer {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      left: 12px;
+      padding-top: 12px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      background: #fff;
+      border-top: 1px solid #eee;
+    }
+
+    .detail-footer .btn {
+      width: 100px;
+    }
+
+    .empty-detail,
+    .empty-data-tip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 14px;
+    }
+
+    .empty-detail {
+      flex: 1;
+      flex-direction: column;
+      padding: 16px;
+    }
+
+    .toast {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 260px;
+      max-width: min(720px, calc(100vw - 32px));
+      padding: 10px 14px;
+      background: #fdf6ec;
+      color: #e6a23c;
+      border: 1px solid #faecd8;
+      border-radius: 4px;
+      box-shadow: 0 6px 18px rgba(16, 24, 40, 0.12);
+      display: none;
+      z-index: 100001;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      display: block;
+    }
+
+    .modal-mask {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(15, 23, 42, 0.38);
+    }
+
+    .modal-mask.open {
+      display: flex;
+    }
+
+    .purchase-modal {
+      width: min(860px, calc(100vw - 48px));
+      max-height: calc(100vh - 72px);
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 20px 48px rgba(15, 23, 42, 0.22);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      flex: none;
+      height: 54px;
+      padding: 0 18px;
+      border-bottom: 1px solid #ebeef5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 600;
+    }
+
+    .modal-close {
+      border: 0;
+      background: transparent;
+      color: #909399;
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-body {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      padding: 16px 18px;
+    }
+
+    .modal-prop-summary {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px;
+      margin-bottom: 14px;
+      border-radius: 6px;
+      background: #f8fafc;
+      border: 1px solid #edf0f5;
+    }
+
+    .modal-prop-name {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .modal-prop-meta {
+      margin-top: 6px;
+      color: #909399;
+      font-size: 13px;
+    }
+
+    .non-standard-form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .form-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      color: #606266;
+    }
+
+    .form-item.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-item label {
+      font-weight: 500;
+      color: #303133;
+    }
+
+    .form-item input,
+    .form-item select {
+      width: 100%;
+      height: 34px;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      padding: 0 10px;
+      outline: none;
+      color: #606266;
+      background: #fff;
+    }
+
+    .form-item input:focus,
+    .form-item select:focus {
+      border-color: #527DF7;
+    }
+
+    .unit-price-field,
+    .quantity-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .unit-price-field input,
+    .quantity-field input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .unit-prefix,
+    .quantity-suffix {
+      color: #606266;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .unit-price-field select {
+      width: 116px;
+      flex: 0 0 116px;
+    }
+
+    .store-multi-select {
+      position: relative;
+    }
+
+    .store-multi-select .multi-select-trigger {
+      min-height: 34px;
+      text-align: left;
+    }
+
+    .store-multi-select .multi-select-panel {
+      z-index: 30;
+      max-height: 180px;
+      overflow: auto;
+    }
+
+    .store-multi-select .multi-select-option {
+      justify-content: flex-start;
+      white-space: nowrap;
+    }
+
+    .store-multi-select .multi-select-option input {
+      flex: none;
+      width: 14px;
+      height: 14px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .upload-box {
+      min-height: 96px;
+      border: 1px dashed #c0c4cc;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      cursor: pointer;
+      background: #fbfdff;
+      transition: 0.16s ease;
+    }
+
+    .upload-box:hover {
+      border-color: #527DF7;
+      background: #eef3ff;
+    }
+
+    .upload-preview {
+      width: 64px;
+      height: 64px;
+      border-radius: 4px;
+      background: #f5f7fa;
+      border: 1px solid #edf0f5;
+      display: grid;
+      place-items: center;
+      color: #909399;
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+
+    .upload-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .upload-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: #606266;
+    }
+
+    .upload-tip {
+      color: #909399;
+      font-size: 12px;
+    }
+
+    .hidden-file-input {
+      display: none;
+    }
+
+    .batch-config {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 120px 190px auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      margin-bottom: 14px;
+      border-radius: 6px;
+      background: #f8fafc;
+      border: 1px solid #edf0f5;
+    }
+
+    .batch-purchase-modal {
+      width: min(1180px, calc(100vw - 48px));
+      height: min(760px, calc(100vh - 48px));
+      max-height: calc(100vh - 48px);
+    }
+
+    .batch-purchase-modal .modal-header {
+      align-items: center;
+    }
+
+    .batch-modal-title {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .batch-modal-title small {
+      color: #909399;
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .batch-purchase-modal .modal-body {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .batch-type-tabs {
+      flex: none;
+      display: flex;
+      align-items: flex-end;
+      gap: 24px;
+      min-height: 50px;
+      padding: 0 18px;
+      border-bottom: 1px solid #ebeef5;
+      background: #fff;
+    }
+
+    .batch-type-tab {
+      position: relative;
+      height: 50px;
+      padding: 0 2px;
+      border: 0;
+      background: transparent;
+      color: #606266;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .batch-type-tab.active {
+      color: #527df7;
+      font-weight: 600;
+    }
+
+    .batch-type-tab.active::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: #527df7;
+    }
+
+    .batch-type-tab-count {
+      margin-left: 4px;
+      color: #909399;
+      font-size: 12px;
+    }
+
+    .batch-type-tab-dirty {
+      position: absolute;
+      top: 10px;
+      right: -8px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #f56c6c;
+    }
+
+    .batch-editor {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      background: #f5f7fa;
+    }
+
+    .batch-prop-nav {
+      min-height: 0;
+      padding: 14px 12px;
+      border-right: 1px solid #ebeef5;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .batch-prop-nav-title {
+      margin: 0 6px 10px;
+      color: #909399;
+      font-size: 12px;
+    }
+
+    .batch-prop-toolbar {
+      flex: none;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 88px;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .batch-prop-search,
+    .batch-prop-filter {
+      width: 100%;
+      height: 34px;
+      min-width: 0;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      background: #fff;
+      color: #606266;
+      outline: none;
+    }
+
+    .batch-prop-search {
+      padding: 0 9px;
+    }
+
+    .batch-prop-filter {
+      padding: 0 6px;
+    }
+
+    .batch-prop-search:focus,
+    .batch-prop-filter:focus {
+      border-color: #527df7;
+    }
+
+    .batch-prop-list {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: auto;
+    }
+
+    .batch-prop-empty {
+      padding: 36px 8px;
+      color: #909399;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .batch-prop-item {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #ebeef5;
+      border-radius: 6px;
+      background: #fff;
+      color: #303133;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .batch-prop-item:hover {
+      border-color: #b8c9ff;
+      background: #f8fbff;
+    }
+
+    .batch-prop-item.active {
+      border-color: #527df7;
+      background: #eef3ff;
+      box-shadow: 0 0 0 1px rgba(82, 125, 247, 0.08);
+    }
+
+    .batch-prop-item-name {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      font-weight: 500;
+    }
+
+    .batch-prop-item-name > span:first-child {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .batch-prop-item-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 8px;
+      color: #909399;
+      font-size: 12px;
+    }
+
+    .batch-prop-item-status .changed {
+      color: #527df7;
+    }
+
+    .batch-config-pane {
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 14px;
+      overflow: hidden;
+    }
+
+    .batch-active-prop {
+      flex: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      color: #303133;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .batch-field-panel {
+      flex: none;
+      padding: 12px;
+      border: 1px solid #dfe6f2;
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .batch-field-panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .batch-field-panel-title {
+      color: #303133;
+      font-weight: 600;
+    }
+
+    .batch-target-summary {
+      color: #909399;
+      font-size: 12px;
+    }
+
+    .batch-fields {
+      display: grid;
+      grid-template-columns: minmax(210px, 1.5fr) minmax(130px, 0.75fr) minmax(180px, 1fr) auto;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .batch-field {
+      min-width: 0;
+    }
+
+    .batch-field-label {
+      min-height: 24px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: #606266;
+      font-size: 13px;
+    }
+
+    .batch-field-label input {
+      margin: 0;
+    }
+
+    .batch-field-control {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .batch-field-control > span {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    .batch-field-control > input,
+    .batch-field-control > select {
+      width: 100%;
+      height: 34px;
+      min-width: 0;
+      padding: 0 9px;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      background: #fff;
+      color: #606266;
+      outline: none;
+    }
+
+    .batch-field-control > input:focus,
+    .batch-field-control > select:focus {
+      border-color: #527df7;
+    }
+
+    .batch-field-control > input:disabled,
+    .batch-field-control > select:disabled {
+      color: #a8abb2;
+      background: #f5f7fa;
+      cursor: not-allowed;
+    }
+
+    .batch-field-readonly {
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      padding: 0 9px;
+      border: 1px solid #e4e7ed;
+      border-radius: 4px;
+      background: #f5f7fa;
+      color: #909399;
+      font-size: 12px;
+    }
+
+    .batch-apply-button {
+      min-width: 132px;
+    }
+
+    .batch-apply-notice {
+      flex: none;
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 10px;
+      padding: 8px 11px;
+      border: 1px solid #d7e1ff;
+      border-radius: 5px;
+      background: #eef3ff;
+      color: #527df7;
+      font-size: 13px;
+    }
+
+    .batch-store-section {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      margin-top: 10px;
+      border: 1px solid #ebeef5;
+      border-radius: 6px;
+      background: #fff;
+      overflow: visible;
+    }
+
+    .batch-store-head {
+      flex: none;
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 12px;
+      border-bottom: 1px solid #ebeef5;
+    }
+
+    .batch-store-head strong {
+      color: #303133;
+      font-size: 14px;
+    }
+
+    .batch-store-head span {
+      color: #909399;
+      font-size: 12px;
+    }
+
+    .batch-store-head-main {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .batch-store-filter {
+      position: relative;
+      flex: none;
+    }
+
+    .batch-store-filter-trigger {
+      min-width: 148px;
+      height: 32px;
+      padding: 0 9px;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      background: #fff;
+      color: #606266;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .batch-store-filter-trigger:hover,
+    .batch-store-filter-trigger.open {
+      border-color: #527df7;
+      color: #527df7;
+    }
+
+    .batch-store-filter-panel {
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 0;
+      z-index: 8;
+      width: 270px;
+      padding: 9px;
+      border: 1px solid #e4e7ed;
+      border-radius: 5px;
+      background: #fff;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.16);
+      display: none;
+    }
+
+    .batch-store-filter-panel.open {
+      display: block;
+    }
+
+    .batch-store-filter-search {
+      width: 100%;
+      height: 32px;
+      padding: 0 9px;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    .batch-store-filter-search:focus {
+      border-color: #527df7;
+    }
+
+    .batch-store-filter-options {
+      max-height: 190px;
+      margin-top: 7px;
+      overflow: auto;
+    }
+
+    .batch-store-filter-option {
+      min-height: 32px;
+      padding: 0 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #606266;
+      cursor: pointer;
+    }
+
+    .batch-store-filter-option.all {
+      margin-bottom: 3px;
+      padding-bottom: 3px;
+      border-bottom: 1px solid #ebeef5;
+      color: #303133;
+      font-weight: 500;
+    }
+
+    .batch-store-filter-option input {
+      width: 14px;
+      height: 14px;
+      margin: 0;
+    }
+
+    .batch-store-filter-empty {
+      padding: 18px 4px;
+      color: #909399;
+      text-align: center;
+    }
+
+    .batch-store-table-wrap {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+    }
+
+    .batch-store-table {
+      min-width: 760px;
+    }
+
+    .batch-store-table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .batch-store-table td.is-modified {
+      background: #eef3ff;
+    }
+
+    .batch-store-table .store-checkbox-cell {
+      text-align: center;
+    }
+
+    .batch-store-table input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      margin: 0;
+    }
+
+    .batch-store-table input:not([type="checkbox"]),
+    .batch-store-table select {
+      width: 100%;
+      height: 32px;
+      padding: 0 8px;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      background: #fff;
+      color: #606266;
+      outline: none;
+    }
+
+    .batch-store-table input:not([type="checkbox"]):focus,
+    .batch-store-table select:focus {
+      border-color: #527df7;
+    }
+
+    .batch-row-qty {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .batch-row-qty span {
+      flex: none;
+      color: #909399;
+      font-size: 12px;
+    }
+
+    .batch-footer-summary {
+      margin-right: auto;
+      color: #909399;
+      font-size: 13px;
+      line-height: 32px;
+    }
+
+    .batch-empty-stores {
+      min-height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #909399;
+    }
+
+    .store-config-block {
+      border: 1px solid #ebeef5;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .store-config-title {
+      padding: 10px 12px;
+      background: #fafafa;
+      font-weight: 600;
+      border-bottom: 1px solid #ebeef5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .store-config-name {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .store-config-arrow {
+      color: #909399;
+      transition: transform 0.2s ease;
+    }
+
+    .store-config-arrow.collapsed {
+      transform: rotate(-90deg);
+    }
+
+    .config-table input,
+    .config-table select {
+      width: 100%;
+      height: 32px;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      padding: 0 8px;
+      outline: none;
+      background: #fff;
+      color: #606266;
+    }
+
+    .config-table input:focus,
+    .config-table select:focus {
+      border-color: #527DF7;
+    }
+
+    .config-table input[readonly] {
+      color: #606266;
+      background: #f5f7fa;
+      cursor: default;
+    }
+
+    .spec-readonly-text {
+      display: block;
+      width: 100%;
+      min-height: 32px;
+      padding: 6px 0;
+      color: #303133;
+      line-height: 20px;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .config-qty-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .config-qty-field input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .config-qty-unit {
+      flex: none;
+      color: #606266;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .modal-footer {
+      flex: none;
+      padding: 12px 18px;
+      border-top: 1px solid #ebeef5;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      background: #fff;
+    }
+
+    :root {
+      --surface: rgba(255, 255, 255, 0.94);
+      --surface-strong: #fff;
+      --line-soft: #e7edf5;
+      --line-strong: #d8e2ee;
+      --text-strong: #172033;
+      --text-main: #334155;
+      --text-muted: #7b8798;
+      --primary: #527DF7;
+      --primary-soft: #eef3ff;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 12px 30px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 24px 70px rgba(15, 23, 42, 0.18);
+    }
+
+    body {
+      color: var(--text-main);
+      background: linear-gradient(180deg, #f7f9fc 0%, #eef2f7 100%);
+    }
+
+    .position-purchase-page {
+      padding: 18px;
+      gap: 0;
+    }
+
+    .selected-stores-bar,
+    .left-section,
+    .right-section,
+    .purchase-modal {
+      background: var(--surface);
+      border: 1px solid rgba(216, 226, 238, 0.9);
+      border-radius: 8px;
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(10px);
+    }
+
+    .selected-stores-bar {
+      padding: 14px 18px;
+      border-radius: 8px;
+    }
+
+    .page-header {
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .title {
+      color: var(--text-strong);
+      font-size: 17px;
+      letter-spacing: 0;
+    }
+
+    .selected-count-top,
+    .selected-count,
+    .pos-location,
+    .price-label,
+    .modal-prop-meta,
+    .upload-tip {
+      color: var(--text-muted);
+    }
+
+    .selected-count-top span,
+    .selected-count-num,
+    .price-value {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .mode-tabs-bar {
+      margin: -2px 0 12px;
+      padding: 0 2px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .mode-tabs,
+    .tabs {
+      gap: 28px;
+    }
+
+    .mode-tab,
+    .tab {
+      color: var(--text-muted);
+    }
+
+    .mode-tab.active,
+    .tab.active,
+    .mode-tab:hover,
+    .tab:hover {
+      color: var(--primary);
+    }
+
+    .mode-tab.active::after,
+    .tab.active::after {
+      background: var(--primary);
+    }
+
+    .btn {
+      border-color: var(--line-strong);
+      border-radius: 6px;
+      color: #465466;
+      background: linear-gradient(180deg, #fff, #f8fafc);
+      box-shadow: 0 1px 1px rgba(15, 23, 42, 0.03);
+    }
+
+    .btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      box-shadow: 0 6px 16px rgba(82, 125, 247, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(82, 125, 247, 0.22);
+    }
+
+    .btn-primary:hover {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:disabled {
+      border-color: var(--primary);
+      background: var(--primary);
+      box-shadow: none;
+      color: #fff;
+      opacity: 0.45;
+    }
+
+    .btn-outline-primary {
+      border-color: var(--primary);
+      background: #fff;
+      color: var(--primary);
+      box-shadow: none;
+    }
+
+    .btn-outline-primary:hover {
+      border-color: var(--primary);
+      background: #eef3ff;
+      color: var(--primary);
+      box-shadow: 0 6px 16px rgba(82, 125, 247, 0.12);
+    }
+
+    .btn-link {
+      color: var(--primary);
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .tag-item {
+      min-height: 30px;
+      border: 1px solid var(--line-soft);
+      border-radius: 6px;
+      background: #f8fafc;
+    }
+
+    .tag {
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    .main-content {
+      gap: 14px;
+    }
+
+    .left-section,
+    .right-section {
+      overflow: hidden;
+    }
+
+    .tabs,
+    .filter-toolbar,
+    .left-footer,
+    .detail-header,
+    .group-header,
+    .modal-header,
+    .modal-footer {
+      border-color: var(--line-soft);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.92));
+    }
+
+    .input,
+    .select,
+    .multi-select-trigger,
+    .store-purchase-qty,
+    .form-item input,
+    .form-item select,
+    .config-table input,
+    .config-table select {
+      border-color: var(--line-strong);
+      border-radius: 6px;
+      color: var(--text-main);
+      background: #fff;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .input:focus,
+    .select:focus,
+    .multi-select-trigger.open,
+    .store-purchase-qty:focus,
+    .form-item input:focus,
+    .form-item select:focus,
+    .config-table input:focus,
+    .config-table select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(82, 125, 247, 0.12);
+    }
+
+    .position-item {
+      margin: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .position-item:hover {
+      background: #f8fbff;
+    }
+
+    .position-item.active {
+      color: var(--primary);
+      background: var(--primary-soft);
+      box-shadow: inset 0 0 0 1px rgba(82, 125, 247, 0.12);
+    }
+
+    .position-item.active .pos-name,
+    .toggle-config-btn,
+    .section-title {
+      color: var(--primary);
+    }
+
+    .pos-image,
+    .prop-image,
+    .custom-image-cell,
+    .upload-preview {
+      border-color: var(--line-soft);
+      background: linear-gradient(135deg, #f8fafc, var(--primary-soft));
+    }
+
+    .detail-header,
+    .custom-image-cell {
+      color: var(--text-main);
+    }
+
+    .prop-group,
+    .modal-prop-summary,
+    .global-non-standard,
+    .store-config-block,
+    .upload-box {
+      border-color: var(--line-soft);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .custom-list-filter {
+      background: transparent;
+    }
+
+    .detail-header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .store-config-block {
+      overflow: hidden;
+    }
+
+    .store-config-title {
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.16s ease;
+    }
+
+    .store-config-title:hover {
+      background: var(--primary-soft);
+    }
+
+    .upload-box:hover {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .prop-table-wrap {
+      border-color: var(--line-soft);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    th {
+      color: #7b8798;
+      background: #f8fafc;
+      border-bottom-color: var(--line-soft);
+    }
+
+    td {
+      color: var(--text-main);
+      border-bottom-color: var(--line-soft);
+    }
+
+    tr:hover td {
+      background: #f8fbff;
+    }
+
+    .detail-footer {
+      border-top-color: var(--line-soft);
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    .modal-mask {
+      background: rgba(15, 23, 42, 0.46);
+      backdrop-filter: blur(6px);
+    }
+
+    .purchase-modal {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .prop-type-tag {
+      border-radius: 999px;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+    }
+
+    .inline-purchase-workspace {
+      flex: 1;
+      min-height: 0;
+      margin-bottom: 58px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--line-soft);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .inline-type-tabs {
+      flex: none;
+      min-height: 48px;
+      padding: 0 16px;
+    }
+
+    .inline-store-selector {
+      flex: none;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line-soft);
+      background: #f8fafc;
+    }
+
+    .inline-store-selector-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .inline-store-selector.collapsed .inline-store-selector-head,
+    .batch-field-panel.collapsed .batch-field-panel-head {
+      margin-bottom: 0;
+    }
+
+    .inline-section-toggle {
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .inline-collapse-action {
+      flex: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: #527df7;
+      font-size: 12px;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .inline-collapse-icon {
+      display: inline-block;
+      transition: transform 0.18s ease;
+    }
+
+    .inline-collapse-icon.expanded {
+      transform: rotate(180deg);
+    }
+
+    .inline-store-selector-title {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .inline-store-selector-title small {
+      color: var(--text-soft);
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .inline-store-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .inline-store-option {
+      min-height: 32px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid #dfe4ec;
+      border-radius: 4px;
+      background: #fff;
+      color: #606266;
+      cursor: pointer;
+    }
+
+    .inline-store-option:has(input:checked) {
+      border-color: #9eb5ff;
+      background: #eef3ff;
+      color: #365fcf;
+    }
+
+    .inline-store-option input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      margin: 0;
+    }
+
+    .inline-store-name {
+      white-space: nowrap;
+    }
+
+    .inline-store-warehouse-qty {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-left: 3px;
+      padding-left: 9px;
+      border-left: 1px solid #dfe4ec;
+      color: #606266;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .inline-store-option .inline-store-warehouse-qty input {
+      width: 48px;
+      height: 26px;
+      padding: 0 6px;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      background: #fff;
+      color: #303133;
+      outline: none;
+      text-align: center;
+    }
+
+    .inline-store-option .inline-store-warehouse-qty input:focus {
+      border-color: #527df7;
+    }
+
+    .inline-purchase-editor {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+      background: #f5f7fa;
+    }
+
+    .inline-prop-list-panel {
+      min-height: 0;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--line-soft);
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .inline-prop-list-title {
+      flex: none;
+      margin: 0 2px 10px;
+      color: var(--text-soft);
+      font-size: 12px;
+    }
+
+    .inline-prop-list {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: auto;
+    }
+
+    .inline-prop-card {
+      width: 100%;
+      min-height: 88px;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 56px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      border: 1px solid #e4e7ed;
+      border-radius: 6px;
+      background: #fff;
+      color: var(--text-main);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .inline-prop-card:hover {
+      border-color: #b8c9ff;
+      background: #f8fbff;
+    }
+
+    .inline-prop-card.active {
+      border-color: #527df7;
+      background: #eef3ff;
+      box-shadow: 0 0 0 1px rgba(82, 125, 247, 0.08);
+    }
+
+    .inline-prop-card .prop-image {
+      width: 56px;
+      height: 56px;
+    }
+
+    .inline-prop-card-body {
+      min-width: 0;
+    }
+
+    .inline-prop-card-name {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      font-weight: 600;
+    }
+
+    .inline-prop-card-name > span:first-child {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .inline-prop-card-name .prop-type-tag {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    .inline-prop-card-price {
+      display: block;
+      margin-top: 8px;
+      color: #606266;
+      font-size: 13px;
+    }
+
+    .inline-prop-card-code {
+      display: block;
+      margin-top: 4px;
+      color: var(--text-soft);
+      font-size: 12px;
+    }
+
+    .inline-config-pane {
+      padding: 12px;
+    }
+
+    .inline-config-pane .batch-active-prop {
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    .inline-config-pane .batch-store-section {
+      overflow: visible;
+    }
+
+    .inline-config-pane .batch-store-table {
+      min-width: 680px;
+    }
+
+    .inline-config-pane .batch-fields {
+      grid-template-columns: minmax(180px, 1.4fr) minmax(118px, .75fr) minmax(160px, 1fr) auto;
+    }
+
+    .inline-config-pane .batch-field-panel-head.inline-section-toggle {
+      width: 100%;
+    }
+
+    .inline-config-pane .batch-field-panel-head .batch-target-summary {
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .inline-empty-stores {
+      min-height: 190px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-soft);
+      text-align: center;
+    }
+
+    .inline-batch-scope-notice {
+      flex: none;
+      min-height: 38px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid #d7e1ff;
+      background: #eef3ff;
+      color: #365fcf;
+      font-size: 12px;
+    }
+
+    .inline-batch-scope-notice strong {
+      color: #244bad;
+      font-size: 13px;
+    }
+
+    .inline-batch-scope-cell {
+      text-align: center;
+    }
+
+    .inline-batch-scope-cell label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .inline-config-pane .batch-store-table tr.inline-batch-target-row td {
+      background: #f3f7ff;
+    }
+
+    .inline-config-pane .batch-store-table tr.inline-batch-target-row:hover td {
+      background: #eaf1ff;
+    }
+
+    .inline-modified-summary {
+      color: #527df7;
+      font-size: 12px;
+    }
+
+    @media (max-width: 1180px) {
+      .inline-purchase-editor {
+        grid-template-columns: 220px minmax(0, 1fr);
+      }
+
+      .inline-config-pane .batch-fields {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .inline-config-pane .batch-apply-button {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 920px) {
+      .position-purchase-page {
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+      }
+
+      .main-content {
+        flex-direction: column;
+        overflow: visible;
+      }
+
+      .left-section {
+        width: 100%;
+        max-height: 520px;
+      }
+
+      .right-section {
+        min-height: 640px;
+      }
+
+      .detail-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .detail-header-actions {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        margin-left: 0;
+      }
+
+      .detail-header-left {
+        width: 100%;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .custom-list-filter {
+        flex: 1 1 260px;
+      }
+
+      .batch-purchase-modal {
+        width: calc(100vw - 24px);
+        height: calc(100vh - 24px);
+        max-height: calc(100vh - 24px);
+      }
+
+      .batch-modal-title {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .batch-purchase-modal .modal-body {
+        overflow: auto;
+      }
+
+      .batch-type-tabs {
+        overflow-x: auto;
+      }
+
+      .batch-editor {
+        display: block;
+        overflow: visible;
+      }
+
+      .batch-prop-nav {
+        max-height: 250px;
+        border-right: 0;
+        border-bottom: 1px solid #ebeef5;
+      }
+
+      .batch-prop-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .batch-store-head {
+        min-height: 50px;
+        flex-wrap: wrap;
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+
+      .batch-config-pane {
+        overflow: visible;
+      }
+
+      .batch-fields {
+        grid-template-columns: 1fr;
+      }
+
+      .batch-apply-button {
+        width: 100%;
+      }
+
+      .batch-store-section {
+        min-height: 280px;
+      }
+
+      .inline-purchase-workspace {
+        min-height: 760px;
+        overflow: visible;
+      }
+
+      .inline-type-tabs {
+        overflow-x: auto;
+      }
+
+      .inline-store-selector-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .inline-purchase-editor {
+        display: block;
+      }
+
+      .inline-prop-list-panel {
+        max-height: none;
+        border-right: 0;
+        border-bottom: 1px solid var(--line-soft);
+      }
+
+      .inline-prop-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        overflow: visible;
+      }
+
+      .inline-config-pane .batch-fields {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .batch-prop-toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .batch-prop-list {
+        grid-template-columns: 1fr;
+      }
+
+      .batch-store-head-main {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .batch-store-filter-trigger {
+        min-width: 132px;
+      }
+
+      .batch-store-filter-panel {
+        right: 0;
+        left: auto;
+        width: min(270px, calc(100vw - 52px));
+      }
+
+      .batch-purchase-modal .modal-header {
+        height: auto;
+        min-height: 58px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+
+      .batch-type-tabs {
+        gap: 18px;
+      }
+
+      .batch-config-pane {
+        padding: 10px;
+      }
+
+      .batch-purchase-modal .modal-footer {
+        flex-wrap: wrap;
+      }
+
+      .batch-footer-summary {
+        width: 100%;
+        line-height: 20px;
+      }
+
+      .inline-prop-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="position-purchase-page">
+    <div class="selected-stores-bar">
+      <div class="page-header">
+        <h1 class="title">选择采购门店</h1>
+        <div class="selected-count-top">已选择 <span id="selectedStoreCount">0</span> 个门店</div>
+        <button class="btn btn-primary" id="reselectBtn">重新选店</button>
+      </div>
+      <div class="tags-wrap" id="storeTags"></div>
+    </div>
+
+    <div class="mode-tabs-bar">
+      <div class="mode-tabs" id="modeTabs"></div>
+    </div>
+
+    <div class="main-content" id="mainContent">
+      <aside class="left-section">
+        <div class="filter-toolbar">
+          <div class="input-wrap">
+            <input class="input" id="keywordInput" placeholder="搜索仓位名称/编号" />
+            <button class="btn search-button" id="searchBtn" title="搜索">🔍</button>
+          </div>
+          <div class="filter-row">
+            <select class="select" id="locationSelect"></select>
+            <select class="select" id="selectedSelect">
+              <option value="">是否已选仓位</option>
+              <option value="selected">已选仓位</option>
+              <option value="unselected">未选仓位</option>
+            </select>
+          </div>
+          <div class="type-filter-row" id="typeFilterRow">
+            <div class="prop-type-filter" id="propTypeFilter">
+              <button class="multi-select-trigger" id="propTypeTrigger" type="button">
+                <span class="multi-select-label" id="propTypeLabel">全部道具类型</span>
+                <span class="multi-select-arrow">⌄</span>
+              </button>
+              <div class="multi-select-panel" id="propTypePanel"></div>
+            </div>
+            <div class="prop-type-filter" id="warehouseTypeFilter">
+              <button class="multi-select-trigger" id="warehouseTypeTrigger" type="button">
+                <span class="multi-select-label" id="warehouseTypeLabel">全部仓位类型</span>
+                <span class="multi-select-arrow">⌄</span>
+              </button>
+              <div class="multi-select-panel" id="warehouseTypePanel"></div>
+            </div>
+            <div class="prop-type-filter applicable-area-filter">
+              <select class="select" id="applicableAreaSelect">
+                <option value="">全部适用区域</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="tabs" id="imageTabs"></div>
+
+        <div class="position-list" id="positionList"></div>
+        <div class="left-footer">
+          <div class="selected-count">已采购 <span class="selected-count-num" id="purchasedPositionCount">0</span> 个仓位</div>
+        </div>
+      </aside>
+
+      <main class="right-section" id="detailPanel"></main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+  <div class="modal-mask" id="purchaseModal"></div>
+
+  <script>
+    const storeTypes = {
+      ZY: { label: "直营", className: "tag-danger" },
+      LY: { label: "联营", className: "tag-success" },
+      JM: { label: "加盟", className: "tag-info" }
+    };
+
+    const imageTabs = [
+      { label: "标准形象", value: "standard" },
+      { label: "旗舰形象", value: "flagship" },
+      { label: "社区形象", value: "community" }
+    ];
+
+    const propTypeOptions = ["美陈道具", "平面道具", "陈列道具", "工程道具", "非标"];
+    const propTypeFilterOptions = propTypeOptions.filter(type => type !== "非标");
+    const warehouseTypeOptions = ["橱窗", "端架", "收银背柜", "墙面"];
+    const applicableAreaOptions = ["华南区", "西北区", "华中区", "广西区", "华东区", "特殊门店联营"];
+    const modeTabs = [
+      { label: "标准仓位", value: "standard" },
+      { label: "定制道具", value: "nonStandard" }
+    ];
+
+    const stores = [
+      { id: "S001", storeName: "重庆观音桥旗舰店", storeType: "ZY", storeForm: "flagship" },
+      { id: "S002", storeName: "成都春熙路标准店", storeType: "LY", storeForm: "standard" },
+      { id: "S003", storeName: "武汉光谷社区店", storeType: "JM", storeForm: "community" },
+      { id: "S004", storeName: "长沙五一广场标准店", storeType: "ZY", storeForm: "standard" }
+    ];
+
+    const warehouses = [
+      {
+        id: "W001",
+        warehouseCode: "POS-A01",
+        warehouseName: "入口橱窗 A 面",
+        location: "入口区",
+        warehouseType: "橱窗",
+        applicableAreas: ["华南区", "华中区"],
+        formCodes: ["flagship", "standard"],
+        icon: "window"
+      },
+      {
+        id: "W002",
+        warehouseCode: "POS-B08",
+        warehouseName: "主通道端架",
+        location: "主通道",
+        warehouseType: "端架",
+        applicableAreas: ["华东区", "西北区"],
+        formCodes: ["standard", "community"],
+        icon: "shelf"
+      },
+      {
+        id: "W003",
+        warehouseCode: "POS-C03",
+        warehouseName: "收银台背柜",
+        location: "收银区",
+        warehouseType: "收银背柜",
+        applicableAreas: ["华南区", "广西区"],
+        formCodes: ["flagship", "standard", "community"],
+        icon: "counter"
+      },
+      {
+        id: "W004",
+        warehouseCode: "POS-D11",
+        warehouseName: "试衣间导视墙",
+        location: "试衣区",
+        warehouseType: "墙面",
+        applicableAreas: ["特殊门店联营"],
+        formCodes: ["flagship"],
+        icon: "sign"
+      }
+    ];
+
+    const specs = {
+      "POS-A01": [
+        {
+          propTypeDesc: "美陈道具",
+          specList: [
+            { specCode: "GG-MC-001", propName: "季节主题灯箱", specDesc: "亚克力面板 600x900mm", price: 328, qty: 1, unit: "个", supplierName: "简造陈列供应商", purchaseType: "standard" },
+            { specCode: "GG-MC-002", propName: "橱窗磁吸画面", specDesc: "双面写真覆膜", price: 86, qty: 0, unit: "平米", supplierName: "山城广告制作", purchaseType: "nonStandard" },
+            { specCode: "GG-MC-003", propName: "旗舰橱窗氛围贴", specDesc: "透明背胶 500x700mm", price: 48, qty: 0, unit: "张", supplierName: "华南印务", purchaseType: "optional" }
+          ]
+        },
+        {
+          propTypeDesc: "平面道具",
+          specList: [
+            { specCode: "GG-PM-001", propName: "活动价签组", specDesc: "入口款 10 张/套", price: 39, qty: 1, unit: "套", supplierName: "华南印务", purchaseType: "standard" }
+          ]
+        }
+      ],
+      "POS-B08": [
+        {
+          propTypeDesc: "陈列道具",
+          specList: [
+            { specCode: "GG-CL-001", propName: "端架层板托", specDesc: "黑色金属 12 件/组", price: 168, qty: 1, unit: "组", supplierName: "简造五金", purchaseType: "standard" },
+            { specCode: "GG-CL-002", propName: "重点款 POP 夹", specDesc: "透明立牌夹", price: 12, qty: 8, unit: "个", supplierName: "华南印务", purchaseType: "standard" }
+          ]
+        },
+        {
+          propTypeDesc: "平面道具",
+          specList: [
+            { specCode: "GG-PM-002", propName: "端架分类牌", specDesc: "PVC 300x120mm", price: 24, qty: 4, unit: "个", supplierName: "山城广告制作", purchaseType: "standard" }
+          ]
+        }
+      ],
+      "POS-C03": [
+        {
+          propTypeDesc: "工程道具",
+          specList: [
+            { specCode: "GG-GC-001", propName: "背柜导轨灯", specDesc: "12W 暖白", price: 58, qty: 4, unit: "个", supplierName: "简造工程配套", purchaseType: "standard" },
+            { specCode: "GG-GC-002", propName: "收银背柜挂件", specDesc: "金属喷粉", price: 76, qty: 2, unit: "个", supplierName: "简造五金", purchaseType: "standard" }
+          ]
+        }
+      ],
+      "POS-D11": [
+        {
+          propTypeDesc: "平面道具",
+          specList: [
+            { specCode: "GG-PM-003", propName: "试衣间导视贴", specDesc: "磨砂膜 400x800mm", price: 42, qty: 2, unit: "平米", supplierName: "华南印务", purchaseType: "standard" },
+            { specCode: "GG-PM-004", propName: "试衣温馨提示牌", specDesc: "亚克力 200x280mm", price: 35, qty: 3, unit: "个", supplierName: "山城广告制作", purchaseType: "standard" }
+          ]
+        }
+      ]
+    };
+
+    const state = {
+      currentImage: "",
+      purchaseMode: "standard",
+      currentPositionCode: "POS-A01",
+      keyword: "",
+      location: "",
+      selectedFilter: "",
+      propTypes: [],
+      propTypePanelOpen: false,
+      warehouseTypes: [],
+      warehouseTypePanelOpen: false,
+      applicableArea: "",
+      activePurchase: null,
+      activeWarehouseConfig: null,
+      activeNonStandardAdd: null,
+      nonStandardKeyword: "",
+      storePropConfigs: {},
+      storeGroupPurchaseQty: {},
+      globalNonStandardProps: [],
+      collapsedStoreConfigs: new Set(),
+      expandedGroups: new Set(),
+      expandedConfig: new Set(),
+      selections: {
+        "POS-A01_美陈道具": ["S001"],
+        "POS-C03_工程道具": ["S001", "S003"]
+      }
+    };
+
+    const els = {
+      selectedStoreCount: document.getElementById("selectedStoreCount"),
+      storeTags: document.getElementById("storeTags"),
+      modeTabs: document.getElementById("modeTabs"),
+      mainContent: document.getElementById("mainContent"),
+      imageTabs: document.getElementById("imageTabs"),
+      keywordInput: document.getElementById("keywordInput"),
+      searchBtn: document.getElementById("searchBtn"),
+      locationSelect: document.getElementById("locationSelect"),
+      selectedSelect: document.getElementById("selectedSelect"),
+      propTypeFilter: document.getElementById("propTypeFilter"),
+      propTypeTrigger: document.getElementById("propTypeTrigger"),
+      propTypeLabel: document.getElementById("propTypeLabel"),
+      propTypePanel: document.getElementById("propTypePanel"),
+      typeFilterRow: document.getElementById("typeFilterRow"),
+      warehouseTypeFilter: document.getElementById("warehouseTypeFilter"),
+      warehouseTypeTrigger: document.getElementById("warehouseTypeTrigger"),
+      warehouseTypeLabel: document.getElementById("warehouseTypeLabel"),
+      warehouseTypePanel: document.getElementById("warehouseTypePanel"),
+      applicableAreaSelect: document.getElementById("applicableAreaSelect"),
+      positionList: document.getElementById("positionList"),
+      purchasedPositionCount: document.getElementById("purchasedPositionCount"),
+      detailPanel: document.getElementById("detailPanel"),
+      purchaseModal: document.getElementById("purchaseModal"),
+      toast: document.getElementById("toast"),
+      draftSaveBtn: document.getElementById("draftSaveBtn"),
+      reselectBtn: document.getElementById("reselectBtn")
+    };
+
+    const DRAFT_STORAGE_KEY = "MAIN_POS_POSITION_PURCHASE_DRAFTS";
+
+    function warehouseIcon(type) {
+      const stroke = "#527DF7";
+      const fill = "#eef3ff";
+      if (type === "shelf") {
+        return `<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="9" width="32" height="30" rx="3" fill="${fill}" stroke="${stroke}" stroke-width="2"/><path d="M10 19h28M10 29h28M16 9v30M32 9v30" stroke="${stroke}" stroke-width="2"/></svg>`;
+      }
+      if (type === "counter") {
+        return `<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="18" width="32" height="18" rx="2" fill="${fill}" stroke="${stroke}" stroke-width="2"/><path d="M14 13h20l3 5H11l3-5Z" fill="#fff" stroke="${stroke}" stroke-width="2"/><path d="M16 26h16" stroke="${stroke}" stroke-width="2"/></svg>`;
+      }
+      if (type === "sign") {
+        return `<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="12" y="8" width="24" height="28" rx="2" fill="${fill}" stroke="${stroke}" stroke-width="2"/><path d="M18 17h12M18 24h8M24 36v5" stroke="${stroke}" stroke-width="2"/></svg>`;
+      }
+      return `<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="10" width="34" height="28" rx="2" fill="${fill}" stroke="${stroke}" stroke-width="2"/><path d="M12 33l8-10 6 7 4-5 6 8" fill="none" stroke="${stroke}" stroke-width="2"/><circle cx="31" cy="18" r="3" fill="${stroke}"/></svg>`;
+    }
+
+    function propIcon(type) {
+      const map = {
+        "美陈道具": ["#f56c6c", "#fef0f0"],
+        "陈列道具": ["#67c23a", "#f0f9eb"],
+        "工程道具": ["#909399", "#f4f4f5"],
+        "平面道具": ["#e6a23c", "#fdf6ec"]
+      };
+      const [stroke, fill] = map[type] || ["#527DF7", "#eef3ff"];
+      return `<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="10" width="28" height="28" rx="5" fill="${fill}" stroke="${stroke}" stroke-width="2"/><path d="M17 19h14M17 25h14M17 31h9" stroke="${stroke}" stroke-width="2" stroke-linecap="round"/></svg>`;
+    }
+
+    function formatMoney(value) {
+      return `¥${Number(value || 0).toFixed(2)}`;
+    }
+
+    function formatUnitPrice(prop) {
+      return `${formatMoney(prop?.price || 0)}/每${prop?.unit || "个"}`;
+    }
+
+    function formatQtyWithUnit(prop) {
+      return `${prop?.qty ?? 1}${prop?.unit || "个"}`;
+    }
+
+    function validatePurchaseQty(value) {
+      const normalized = String(value ?? "").trim();
+      if (!normalized || Number.isNaN(Number(normalized))) return "请输入采购数量";
+      if (Number(normalized) < 0) return "采购数量不能小于0";
+      if (!/^\d+(?:\.\d{1,2})?$/.test(normalized)) return "采购数量最多支持2位小数";
+      return "";
+    }
+
+    function escapeAttr(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function formatApplicableAreaLabel(areas) {
+      const list = (areas || []).filter(Boolean);
+      if (!list.length) return "-";
+      if (list.length === 1) return list[0];
+      return `适用${list.length}个区域`;
+    }
+
+    function selectedStoresForCurrentImage() {
+      return state.currentImage ? stores.filter(store => store.storeForm === state.currentImage) : stores;
+    }
+
+    function getWarehouseGroups(code) {
+      return specs[code] || [];
+    }
+
+    function groupKey(code, type) {
+      return `${code}_${type}`;
+    }
+
+    function storeGroupQtyKey(groupKeyValue, storeId) {
+      return `${groupKeyValue}__${storeId}`;
+    }
+
+    function selectedWarehouseCodes() {
+      const codes = new Set();
+      Object.entries(state.selections).forEach(([key, storeIds]) => {
+        if (storeIds && storeIds.length) {
+          codes.add(key.split("_")[0]);
+        }
+      });
+      return codes;
+    }
+
+    function filteredWarehouses() {
+      const selectedCodes = selectedWarehouseCodes();
+      return warehouses.filter(warehouse => {
+        if (state.currentImage && !warehouse.formCodes.includes(state.currentImage)) return false;
+        if (state.keyword) {
+          const keyword = state.keyword.toLowerCase();
+          const matched = [warehouse.warehouseName, warehouse.warehouseCode].some(value => String(value || "").toLowerCase().includes(keyword));
+          if (!matched) return false;
+        }
+        if (state.location && warehouse.location !== state.location) return false;
+        if (state.warehouseTypes.length && !state.warehouseTypes.includes(warehouse.warehouseType)) return false;
+        if (state.applicableArea && !(warehouse.applicableAreas || []).includes(state.applicableArea)) return false;
+        if (state.selectedFilter === "selected" && !selectedCodes.has(warehouse.warehouseCode)) return false;
+        if (state.selectedFilter === "unselected" && selectedCodes.has(warehouse.warehouseCode)) return false;
+        if (state.propTypes.length) {
+          const warehouseTypes = getWarehouseGroups(warehouse.warehouseCode).map(group => group.propTypeDesc);
+          if (!state.propTypes.some(type => warehouseTypes.includes(type))) return false;
+        }
+        return true;
+      });
+    }
+
+    function ensureCurrentPosition() {
+      const list = filteredWarehouses();
+      if (!list.some(item => item.warehouseCode === state.currentPositionCode)) {
+        state.currentPositionCode = list[0]?.warehouseCode || "";
+      }
+    }
+
+    function showToast(message) {
+      els.toast.textContent = message;
+      els.toast.classList.add("show");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => els.toast.classList.remove("show"), 2600);
+    }
+
+    function readDrafts() {
+      try {
+        return JSON.parse(localStorage.getItem(DRAFT_STORAGE_KEY) || "[]");
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function writeDrafts(drafts) {
+      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(drafts));
+    }
+
+    function draftSnapshot() {
+      return {
+        currentImage: state.currentImage,
+        purchaseMode: state.purchaseMode,
+        currentPositionCode: state.currentPositionCode,
+        keyword: state.keyword,
+        location: state.location,
+        selectedFilter: state.selectedFilter,
+        propTypes: state.propTypes,
+        warehouseTypes: state.warehouseTypes,
+        applicableArea: state.applicableArea,
+        nonStandardKeyword: state.nonStandardKeyword,
+        storePropConfigs: state.storePropConfigs,
+        storeGroupPurchaseQty: state.storeGroupPurchaseQty,
+        globalNonStandardProps: state.globalNonStandardProps,
+        collapsedStoreConfigs: [...state.collapsedStoreConfigs],
+        expandedGroups: [...state.expandedGroups],
+        expandedConfig: [...state.expandedConfig],
+        selections: state.selections
+      };
+    }
+
+    function saveDraft() {
+      persistInlineWarehouseConfig();
+      const count = state.purchaseMode === "nonStandard" ? state.globalNonStandardProps.length : purchasedPositionCount();
+      const mode = state.purchaseMode === "nonStandard" ? "定制道具" : "标准仓位";
+      const drafts = readDrafts();
+      drafts.unshift({
+        id: `position_${Date.now()}`,
+        title: `仓位采购草稿-${mode}-${count}项`,
+        stage: "采购入口",
+        count,
+        updatedAt: new Date().toLocaleString("zh-CN", { hour12: false }),
+        snapshot: draftSnapshot()
+      });
+      writeDrafts(drafts.slice(0, 10));
+      showToast("已暂存，可在原始订单列表的暂存记录中继续编辑");
+    }
+
+    function restoreDraft(id) {
+      const draft = readDrafts().find(item => item.id === id);
+      if (!draft) return showToast("草稿不存在");
+      const data = draft.snapshot || {};
+      Object.assign(state, data);
+      state.collapsedStoreConfigs = new Set(data.collapsedStoreConfigs || []);
+      state.expandedGroups = new Set(data.expandedGroups || []);
+      state.expandedConfig = new Set(data.expandedConfig || []);
+      state.activePurchase = null;
+      state.activeWarehouseConfig = null;
+      state.activeNonStandardAdd = null;
+      closePurchaseModal();
+      render();
+      showToast("已恢复暂存草稿");
+    }
+
+    function deleteDraft(id) {
+      writeDrafts(readDrafts().filter(item => item.id !== id));
+      renderDraftList();
+      showToast("草稿已删除");
+    }
+
+    function renderDraftList() {
+      const drafts = readDrafts();
+      els.purchaseModal.classList.add("open");
+      els.purchaseModal.innerHTML = `<div class="purchase-modal">
+        <div class="modal-header">
+          <span>暂存记录</span>
+          <button class="modal-close" data-modal-close type="button">×</button>
+        </div>
+        <div class="modal-body">
+          ${drafts.length ? `<table class="config-table">
+            <thead><tr><th>草稿名称</th><th style="width:120px;">阶段</th><th style="width:160px;">更新时间</th><th style="width:140px;">操作</th></tr></thead>
+            <tbody>${drafts.map(draft => `<tr>
+              <td>${escapeHtml(draft.title)}</td>
+              <td>${escapeHtml(draft.stage)}</td>
+              <td>${escapeHtml(draft.updatedAt)}</td>
+              <td><button class="btn btn-link" data-restore-draft="${draft.id}" type="button">继续编辑</button><button class="btn btn-link danger-link" data-delete-draft="${draft.id}" type="button">删除</button></td>
+            </tr>`).join("")}</tbody>
+          </table>` : `<div class="empty-data-tip">暂无暂存记录</div>`}
+        </div>
+      </div>`;
+    }
+
+    function renderStores() {
+      els.selectedStoreCount.textContent = stores.length;
+      els.storeTags.innerHTML = stores.map(store => {
+        const type = storeTypes[store.storeType] || storeTypes.JM;
+        return `<div class="tag-item">
+          <span class="tag ${type.className}">${type.label}</span>
+          <span class="tag-store-name">${store.storeName}</span>
+        </div>`;
+      }).join("");
+    }
+
+    function renderTabs() {
+      els.modeTabs.innerHTML = modeTabs.map(tab => (
+        `<button class="mode-tab ${tab.value === state.purchaseMode ? "active" : ""}" data-mode="${tab.value}" type="button">${tab.label}</button>`
+      )).join("");
+      els.imageTabs.style.display = state.purchaseMode === "standard" ? "" : "none";
+      els.imageTabs.innerHTML = imageTabs.map(tab => (
+        `<button class="tab ${tab.value === state.currentImage ? "active" : ""}" data-image="${tab.value}">${tab.label}</button>`
+      )).join("");
+    }
+
+    function renderLocations() {
+      const locations = [...new Set(warehouses
+        .filter(warehouse => !state.currentImage || warehouse.formCodes.includes(state.currentImage))
+        .map(warehouse => warehouse.location))];
+      els.locationSelect.innerHTML = `<option value="">全部位置</option>${locations.map(location => (
+        `<option value="${location}" ${location === state.location ? "selected" : ""}>${location}</option>`
+      )).join("")}`;
+    }
+
+    function renderPropTypeFilter() {
+      els.propTypeLabel.textContent = state.propTypes.length ? state.propTypes.join("、") : "全部道具类型";
+      els.propTypeTrigger.classList.toggle("open", state.propTypePanelOpen);
+      els.propTypePanel.classList.toggle("open", state.propTypePanelOpen);
+      els.propTypePanel.innerHTML = propTypeFilterOptions.map(type => (
+        `<label class="multi-select-option">
+          <input type="checkbox" value="${type}" ${state.propTypes.includes(type) ? "checked" : ""}>
+          ${type}
+        </label>`
+      )).join("");
+    }
+
+    function renderWarehouseTypeFilter() {
+      els.warehouseTypeLabel.textContent = state.warehouseTypes.length ? state.warehouseTypes.join("、") : "全部仓位类型";
+      els.warehouseTypeTrigger.classList.toggle("open", state.warehouseTypePanelOpen);
+      els.warehouseTypePanel.classList.toggle("open", state.warehouseTypePanelOpen);
+      els.warehouseTypePanel.innerHTML = warehouseTypeOptions.map(type => (
+        `<label class="multi-select-option">
+          <input type="checkbox" value="${type}" ${state.warehouseTypes.includes(type) ? "checked" : ""}>
+          ${type}
+        </label>`
+      )).join("");
+    }
+
+    function renderApplicableAreaFilter() {
+      els.applicableAreaSelect.innerHTML = `<option value="">全部适用区域</option>${applicableAreaOptions.map(area => (
+        `<option value="${area}" ${state.applicableArea === area ? "selected" : ""}>${area}</option>`
+      )).join("")}`;
+    }
+
+    function renderPositions() {
+      if (state.purchaseMode === "nonStandard") {
+        const list = state.globalNonStandardProps.filter(prop => !state.keyword || prop.propName.includes(state.keyword));
+        if (list.length === 0) {
+          els.positionList.innerHTML = `<div class="empty-data-tip">暂无定制道具</div>`;
+          return;
+        }
+        els.positionList.innerHTML = list.map((prop, index) => (
+          `<div class="position-item ${index === 0 ? "active" : ""}">
+            <div class="pos-image">${propIcon(prop.propType)}</div>
+            <div class="pos-info">
+              <div class="pos-name">
+                <span class="text-ellipsis">${prop.propName}</span>
+                <span class="tag tag-info">非标</span>
+              </div>
+              <div class="pos-location">${prop.propType || "未分类"} / ${formatMoney(prop.price || 0)} x ${prop.qty || 0}</div>
+            </div>
+          </div>`
+        )).join("");
+        return;
+      }
+
+      const list = filteredWarehouses();
+      const selectedCodes = selectedWarehouseCodes();
+      if (!list.length) {
+        els.positionList.innerHTML = `<div class="empty-data-tip">暂无仓位数据</div>`;
+        return;
+      }
+      els.positionList.innerHTML = list.map(pos => (
+        `<div class="position-item ${pos.warehouseCode === state.currentPositionCode ? "active" : ""}" data-code="${pos.warehouseCode}">
+          <div class="pos-image">${warehouseIcon(pos.icon)}</div>
+          <div class="pos-info">
+            <div class="pos-name">
+              <span class="text-ellipsis">${pos.warehouseName}</span>
+              ${selectedCodes.has(pos.warehouseCode) ? `<span class="tag tag-success">已选</span>` : ""}
+            </div>
+            <div class="pos-meta-tags" title="位置：${escapeHtml(pos.location || "-")}；类型：${escapeHtml(pos.warehouseType || "未分类")}；适用区域：${escapeHtml((pos.applicableAreas || []).join("、") || "-")}">
+              <span class="tag tag-info pos-meta-tag">${escapeHtml(pos.location || "-")}</span>
+              <span class="tag tag-primary pos-meta-tag">${escapeHtml(pos.warehouseType || "未分类")}</span>
+              <span class="pos-area-row">
+                <span class="tag tag-info pos-meta-tag pos-area-tag" data-area-tooltip="${escapeHtml((pos.applicableAreas || []).join("、") || "-")}">${escapeHtml(formatApplicableAreaLabel(pos.applicableAreas))}</span>
+              </span>
+            </div>
+          </div>
+        </div>`
+      )).join("");
+    }
+
+    function groupTotal(group) {
+      return (group.specList || []).reduce((sum, prop) => sum + Number(prop.price || 0) * Number(prop.qty || 1), 0);
+    }
+
+    function propConfigKey(warehouseCode, propType, propName) {
+      return `${warehouseCode}__${propType}__${propName}`;
+    }
+
+    function getPropConfig(configKey) {
+      return state.storePropConfigs[configKey] || {};
+    }
+
+    function getPurchasedPropQty(configKey, selectedStoreIds, prop) {
+      const configs = getPropConfig(configKey);
+      return selectedStoreIds.reduce((sum, storeId) => {
+        const defaultQty = getPropPurchaseType(prop) === "standard" ? Number(prop.qty || 0) : 0;
+        return sum + Number(configs[storeId]?.qty ?? defaultQty);
+      }, 0);
+    }
+
+    function getAllSuppliers(extraSupplier) {
+      return [...new Set(["简造陈列供应商", "山城广告制作", "华南印务", "简造五金", "简造工程配套", extraSupplier].filter(Boolean))];
+    }
+
+    function getPropPurchaseType(prop) {
+      if (prop?.purchaseType) return prop.purchaseType;
+      if (prop?.isNonStandard === true) return "nonStandard";
+      if (Number(prop?.qty || 0) === 0) return "optional";
+      return "standard";
+    }
+
+    function isNonStandardProp(prop) {
+      return getPropPurchaseType(prop) === "nonStandard";
+    }
+
+    function canEditPropSpec(prop) {
+      return getPropPurchaseType(prop) === "nonStandard";
+    }
+
+    function propSpecReadonlyMeta(prop) {
+      return getPropPurchaseType(prop) === "standard"
+        ? {
+          text: "标准道具使用仓位标配规格",
+          title: "标准道具规格由仓位标配确定，不支持修改"
+        }
+        : {
+          text: "可选道具使用标准规格",
+          title: "可选道具使用标准规格，不支持修改"
+        };
+    }
+
+    function propPurchaseTypeTag(prop) {
+      const type = getPropPurchaseType(prop);
+      const typeMeta = {
+        standard: { label: "标准", className: "prop-type-standard" },
+        nonStandard: { label: "非标", className: "prop-type-non-standard" },
+        optional: { label: "可选", className: "prop-type-optional" }
+      }[type];
+      return `<span class="prop-type-tag ${typeMeta.className}" data-prop-purchase-type="${type}">${typeMeta.label}</span>`;
+    }
+
+    function propPurchaseActionLabel(prop) {
+      return {
+        standard: "调整配置",
+        nonStandard: "配置并采购",
+        optional: "采购"
+      }[getPropPurchaseType(prop)];
+    }
+
+    function ensurePropConfig(warehouseCode, propType, prop) {
+      const configKey = propConfigKey(warehouseCode, propType, prop.propName);
+      if (!state.storePropConfigs[configKey]) {
+        state.storePropConfigs[configKey] = {};
+      }
+      stores.forEach(store => {
+        if (!state.storePropConfigs[configKey][store.id]) {
+          state.storePropConfigs[configKey][store.id] = {
+            specDesc: prop.specDesc || "",
+            qty: prop.qty ?? 1,
+            supplierName: prop.supplierName || ""
+          };
+        }
+      });
+      return configKey;
+    }
+
+    function getWarehouseConfigRows(warehouseCode) {
+      return getWarehouseGroups(warehouseCode).flatMap(group => {
+        return (group.specList || []).map(prop => ({
+          propType: group.propTypeDesc,
+          prop,
+          configKey: ensurePropConfig(warehouseCode, group.propTypeDesc, prop)
+        }));
+      });
+    }
+
+    function openPurchaseModal(warehouseCode, propType, propName) {
+      const group = getWarehouseGroups(warehouseCode).find(item => item.propTypeDesc === propType);
+      const prop = group?.specList?.find(item => item.propName === propName);
+      if (!group || !prop) return;
+      ensurePropConfig(warehouseCode, propType, prop);
+      state.activePurchase = { warehouseCode, propType, propName };
+      renderPurchaseModal();
+    }
+
+    function closePurchaseModal() {
+      state.activePurchase = null;
+      state.activeWarehouseConfig = null;
+      state.activeNonStandardAdd = null;
+      renderPurchaseModal();
+    }
+
+    function renderPurchaseModal() {
+      if (!state.activePurchase && !state.activeWarehouseConfig && !state.activeNonStandardAdd) {
+        els.purchaseModal.classList.remove("open");
+        els.purchaseModal.innerHTML = "";
+        return;
+      }
+
+      if (state.activeNonStandardAdd) {
+        renderNonStandardAddModal();
+        return;
+      }
+
+      if (state.activeWarehouseConfig) {
+        renderWarehouseConfigModal();
+        return;
+      }
+
+      const { warehouseCode, propType, propName } = state.activePurchase;
+      const group = getWarehouseGroups(warehouseCode).find(item => item.propTypeDesc === propType);
+      const prop = group?.specList?.find(item => item.propName === propName);
+      const specReadonly = prop && !canEditPropSpec(prop);
+      const configKey = propConfigKey(warehouseCode, propType, propName);
+      const configs = getPropConfig(configKey);
+      const suppliers = getAllSuppliers(prop?.supplierName);
+
+      els.purchaseModal.classList.add("open");
+      els.purchaseModal.innerHTML = `<div class="purchase-modal">
+        <div class="modal-header">
+          <span>采购配置</span>
+          <button class="modal-close" data-modal-close type="button">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-prop-summary">
+            <div class="prop-image">${propIcon(propType)}</div>
+            <div>
+              <div class="modal-prop-name">${propName}</div>
+              <div class="modal-prop-meta">${propType} / ${formatUnitPrice(prop)}</div>
+            </div>
+          </div>
+          <table class="config-table">
+            <thead>
+              <tr>
+                <th style="width: 24%;">门店</th>
+                <th>${specReadonly ? "规格说明" : `<span class="required-star">*</span>规格说明`}</th>
+                <th style="width: 150px;">数量</th>
+                <th style="width: 190px;">供应商</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${stores.filter(store => (state.selections[groupKey(warehouseCode, propType)] || []).includes(store.id)).map(store => {
+                const config = configs[store.id] || {};
+                return `<tr>
+                  <td class="text-ellipsis">${store.storeName}</td>
+                  <td>${specReadonly ? `<span class="spec-readonly-text">${escapeHtml(config.specDesc || prop?.specDesc || "-")}</span>` : `<input data-config-field="specDesc" data-store-id="${store.id}" value="${config.specDesc || prop?.specDesc || ""}" />`}</td>
+                  <td><div class="config-qty-field"><input data-config-field="qty" data-store-id="${store.id}" type="number" min="0" step="0.01" inputmode="decimal" value="${config.qty ?? 1}" /><span class="config-qty-unit">${prop?.unit || "个"}</span></div></td>
+                  <td>
+                    <select data-config-field="supplierName" data-store-id="${store.id}">
+                      ${suppliers.map(supplier => `<option value="${supplier}" ${supplier === (config.supplierName || prop?.supplierName) ? "selected" : ""}>${supplier}</option>`).join("")}
+                    </select>
+                  </td>
+                </tr>`;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" data-modal-close type="button">取消</button>
+          <button class="btn btn-primary" data-modal-save type="button">保存</button>
+        </div>
+      </div>`;
+    }
+
+    function savePurchaseConfig() {
+      const qtyInputs = [...els.purchaseModal.querySelectorAll('[data-config-field="qty"]')];
+      for (const input of qtyInputs) {
+        const qtyError = validatePurchaseQty(input.value);
+        if (qtyError) {
+          input.focus();
+          showToast(qtyError);
+          return;
+        }
+      }
+      closePurchaseModal();
+      render();
+      showToast("采购配置已保存");
+    }
+
+    function openNonStandardAddModal(index = null) {
+      const editingProp = Number.isInteger(index) ? state.globalNonStandardProps[index] : null;
+      state.activeNonStandardAdd = {
+        index,
+        storeIds: editingProp?.storeIds ? [...editingProp.storeIds] : [],
+        storePanelOpen: false
+      };
+      state.activePurchase = null;
+      state.activeWarehouseConfig = null;
+      renderPurchaseModal();
+    }
+
+    function renderNonStandardAddModal() {
+      const suppliers = getAllSuppliers();
+      const editingProp = Number.isInteger(state.activeNonStandardAdd.index)
+        ? state.globalNonStandardProps[state.activeNonStandardAdd.index]
+        : null;
+      const selectedStoreIds = state.activeNonStandardAdd.storeIds || [];
+      const storeLabel = selectedStoreIds.length
+        ? stores.filter(store => selectedStoreIds.includes(store.id)).map(store => store.storeName).join("、")
+        : "请选择采购门店";
+      els.purchaseModal.classList.add("open");
+      els.purchaseModal.innerHTML = `<div class="purchase-modal">
+        <div class="modal-header">
+          <span>${editingProp ? "编辑定制道具" : "采购定制道具"}</span>
+          <button class="modal-close" data-modal-close type="button">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="non-standard-form">
+            <div class="form-item full">
+              <label>采购门店</label>
+              <div class="store-multi-select" data-store-multi-select>
+                <button class="multi-select-trigger ${state.activeNonStandardAdd.storePanelOpen ? "open" : ""}" data-store-select-trigger type="button">
+                  <span class="multi-select-label" data-store-select-label>${storeLabel}</span>
+                  <span class="multi-select-arrow">⌄</span>
+                </button>
+                <div class="multi-select-panel ${state.activeNonStandardAdd.storePanelOpen ? "open" : ""}" data-store-select-panel>
+                  ${stores.map(store => `<label class="multi-select-option">
+                    <input type="checkbox" data-non-standard-store value="${store.id}" ${selectedStoreIds.includes(store.id) ? "checked" : ""}>
+                    ${store.storeName}
+                  </label>`).join("")}
+                </div>
+              </div>
+            </div>
+            <div class="form-item">
+              <label>道具名称</label>
+              <input data-non-standard-field="propName" placeholder="请输入道具名称" value="${escapeAttr(editingProp?.propName)}" />
+            </div>
+            <div class="form-item">
+              <label>道具类型</label>
+              <select data-non-standard-field="propType">
+                ${propTypeOptions.filter(type => type !== "非标").map(type => `<option value="${type}" ${type === editingProp?.propType ? "selected" : ""}>${type}</option>`).join("")}
+              </select>
+            </div>
+            <div class="form-item full">
+              <label>规格说明</label>
+              <input data-non-standard-field="specDesc" placeholder="请输入规格说明" value="${escapeAttr(editingProp?.specDesc)}" />
+            </div>
+            <div class="form-item">
+              <label>图片</label>
+              <div class="upload-box" data-upload-trigger>
+                <div class="upload-preview" id="nonStandardImagePreview">${editingProp?.imageName ? propIcon(editingProp.propType) : "+"}</div>
+                <div class="upload-text">
+                  <span id="nonStandardImageName">${escapeAttr(editingProp?.imageName) || "上传图片"}</span>
+                  <span class="upload-tip">支持本地选择，示例页仅展示预览</span>
+                </div>
+              </div>
+              <input class="hidden-file-input" data-non-standard-field="imageName" type="file" accept="image/*" />
+            </div>
+            <div class="form-item">
+              <label>供应商</label>
+              <select data-non-standard-field="supplierName">
+                ${suppliers.map(supplier => `<option value="${supplier}" ${supplier === editingProp?.supplierName ? "selected" : ""}>${supplier}</option>`).join("")}
+              </select>
+            </div>
+            <div class="form-item">
+              <label>每单位价格（元）</label>
+              <div class="unit-price-field">
+                <input data-non-standard-field="price" type="number" min="0" step="0.01" placeholder="0.00" value="${editingProp?.price ?? ""}" />
+                <span class="unit-prefix">/每</span>
+                <select data-non-standard-field="unit">
+                  <option value="" ${editingProp?.unit ? "" : "selected"}>请选择单位</option>
+                  ${["平米", "米", "个", "对"].map(unit => `<option value="${unit}" ${unit === editingProp?.unit ? "selected" : ""}>${unit}</option>`).join("")}
+                </select>
+              </div>
+            </div>
+            <div class="form-item">
+              <label>数量</label>
+              <div class="quantity-field">
+                <input data-non-standard-field="qty" type="number" min="0" step="0.01" inputmode="decimal" value="${editingProp?.qty ?? 1}" />
+                <span class="quantity-suffix" data-non-standard-qty-unit>${escapeHtml(editingProp?.unit || "")}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" data-modal-close type="button">取消</button>
+          <button class="btn btn-primary" data-save-non-standard type="button">保存</button>
+        </div>
+      </div>`;
+    }
+
+    function saveNonStandardProp() {
+      if (!state.activeNonStandardAdd) return;
+      const read = field => els.purchaseModal.querySelector(`[data-non-standard-field="${field}"]`)?.value?.trim() || "";
+      const storeIds = state.activeNonStandardAdd.storeIds || [];
+      if (storeIds.length === 0) {
+        showToast("请选择采购门店");
+        return;
+      }
+      const propName = read("propName");
+      if (!propName) {
+        showToast("请填写道具名称");
+        return;
+      }
+      const qtyValue = read("qty");
+      const qtyError = validatePurchaseQty(qtyValue);
+      if (qtyError) {
+        els.purchaseModal.querySelector('[data-non-standard-field="qty"]')?.focus();
+        showToast(qtyError);
+        return;
+      }
+      const prop = {
+        propName,
+        propType: read("propType"),
+        specDesc: read("specDesc"),
+        imageName: els.purchaseModal.querySelector('[data-non-standard-field="imageName"]')?.files?.[0]?.name || (Number.isInteger(state.activeNonStandardAdd.index) ? state.globalNonStandardProps[state.activeNonStandardAdd.index]?.imageName : "") || "",
+        price: Number(read("price") || 0),
+        unit: read("unit"),
+        qty: Number(qtyValue),
+        supplierName: read("supplierName"),
+        storeIds,
+        storeNames: stores.filter(store => storeIds.includes(store.id)).map(store => store.storeName)
+      };
+      const isEdit = Number.isInteger(state.activeNonStandardAdd.index);
+      if (isEdit) {
+        state.globalNonStandardProps[state.activeNonStandardAdd.index] = prop;
+      } else {
+        state.globalNonStandardProps.push(prop);
+      }
+      closePurchaseModal();
+      render();
+      showToast(isEdit ? "定制道具已更新" : "定制道具已添加");
+    }
+
+    function renderGlobalNonStandardSection() {
+      const keyword = state.nonStandardKeyword.trim();
+      const customRows = state.globalNonStandardProps
+        .map((prop, index) => ({ prop, index }))
+        .filter(({ prop }) => !keyword || (prop.propName || "").includes(keyword));
+      const listHtml = state.globalNonStandardProps.length === 0
+        ? `<div class="empty-data-tip">暂无定制道具</div>`
+        : customRows.length === 0
+          ? `<div class="empty-data-tip">未找到匹配的定制道具</div>`
+          : `<div class="prop-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 180px;">采购门店</th>
+                <th>道具名称</th>
+                <th style="width: 120px;">道具类型</th>
+                <th>规格说明</th>
+                <th style="width: 72px;">图片</th>
+                <th style="width: 140px;">每单位价格（元）</th>
+                <th style="width: 80px;">数量</th>
+                <th>供应商</th>
+                <th style="width: 100px;">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${customRows.map(({ prop, index }) => {
+                const storeNames = (prop.storeNames || []).join("、") || "-";
+                const propName = prop.propName || "-";
+                const propType = prop.propType || "-";
+                const specDesc = prop.specDesc || "-";
+                const price = formatUnitPrice(prop);
+                const qty = `${prop.qty || 0}${prop.unit || "个"}`;
+                const supplierName = prop.supplierName || "-";
+                return `<tr>
+                  <td class="text-ellipsis" title="${escapeHtml(storeNames)}">${escapeHtml(storeNames)}</td>
+                  <td><div class="prop-name-cell"><span class="text-ellipsis" title="${escapeHtml(propName)}">${escapeHtml(propName)}</span></div></td>
+                  <td title="${escapeHtml(propType)}">${escapeHtml(propType)}</td>
+                  <td><span class="text-ellipsis prop-spec-tooltip" tabindex="0" data-tooltip="${escapeHtml(specDesc)}" title="${escapeHtml(specDesc)}">${escapeHtml(specDesc)}</span></td>
+                  <td><div class="custom-image-cell">${propIcon(prop.propType)}</div></td>
+                  <td title="${escapeHtml(price)}">${price}</td>
+                  <td title="${escapeHtml(qty)}">${qty}</td>
+                  <td class="text-ellipsis" title="${escapeHtml(supplierName)}">${escapeHtml(supplierName)}</td>
+                  <td><div class="table-actions"><button class="btn btn-link" data-edit-non-standard="${index}" type="button">编辑</button><button class="btn btn-link danger-link" data-delete-non-standard="${index}" type="button">删除</button></div></td>
+                </tr>`;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>`;
+      return `<section class="global-non-standard">
+        ${listHtml}
+      </section>`;
+    }
+
+    function nonStandardFilterHtml() {
+      return `<div class="custom-list-filter">
+        <label for="nonStandardKeywordInput">道具名称</label>
+        <input class="input" id="nonStandardKeywordInput" data-non-standard-keyword placeholder="请输入道具名称" value="${escapeHtml(state.nonStandardKeyword)}" />
+      </div>`;
+    }
+
+    function createWarehouseBatchState(warehouseCode, mode = "modal") {
+      const groups = getWarehouseGroups(warehouseCode);
+      if (!groups.length) return null;
+      const initialGroup = groups.find(group => (state.selections[groupKey(warehouseCode, group.propTypeDesc)] || []).length > 0) || groups[0];
+      const draftConfigs = buildWarehouseBatchConfigs(warehouseCode);
+      return {
+        mode,
+        warehouseCode,
+        activePropType: initialGroup.propTypeDesc,
+        activePropName: initialGroup.specList?.[0]?.propName || "",
+        draftConfigs,
+        originalConfigs: cloneData(draftConfigs),
+        selectedStoreIdsByType: Object.fromEntries(groups.map(group => [
+          group.propTypeDesc,
+          [...(state.selections[groupKey(warehouseCode, group.propTypeDesc)] || [])]
+        ])),
+        storeFilterIdsByType: Object.fromEntries(groups.map(group => [
+          group.propTypeDesc,
+          [...(state.selections[groupKey(warehouseCode, group.propTypeDesc)] || [])]
+        ])),
+        propKeyword: "",
+        propPurchaseTypeFilter: "",
+        storeFilterOpen: false,
+        storeKeyword: "",
+        batchEnabled: { specDesc: false, qty: false, supplierName: false },
+        batchValues: { specDesc: "", qty: "", supplierName: "" },
+        lastBatchSnapshot: null,
+        recentBatchCells: [],
+        batchNotice: "",
+        storeSelectorExpanded: true,
+        batchPanelExpanded: false,
+        dirty: false
+      };
+    }
+
+    function openWarehouseConfigModal(warehouseCode) {
+      state.activeWarehouseConfig = createWarehouseBatchState(warehouseCode, "modal");
+      if (!state.activeWarehouseConfig) return;
+      state.activePurchase = null;
+      resetWarehouseBatchFields();
+      renderPurchaseModal();
+    }
+
+    function persistInlineWarehouseConfig() {
+      const active = state.activeWarehouseConfig;
+      if (!active || active.mode !== "inline") return;
+      Object.entries(active.draftConfigs).forEach(([configKey, configs]) => {
+        state.storePropConfigs[configKey] = cloneData(configs);
+      });
+    }
+
+    function ensureInlineWarehouseConfig(warehouseCode) {
+      const groups = getWarehouseGroups(warehouseCode);
+      let active = state.activeWarehouseConfig;
+      if (!active || active.mode !== "inline" || active.warehouseCode !== warehouseCode) {
+        persistInlineWarehouseConfig();
+        active = createWarehouseBatchState(warehouseCode, "inline");
+        state.activeWarehouseConfig = active;
+      }
+      if (!active) return null;
+
+      groups.forEach(group => {
+        const propType = group.propTypeDesc;
+        const available = [...(state.selections[groupKey(warehouseCode, propType)] || [])];
+        const previousAvailable = active.availableStoreIdsByType?.[propType] || [];
+        const syncSelection = source => {
+          const result = (source || []).filter(storeId => available.includes(storeId));
+          available.forEach(storeId => {
+            if (!previousAvailable.includes(storeId) && !result.includes(storeId)) result.push(storeId);
+          });
+          return result;
+        };
+        active.selectedStoreIdsByType[propType] = syncSelection(active.selectedStoreIdsByType[propType]);
+        active.storeFilterIdsByType[propType] = syncSelection(active.storeFilterIdsByType[propType]);
+      });
+      active.availableStoreIdsByType = Object.fromEntries(groups.map(group => [
+        group.propTypeDesc,
+        [...(state.selections[groupKey(warehouseCode, group.propTypeDesc)] || [])]
+      ]));
+      return active;
+    }
+
+    function renderWarehouseConfigSurface() {
+      if (state.activeWarehouseConfig?.mode === "inline") render();
+      else renderWarehouseConfigModal();
+    }
+
+    function cloneData(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+
+    function buildWarehouseBatchConfigs(warehouseCode) {
+      const result = {};
+      getWarehouseGroups(warehouseCode).forEach(group => {
+        (group.specList || []).forEach(prop => {
+          const configKey = propConfigKey(warehouseCode, group.propTypeDesc, prop.propName);
+          const savedConfigs = state.storePropConfigs[configKey] || {};
+          result[configKey] = {};
+          stores.forEach(store => {
+            const saved = savedConfigs[store.id] || {};
+            result[configKey][store.id] = {
+              specDesc: saved.specDesc ?? prop.specDesc ?? "",
+              qty: saved.qty ?? (getPropPurchaseType(prop) === "standard" ? Number(prop.qty || 0) : 0),
+              supplierName: saved.supplierName ?? prop.supplierName ?? ""
+            };
+          });
+        });
+      });
+      return result;
+    }
+
+    function getActiveWarehouseBatchGroup() {
+      const active = state.activeWarehouseConfig;
+      return getWarehouseGroups(active?.warehouseCode).find(group => group.propTypeDesc === active?.activePropType);
+    }
+
+    function getActiveWarehouseBatchProp() {
+      const active = state.activeWarehouseConfig;
+      return getActiveWarehouseBatchGroup()?.specList?.find(prop => prop.propName === active?.activePropName);
+    }
+
+    function getWarehouseBatchConfigKey(prop = getActiveWarehouseBatchProp()) {
+      const active = state.activeWarehouseConfig;
+      return propConfigKey(active.warehouseCode, active.activePropType, prop.propName);
+    }
+
+    function getWarehouseBatchAvailableStoreIds(propType = state.activeWarehouseConfig?.activePropType) {
+      const active = state.activeWarehouseConfig;
+      return [...(state.selections[groupKey(active.warehouseCode, propType)] || [])];
+    }
+
+    function getWarehouseBatchSelectedStoreIds() {
+      const active = state.activeWarehouseConfig;
+      const visible = new Set(getWarehouseBatchVisibleStoreIds());
+      return (active.selectedStoreIdsByType[active.activePropType] || []).filter(storeId => visible.has(storeId));
+    }
+
+    function getWarehouseBatchVisibleStoreIds() {
+      const active = state.activeWarehouseConfig;
+      const availableStoreIds = getWarehouseBatchAvailableStoreIds();
+      const filterIds = new Set(active.storeFilterIdsByType[active.activePropType] || []);
+      return availableStoreIds.filter(storeId => filterIds.has(storeId));
+    }
+
+    function getWarehouseBatchFilteredProps() {
+      const active = state.activeWarehouseConfig;
+      const keyword = String(active.propKeyword || "").trim().toLowerCase();
+      return (getActiveWarehouseBatchGroup()?.specList || []).filter(prop => {
+        if (active.propPurchaseTypeFilter && getPropPurchaseType(prop) !== active.propPurchaseTypeFilter) return false;
+        if (!keyword) return true;
+        return [prop.specCode, prop.propName].some(value => String(value || "").toLowerCase().includes(keyword));
+      });
+    }
+
+    function syncWarehouseBatchActivePropToFilter() {
+      const active = state.activeWarehouseConfig;
+      const props = getWarehouseBatchFilteredProps();
+      if (!props.length || props.some(prop => prop.propName === active.activePropName)) return false;
+      active.activePropName = props[0].propName;
+      resetWarehouseBatchFields();
+      return true;
+    }
+
+    function renderWarehouseBatchPropList() {
+      const active = state.activeWarehouseConfig;
+      const props = getWarehouseBatchFilteredProps();
+      if (!props.length) return `<div class="batch-prop-empty">未找到匹配的道具</div>`;
+      return props.map(item => {
+        const changed = warehouseBatchPropChanged(active.activePropType, item);
+        return `<button class="batch-prop-item ${item.propName === active.activePropName ? "active" : ""}" data-batch-prop="${escapeAttr(item.propName)}" type="button">
+          <span class="batch-prop-item-name"><span>${escapeHtml(item.propName)}</span>${propPurchaseTypeTag(item)}</span>
+          <span class="batch-prop-item-status"><span>${escapeHtml(item.specCode || "暂无规格编号")} · ${warehouseBatchPropStatus(active.activePropType, item)}</span>${changed ? `<span class="changed">已修改</span>` : ""}</span>
+        </button>`;
+      }).join("");
+    }
+
+    function getWarehouseBatchStoreSearchResults() {
+      const active = state.activeWarehouseConfig;
+      const keyword = String(active.storeKeyword || "").trim().toLowerCase();
+      return getWarehouseBatchAvailableStoreIds()
+        .map(storeId => stores.find(store => store.id === storeId))
+        .filter(store => store && (!keyword || store.storeName.toLowerCase().includes(keyword)));
+    }
+
+    function renderWarehouseBatchStoreFilterOptions() {
+      const active = state.activeWarehouseConfig;
+      const matchedStores = getWarehouseBatchStoreSearchResults();
+      const filterIds = new Set(active.storeFilterIdsByType[active.activePropType] || []);
+      const allMatched = matchedStores.length > 0 && matchedStores.every(store => filterIds.has(store.id));
+      return `${matchedStores.length ? `<label class="batch-store-filter-option all">
+        <input type="checkbox" data-batch-store-filter-all ${allMatched ? "checked" : ""}>
+        <span>全选当前结果</span>
+      </label>` : ""}
+      ${matchedStores.map(store => `<label class="batch-store-filter-option">
+        <input type="checkbox" data-batch-store-filter-item="${store.id}" ${filterIds.has(store.id) ? "checked" : ""}>
+        <span>${escapeHtml(store.storeName)}</span>
+      </label>`).join("") || `<div class="batch-store-filter-empty">未找到匹配门店</div>`}`;
+    }
+
+    function syncWarehouseBatchStoreFilterAllState(root = els.purchaseModal) {
+      const active = state.activeWarehouseConfig;
+      const checkbox = root.querySelector("[data-batch-store-filter-all]");
+      if (!active || !checkbox) return;
+      const matchedStores = getWarehouseBatchStoreSearchResults();
+      const filterIds = new Set(active.storeFilterIdsByType[active.activePropType] || []);
+      const selectedCount = matchedStores.filter(store => filterIds.has(store.id)).length;
+      checkbox.checked = matchedStores.length > 0 && selectedCount === matchedStores.length;
+      checkbox.indeterminate = selectedCount > 0 && selectedCount < matchedStores.length;
+    }
+
+    function resetWarehouseBatchFields() {
+      const active = state.activeWarehouseConfig;
+      if (!active || !getActiveWarehouseBatchProp()) return;
+      active.batchEnabled = { specDesc: false, qty: false, supplierName: false };
+      active.batchValues = { specDesc: "", qty: "", supplierName: "" };
+      active.batchNotice = "";
+      active.recentBatchCells = [];
+      active.lastBatchSnapshot = null;
+    }
+
+    function warehouseBatchValueChanged(configKey, storeId, field) {
+      const active = state.activeWarehouseConfig;
+      const current = active.draftConfigs[configKey]?.[storeId]?.[field];
+      const original = active.originalConfigs[configKey]?.[storeId]?.[field];
+      return String(current ?? "") !== String(original ?? "");
+    }
+
+    function warehouseBatchPropChanged(propType, prop) {
+      const active = state.activeWarehouseConfig;
+      const configKey = propConfigKey(active.warehouseCode, propType, prop.propName);
+      return stores.some(store => ["specDesc", "qty", "supplierName"].some(field => warehouseBatchValueChanged(configKey, store.id, field)));
+    }
+
+    function warehouseBatchTypeChanged(group) {
+      return (group.specList || []).some(prop => warehouseBatchPropChanged(group.propTypeDesc, prop));
+    }
+
+    function warehouseBatchDiffStats() {
+      const active = state.activeWarehouseConfig;
+      const changedProps = new Set();
+      const changedRows = new Set();
+      getWarehouseGroups(active.warehouseCode).forEach(group => {
+        (group.specList || []).forEach(prop => {
+          const configKey = propConfigKey(active.warehouseCode, group.propTypeDesc, prop.propName);
+          stores.forEach(store => {
+            if (["specDesc", "qty", "supplierName"].some(field => warehouseBatchValueChanged(configKey, store.id, field))) {
+              changedProps.add(configKey);
+              changedRows.add(`${configKey}__${store.id}`);
+            }
+          });
+        });
+      });
+      return { propCount: changedProps.size, rowCount: changedRows.size };
+    }
+
+    function updateWarehouseBatchDirtyState() {
+      const active = state.activeWarehouseConfig;
+      const stats = warehouseBatchDiffStats();
+      active.dirty = stats.rowCount > 0;
+      return stats;
+    }
+
+    function warehouseBatchPurchasedQty(propType, prop) {
+      const active = state.activeWarehouseConfig;
+      const configKey = propConfigKey(active.warehouseCode, propType, prop.propName);
+      return getWarehouseBatchAvailableStoreIds(propType).reduce((sum, storeId) => {
+        return sum + Number(active.draftConfigs[configKey]?.[storeId]?.qty || 0);
+      }, 0);
+    }
+
+    function warehouseBatchPropStatus(propType, prop) {
+      const qty = warehouseBatchPurchasedQty(propType, prop);
+      const type = getPropPurchaseType(prop);
+      if (qty > 0) return `采购${qty}${prop.unit || "个"}`;
+      if (type === "nonStandard") return "未配置";
+      if (type === "optional") return "未采购";
+      return "采购数量为0";
+    }
+
+    function warehouseBatchFieldPlaceholder(field) {
+      if (field === "specDesc") return "请输入规格说明";
+      if (field === "qty") return "请输入数量";
+      return "请选择供应商";
+    }
+
+    function renderWarehouseBatchField(field, label, content) {
+      const active = state.activeWarehouseConfig;
+      return `<div class="batch-field">
+        <label class="batch-field-label">
+          <input type="checkbox" data-batch-enable="${field}" ${active.batchEnabled[field] ? "checked" : ""}>
+          <span>${label}</span>
+        </label>
+        ${content}
+      </div>`;
+    }
+
+    function renderWarehouseConfigModal() {
+      const active = state.activeWarehouseConfig;
+      const { warehouseCode } = active;
+      const position = warehouses.find(item => item.warehouseCode === warehouseCode);
+      const groups = getWarehouseGroups(warehouseCode);
+      const activeGroup = getActiveWarehouseBatchGroup();
+      const prop = getActiveWarehouseBatchProp();
+      if (!activeGroup || !prop) return;
+      const configKey = getWarehouseBatchConfigKey(prop);
+      const availableStoreIds = getWarehouseBatchAvailableStoreIds();
+      const visibleStoreIds = getWarehouseBatchVisibleStoreIds();
+      const selectedStoreIds = getWarehouseBatchSelectedStoreIds();
+      const allSelected = visibleStoreIds.length > 0 && visibleStoreIds.every(storeId => selectedStoreIds.includes(storeId));
+      const selectedSet = new Set(selectedStoreIds);
+      const storeFilterIds = active.storeFilterIdsByType[active.activePropType] || [];
+      const allStoresVisible = availableStoreIds.length === storeFilterIds.length && availableStoreIds.every(storeId => storeFilterIds.includes(storeId));
+      const storeFilterLabel = allStoresVisible ? `全部门店（${availableStoreIds.length}）` : `已筛选 ${visibleStoreIds.length}/${availableStoreIds.length}`;
+      const suppliers = getAllSuppliers();
+      const specEditable = canEditPropSpec(prop);
+      const specReadonlyMeta = propSpecReadonlyMeta(prop);
+      const stats = updateWarehouseBatchDirtyState();
+      const anyBatchFieldEnabled = Object.values(active.batchEnabled).some(Boolean);
+      const batchSelectionMode = anyBatchFieldEnabled;
+      const batchFieldNames = Object.entries(active.batchEnabled)
+        .filter(([, enabled]) => enabled)
+        .map(([field]) => ({ specDesc: "规格说明", qty: "数量", supplierName: "供应商" })[field]);
+
+      const typeTabs = groups.map(group => `<button class="batch-type-tab ${group.propTypeDesc === active.activePropType ? "active" : ""}" data-batch-type="${escapeAttr(group.propTypeDesc)}" type="button">
+        ${escapeHtml(group.propTypeDesc)}<span class="batch-type-tab-count">${group.specList?.length || 0}</span>
+        ${warehouseBatchTypeChanged(group) ? `<span class="batch-type-tab-dirty" title="存在未保存修改"></span>` : ""}
+      </button>`).join("");
+
+      const propList = renderWarehouseBatchPropList();
+
+      const specField = specEditable
+        ? renderWarehouseBatchField("specDesc", "规格说明", `<div class="batch-field-control"><input data-batch-value="specDesc" value="${escapeAttr(active.batchValues.specDesc)}" placeholder="${escapeAttr(warehouseBatchFieldPlaceholder("specDesc"))}" ${active.batchEnabled.specDesc ? "" : "disabled"}></div>`)
+        : `<div class="batch-field"><div class="batch-field-label">规格说明</div><div class="batch-field-readonly" title="${escapeAttr(specReadonlyMeta.title)}">${escapeHtml(specReadonlyMeta.text)}</div></div>`;
+      const qtyStep = "0.01";
+      const qtyField = renderWarehouseBatchField("qty", "数量", `<div class="batch-field-control"><input data-batch-value="qty" type="number" min="0" step="${qtyStep}" inputmode="decimal" value="${escapeAttr(active.batchValues.qty)}" placeholder="${escapeAttr(warehouseBatchFieldPlaceholder("qty"))}" ${active.batchEnabled.qty ? "" : "disabled"}><span>${escapeHtml(prop.unit || "个")}</span></div>`);
+      const supplierField = renderWarehouseBatchField("supplierName", "供应商", `<div class="batch-field-control"><select data-batch-value="supplierName" ${active.batchEnabled.supplierName ? "" : "disabled"}><option value="">请选择供应商</option>${suppliers.map(supplier => `<option value="${escapeAttr(supplier)}" ${supplier === active.batchValues.supplierName ? "selected" : ""}>${escapeHtml(supplier)}</option>`).join("")}</select></div>`);
+
+      const storeRows = visibleStoreIds.map(storeId => {
+        const store = stores.find(item => item.id === storeId);
+        const config = active.draftConfigs[configKey]?.[storeId] || {};
+        return `<tr>
+          <td class="store-checkbox-cell"><input type="checkbox" data-batch-store="${storeId}" ${selectedSet.has(storeId) ? "checked" : ""} aria-label="选择${escapeAttr(store?.storeName)}"></td>
+          <td class="text-ellipsis" title="${escapeAttr(store?.storeName)}">${escapeHtml(store?.storeName || "-")}</td>
+          <td class="${warehouseBatchValueChanged(configKey, storeId, "specDesc") ? "is-modified" : ""}">${specEditable ? `<input data-batch-row-field="specDesc" data-config-key="${escapeAttr(configKey)}" data-store-id="${storeId}" value="${escapeAttr(config.specDesc)}">` : `<span class="spec-readonly-text">${escapeHtml(config.specDesc || prop.specDesc || "-")}</span>`}</td>
+          <td class="${warehouseBatchValueChanged(configKey, storeId, "qty") ? "is-modified" : ""}"><div class="batch-row-qty"><input data-batch-row-field="qty" data-config-key="${escapeAttr(configKey)}" data-store-id="${storeId}" type="number" min="0" step="${qtyStep}" inputmode="decimal" value="${escapeAttr(config.qty)}"><span>${escapeHtml(prop.unit || "个")}</span></div></td>
+          <td class="${warehouseBatchValueChanged(configKey, storeId, "supplierName") ? "is-modified" : ""}"><select data-batch-row-field="supplierName" data-config-key="${escapeAttr(configKey)}" data-store-id="${storeId}">${getAllSuppliers(prop.supplierName).map(supplier => `<option value="${escapeAttr(supplier)}" ${supplier === config.supplierName ? "selected" : ""}>${escapeHtml(supplier)}</option>`).join("")}</select></td>
+        </tr>`;
+      }).join("");
+
+      els.purchaseModal.classList.add("open");
+      els.purchaseModal.innerHTML = `<div class="purchase-modal batch-purchase-modal" data-warehouse-batch-modal>
+        <div class="modal-header">
+          <div class="batch-modal-title"><span>${escapeHtml(position?.warehouseName || "仓位")} - 批量采购配置</span><small>已选 ${new Set(groups.flatMap(group => state.selections[groupKey(warehouseCode, group.propTypeDesc)] || [])).size} 家门店</small></div>
+          <button class="modal-close" data-modal-close type="button">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="batch-type-tabs" role="tablist" aria-label="道具类型">${typeTabs}</div>
+          <div class="batch-editor">
+            <aside class="batch-prop-nav">
+              <div class="batch-prop-nav-title">${escapeHtml(active.activePropType)}下的道具</div>
+              <div class="batch-prop-toolbar">
+                <input class="batch-prop-search" data-batch-prop-keyword placeholder="搜索规格编号/道具名称" value="${escapeAttr(active.propKeyword)}" aria-label="搜索规格编号或道具名称">
+                <select class="batch-prop-filter" data-batch-prop-type-filter aria-label="筛选道具类型">
+                  <option value="" ${active.propPurchaseTypeFilter ? "" : "selected"}>全部类型</option>
+                  <option value="standard" ${active.propPurchaseTypeFilter === "standard" ? "selected" : ""}>标准</option>
+                  <option value="nonStandard" ${active.propPurchaseTypeFilter === "nonStandard" ? "selected" : ""}>非标</option>
+                  <option value="optional" ${active.propPurchaseTypeFilter === "optional" ? "selected" : ""}>可选</option>
+                </select>
+              </div>
+              <div class="batch-prop-list" data-batch-prop-list>${propList}</div>
+            </aside>
+            <section class="batch-config-pane">
+              <div class="batch-active-prop"><span>${escapeHtml(prop.propName)}</span>${propPurchaseTypeTag(prop)}</div>
+              <div class="batch-field-panel">
+                <div class="batch-field-panel-head"><span class="batch-field-panel-title">批量设置</span><span class="batch-target-summary">已选择 ${selectedStoreIds.length}/${visibleStoreIds.length} 家门店</span></div>
+                <div class="batch-fields">
+                  ${specField}${qtyField}${supplierField}
+                  <button class="btn btn-primary batch-apply-button" data-batch-apply type="button" ${selectedStoreIds.length && anyBatchFieldEnabled ? "" : "disabled"}>应用到${selectedStoreIds.length}家门店</button>
+                </div>
+              </div>
+              ${active.batchNotice ? `<div class="batch-apply-notice"><span>${escapeHtml(active.batchNotice)}</span><button class="btn btn-link" data-batch-undo type="button">撤销本次应用</button></div>` : ""}
+              <div class="batch-store-section">
+                <div class="batch-store-head">
+                  <div class="batch-store-head-main">
+                    <strong>采购门店</strong>
+                    ${availableStoreIds.length ? `<div class="batch-store-filter" data-batch-store-filter>
+                      <button class="batch-store-filter-trigger ${active.storeFilterOpen ? "open" : ""}" data-batch-store-filter-trigger type="button" aria-expanded="${active.storeFilterOpen}"><span>${storeFilterLabel}</span><span>⌄</span></button>
+                      <div class="batch-store-filter-panel ${active.storeFilterOpen ? "open" : ""}" data-batch-store-filter-panel>
+                        <input class="batch-store-filter-search" data-batch-store-keyword placeholder="搜索门店名称" value="${escapeAttr(active.storeKeyword)}" aria-label="搜索门店名称">
+                        <div class="batch-store-filter-options" data-batch-store-filter-options>${renderWarehouseBatchStoreFilterOptions()}</div>
+                      </div>
+                    </div>` : ""}
+                  </div>
+                  <span>${availableStoreIds.length ? `批量字段仅覆盖当前列表中勾选门店，仍可逐行调整` : `请先在页面中选择采购门店`}</span>
+                </div>
+                ${availableStoreIds.length === 0 ? `<div class="batch-empty-stores">当前道具类型尚未选择采购门店</div>` : visibleStoreIds.length ? `<div class="batch-store-table-wrap"><table class="batch-store-table"><thead><tr><th style="width:42px;text-align:center"><input type="checkbox" data-batch-store-all ${allSelected ? "checked" : ""} aria-label="全选当前筛选门店"></th><th style="width:180px">门店</th><th>规格说明</th><th style="width:132px">数量</th><th style="width:190px">供应商</th></tr></thead><tbody>${storeRows}</tbody></table></div>` : `<div class="batch-empty-stores">当前筛选条件下暂无采购门店</div>`}
+              </div>
+            </section>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <span class="batch-footer-summary" data-batch-footer-summary>${stats.rowCount ? `已修改 ${stats.propCount} 个道具、${stats.rowCount} 条门店配置` : "暂未修改配置"}</span>
+          <button class="btn" data-batch-cancel type="button">取消</button>
+          <button class="btn btn-primary" data-batch-save type="button" ${stats.rowCount ? "" : "disabled"}>保存全部配置</button>
+        </div>
+      </div>`;
+      const selectAllStores = els.purchaseModal.querySelector("[data-batch-store-all]");
+      if (selectAllStores) selectAllStores.indeterminate = selectedStoreIds.length > 0 && !allSelected;
+      syncWarehouseBatchStoreFilterAllState();
+    }
+
+    function activateWarehouseBatchType(propType) {
+      const active = state.activeWarehouseConfig;
+      const group = getWarehouseGroups(active.warehouseCode).find(item => item.propTypeDesc === propType);
+      if (!group) return;
+      active.activePropType = propType;
+      active.activePropName = group.specList?.[0]?.propName || "";
+      if (!active.selectedStoreIdsByType[propType]) {
+        active.selectedStoreIdsByType[propType] = getWarehouseBatchAvailableStoreIds(propType);
+      }
+      if (!active.storeFilterIdsByType[propType]) {
+        active.storeFilterIdsByType[propType] = getWarehouseBatchAvailableStoreIds(propType);
+      }
+      active.storeFilterOpen = false;
+      active.storeKeyword = "";
+      resetWarehouseBatchFields();
+      renderWarehouseConfigSurface();
+    }
+
+    function activateWarehouseBatchProp(propName) {
+      const active = state.activeWarehouseConfig;
+      if (!getActiveWarehouseBatchGroup()?.specList?.some(prop => prop.propName === propName)) return;
+      active.activePropName = propName;
+      resetWarehouseBatchFields();
+      renderWarehouseConfigSurface();
+    }
+
+    function validateWarehouseBatchQty(value) {
+      return validatePurchaseQty(value);
+    }
+
+    function applyWarehouseBatchValues() {
+      const active = state.activeWarehouseConfig;
+      const prop = getActiveWarehouseBatchProp();
+      const storeIds = getWarehouseBatchSelectedStoreIds();
+      const enabledFields = Object.entries(active.batchEnabled).filter(([, enabled]) => enabled).map(([field]) => field);
+      if (!storeIds.length) return showToast(active.mode === "inline" ? "请至少选择一家批量设置的应用门店" : "请至少选择一家采购门店");
+      if (!enabledFields.length) return showToast("请勾选需要批量设置的字段");
+      if (active.batchEnabled.specDesc && !String(active.batchValues.specDesc || "").trim()) return showToast("请输入规格说明");
+      if (active.batchEnabled.qty) {
+        const qtyError = validateWarehouseBatchQty(active.batchValues.qty, prop);
+        if (qtyError) return showToast(qtyError);
+      }
+      if (active.batchEnabled.supplierName && !active.batchValues.supplierName) return showToast("请选择供应商");
+
+      const configKey = getWarehouseBatchConfigKey(prop);
+      active.lastBatchSnapshot = cloneData(active.draftConfigs);
+      active.recentBatchCells = [];
+      storeIds.forEach(storeId => {
+        enabledFields.forEach(field => {
+          active.draftConfigs[configKey][storeId][field] = field === "qty"
+            ? Number(active.batchValues[field])
+            : active.batchValues[field];
+          active.recentBatchCells.push(`${configKey}__${storeId}__${field}`);
+        });
+      });
+      const fieldNames = enabledFields.map(field => ({ specDesc: "规格说明", qty: "数量", supplierName: "供应商" })[field]);
+      active.batchNotice = active.mode === "inline"
+        ? `已将“${fieldNames.join("、")}”应用到${storeIds.length}家门店`
+        : `已将“${fieldNames.join("、")}”应用到${storeIds.length}家门店，尚未保存`;
+      if (active.mode === "inline") {
+        active.batchEnabled = { specDesc: false, qty: false, supplierName: false };
+        active.batchValues = { specDesc: "", qty: "", supplierName: "" };
+        active.selectedStoreIdsByType[active.activePropType] = [];
+      }
+      updateWarehouseBatchDirtyState();
+      persistInlineWarehouseConfig();
+      renderWarehouseConfigSurface();
+    }
+
+    function undoWarehouseBatchApply() {
+      const active = state.activeWarehouseConfig;
+      if (!active.lastBatchSnapshot) return;
+      active.draftConfigs = cloneData(active.lastBatchSnapshot);
+      active.lastBatchSnapshot = null;
+      active.recentBatchCells = [];
+      active.batchNotice = "";
+      updateWarehouseBatchDirtyState();
+      resetWarehouseBatchFields();
+      persistInlineWarehouseConfig();
+      renderWarehouseConfigSurface();
+      showToast("已撤销本次批量应用");
+    }
+
+    function updateWarehouseBatchRowField(field) {
+      const active = state.activeWarehouseConfig;
+      const configKey = field.dataset.configKey;
+      const storeId = field.dataset.storeId;
+      const fieldName = field.dataset.batchRowField;
+      if (!active?.draftConfigs[configKey]?.[storeId] || !fieldName) return;
+      active.draftConfigs[configKey][storeId][fieldName] = fieldName === "qty" ? Number(field.value || 0) : field.value;
+      field.closest("td")?.classList.toggle("is-modified", warehouseBatchValueChanged(configKey, storeId, fieldName));
+      persistInlineWarehouseConfig();
+      syncWarehouseBatchFooter();
+    }
+
+    function syncWarehouseBatchFooter() {
+      if (!state.activeWarehouseConfig) return;
+      const stats = updateWarehouseBatchDirtyState();
+      const root = state.activeWarehouseConfig.mode === "inline" ? els.detailPanel : els.purchaseModal;
+      const summary = root.querySelector("[data-batch-footer-summary]");
+      const saveButton = root.querySelector("[data-batch-save]");
+      if (summary) {
+        summary.textContent = stats.rowCount
+          ? `${state.activeWarehouseConfig.mode === "inline" ? "已调整" : "已修改"} ${stats.propCount} 个道具、${stats.rowCount} 条门店配置`
+          : state.activeWarehouseConfig.mode === "inline" ? "" : "暂未修改配置";
+      }
+      if (saveButton) saveButton.disabled = stats.rowCount === 0;
+    }
+
+    function validateWarehouseBatchDraft() {
+      const active = state.activeWarehouseConfig;
+      const groups = getWarehouseGroups(active.warehouseCode);
+      for (const group of groups) {
+        const storeIds = getWarehouseBatchAvailableStoreIds(group.propTypeDesc);
+        for (const prop of (group.specList || [])) {
+          const configKey = propConfigKey(active.warehouseCode, group.propTypeDesc, prop.propName);
+          for (const storeId of storeIds) {
+            const config = active.draftConfigs[configKey]?.[storeId] || {};
+            const store = stores.find(item => item.id === storeId);
+            const qtyError = validateWarehouseBatchQty(config.qty, prop);
+            if (qtyError) return { group, prop, message: `${store?.storeName || "门店"}：${qtyError}` };
+            if (Number(config.qty) > 0 && canEditPropSpec(prop) && !String(config.specDesc || "").trim()) {
+              return { group, prop, message: `${store?.storeName || "门店"}：规格说明不能为空` };
+            }
+            if (Number(config.qty) > 0 && !config.supplierName) {
+              return { group, prop, message: `${store?.storeName || "门店"}：请选择供应商` };
+            }
+          }
+        }
+      }
+      return null;
+    }
+
+    function saveWarehouseBatchConfig() {
+      const active = state.activeWarehouseConfig;
+      const error = validateWarehouseBatchDraft();
+      if (error) {
+        active.activePropType = error.group.propTypeDesc;
+        active.activePropName = error.prop.propName;
+        resetWarehouseBatchFields();
+        renderWarehouseConfigSurface();
+        showToast(error.message);
+        return;
+      }
+      Object.entries(active.draftConfigs).forEach(([configKey, configs]) => {
+        state.storePropConfigs[configKey] = cloneData(configs);
+      });
+      active.dirty = false;
+      closePurchaseModal();
+      render();
+      showToast("批量采购配置已保存");
+    }
+
+    function requestCloseWarehouseBatch() {
+      const active = state.activeWarehouseConfig;
+      if (active?.dirty && !window.confirm("当前存在未保存的批量配置，确定放弃修改吗？")) return;
+      closePurchaseModal();
+    }
+
+    function renderWarehouseInlinePropCards() {
+      const active = state.activeWarehouseConfig;
+      const props = getWarehouseBatchFilteredProps();
+      if (!props.length) return `<div class="batch-prop-empty">未找到匹配的道具</div>`;
+      return props.map(item => `<button class="inline-prop-card ${item.propName === active.activePropName ? "active" : ""}" data-inline-batch-prop="${escapeAttr(item.propName)}" type="button" aria-pressed="${item.propName === active.activePropName}">
+        <span class="prop-image">${propIcon(active.activePropType)}</span>
+        <span class="inline-prop-card-body">
+          <span class="inline-prop-card-name"><span>${escapeHtml(item.propName)}</span>${propPurchaseTypeTag(item)}</span>
+          <span class="inline-prop-card-price">${escapeHtml(formatUnitPrice(item))}</span>
+          <span class="inline-prop-card-code">${escapeHtml(item.specCode || "暂无规格编号")}${warehouseBatchPropChanged(active.activePropType, item) ? " · 已调整" : ""}</span>
+        </span>
+      </button>`).join("");
+    }
+
+    function renderWarehouseInlineConfig(position, groups) {
+      const active = ensureInlineWarehouseConfig(position.warehouseCode);
+      const activeGroup = getActiveWarehouseBatchGroup();
+      const prop = getActiveWarehouseBatchProp();
+      if (!active || !activeGroup || !prop) return `<div class="empty-data-tip">暂无道具数据</div>`;
+
+      const selectionKey = groupKey(position.warehouseCode, active.activePropType);
+      const availableStoreIds = getWarehouseBatchAvailableStoreIds();
+      const visibleStoreIds = getWarehouseBatchVisibleStoreIds();
+      const selectedStoreIds = getWarehouseBatchSelectedStoreIds();
+      const selectedSet = new Set(selectedStoreIds);
+      const allPurchaseStoresSelected = stores.length > 0 && stores.every(store => availableStoreIds.includes(store.id));
+      const purchaseStoresIndeterminate = availableStoreIds.length > 0 && !allPurchaseStoresSelected;
+      const allBatchStoresSelected = visibleStoreIds.length > 0 && visibleStoreIds.every(storeId => selectedSet.has(storeId));
+      const configKey = getWarehouseBatchConfigKey(prop);
+      const suppliers = getAllSuppliers();
+      const specEditable = canEditPropSpec(prop);
+      const specReadonlyMeta = propSpecReadonlyMeta(prop);
+      const stats = updateWarehouseBatchDirtyState();
+      const anyBatchFieldEnabled = Object.values(active.batchEnabled).some(Boolean);
+      const batchSelectionMode = anyBatchFieldEnabled;
+      const storeFilterIds = active.storeFilterIdsByType[active.activePropType] || [];
+      const allStoresVisible = availableStoreIds.length === storeFilterIds.length && availableStoreIds.every(storeId => storeFilterIds.includes(storeId));
+      const storeFilterLabel = allStoresVisible ? `全部门店（${availableStoreIds.length}）` : `已筛选 ${visibleStoreIds.length}/${availableStoreIds.length}`;
+
+      const typeTabs = groups.map(group => `<button class="batch-type-tab ${group.propTypeDesc === active.activePropType ? "active" : ""}" data-inline-batch-type="${escapeAttr(group.propTypeDesc)}" type="button" role="tab" aria-selected="${group.propTypeDesc === active.activePropType}">
+        ${escapeHtml(group.propTypeDesc)}<span class="batch-type-tab-count">${group.specList?.length || 0}</span>
+        ${warehouseBatchTypeChanged(group) ? `<span class="batch-type-tab-dirty" title="已调整配置"></span>` : ""}
+      </button>`).join("");
+
+      const propCards = renderWarehouseInlinePropCards();
+
+      const specField = specEditable
+        ? renderWarehouseBatchField("specDesc", "规格说明", `<div class="batch-field-control"><input data-batch-value="specDesc" value="${escapeAttr(active.batchValues.specDesc)}" placeholder="请输入规格说明" ${active.batchEnabled.specDesc ? "" : "disabled"}></div>`)
+        : `<div class="batch-field"><div class="batch-field-label">规格说明</div><div class="batch-field-readonly" title="${escapeAttr(specReadonlyMeta.title)}">${escapeHtml(specReadonlyMeta.text)}</div></div>`;
+      const qtyField = renderWarehouseBatchField("qty", "数量", `<div class="batch-field-control"><input data-batch-value="qty" type="number" min="0" step="0.01" inputmode="decimal" value="${escapeAttr(active.batchValues.qty)}" placeholder="请输入数量" ${active.batchEnabled.qty ? "" : "disabled"}><span>${escapeHtml(prop.unit || "个")}</span></div>`);
+      const supplierField = renderWarehouseBatchField("supplierName", "供应商", `<div class="batch-field-control"><select data-batch-value="supplierName" ${active.batchEnabled.supplierName ? "" : "disabled"}><option value="">请选择供应商</option>${suppliers.map(supplier => `<option value="${escapeAttr(supplier)}" ${supplier === active.batchValues.supplierName ? "selected" : ""}>${escapeHtml(supplier)}</option>`).join("")}</select></div>`);
+
+      const storeRows = visibleStoreIds.map(storeId => {
+        const store = stores.find(item => item.id === storeId);
+        const config = active.draftConfigs[configKey]?.[storeId] || {};
+        return `<tr class="${batchSelectionMode && selectedSet.has(storeId) ? "inline-batch-target-row" : ""}">
+          ${batchSelectionMode ? `<td class="store-checkbox-cell"><input type="checkbox" data-inline-batch-store="${storeId}" ${selectedSet.has(storeId) ? "checked" : ""} aria-label="将${escapeAttr(store?.storeName)}纳入本次批量设置"></td>` : ""}
+          <td class="text-ellipsis" title="${escapeAttr(store?.storeName)}">${escapeHtml(store?.storeName || "-")}</td>
+          <td class="${warehouseBatchValueChanged(configKey, storeId, "specDesc") ? "is-modified" : ""}">${specEditable ? `<input data-batch-row-field="specDesc" data-config-key="${escapeAttr(configKey)}" data-store-id="${storeId}" value="${escapeAttr(config.specDesc)}">` : `<span class="spec-readonly-text">${escapeHtml(config.specDesc || prop.specDesc || "-")}</span>`}</td>
+          <td class="${warehouseBatchValueChanged(configKey, storeId, "qty") ? "is-modified" : ""}"><div class="batch-row-qty"><input data-batch-row-field="qty" data-config-key="${escapeAttr(configKey)}" data-store-id="${storeId}" type="number" min="0" step="0.01" inputmode="decimal" value="${escapeAttr(config.qty)}"><span>${escapeHtml(prop.unit || "个")}</span></div></td>
+          <td class="${warehouseBatchValueChanged(configKey, storeId, "supplierName") ? "is-modified" : ""}"><select data-batch-row-field="supplierName" data-config-key="${escapeAttr(configKey)}" data-store-id="${storeId}">${getAllSuppliers(prop.supplierName).map(supplier => `<option value="${escapeAttr(supplier)}" ${supplier === config.supplierName ? "selected" : ""}>${escapeHtml(supplier)}</option>`).join("")}</select></td>
+        </tr>`;
+      }).join("");
+
+      return `<section class="inline-purchase-workspace" data-inline-purchase-workspace>
+        <div class="batch-type-tabs inline-type-tabs" role="tablist" aria-label="道具类型">${typeTabs}</div>
+        <div class="inline-store-selector ${active.storeSelectorExpanded ? "" : "collapsed"}" data-inline-store-selector>
+          <div class="inline-store-selector-head">
+            <button class="inline-section-toggle" data-toggle-inline-stores type="button" aria-expanded="${active.storeSelectorExpanded}">
+              <span class="inline-store-selector-title"><span>采购门店</span><small>${escapeHtml(active.activePropType)}已选 ${availableStoreIds.length}/${stores.length} 家</small></span>
+              <span class="inline-collapse-action">${active.storeSelectorExpanded ? "收起" : "展开"}<span class="inline-collapse-icon ${active.storeSelectorExpanded ? "expanded" : ""}">⌄</span></span>
+            </button>
+            <label class="inline-store-option"><input type="checkbox" data-select-all="${selectionKey}" ${allPurchaseStoresSelected ? "checked" : ""} ${purchaseStoresIndeterminate ? "data-indeterminate='true'" : ""}>全选所有门店</label>
+          </div>
+          ${active.storeSelectorExpanded ? `<div class="inline-store-options">
+            ${stores.map(store => {
+              const checked = availableStoreIds.includes(store.id);
+              const qtyKey = storeGroupQtyKey(selectionKey, store.id);
+              return `<label class="inline-store-option">
+                <input type="checkbox" data-store-check="${selectionKey}" value="${store.id}" ${checked ? "checked" : ""}>
+                <span class="inline-store-name">${escapeHtml(store.storeName)}</span>
+                ${checked ? `<span class="inline-store-warehouse-qty">采购仓位数<input data-store-purchase-qty="${qtyKey}" type="number" min="1" step="1" inputmode="numeric" value="${state.storeGroupPurchaseQty[qtyKey] ?? 1}" aria-label="${escapeAttr(store.storeName)}采购仓位数量" onclick="event.stopPropagation()">个</span>` : ""}
+              </label>`;
+            }).join("")}
+          </div>` : ""}
+        </div>
+        <div class="inline-purchase-editor">
+          <aside class="inline-prop-list-panel">
+            <div class="batch-prop-toolbar">
+              <input class="batch-prop-search" data-inline-prop-keyword placeholder="搜索道具名称/规格编号" value="${escapeAttr(active.propKeyword)}" aria-label="搜索道具名称或规格编号">
+              <select class="batch-prop-filter" data-inline-prop-type-filter aria-label="筛选道具属性">
+                <option value="" ${active.propPurchaseTypeFilter ? "" : "selected"}>全部属性</option>
+                <option value="standard" ${active.propPurchaseTypeFilter === "standard" ? "selected" : ""}>标准</option>
+                <option value="nonStandard" ${active.propPurchaseTypeFilter === "nonStandard" ? "selected" : ""}>非标</option>
+                <option value="optional" ${active.propPurchaseTypeFilter === "optional" ? "selected" : ""}>可选</option>
+              </select>
+            </div>
+            <div class="inline-prop-list">${propCards || `<div class="batch-prop-empty">暂无道具</div>`}</div>
+          </aside>
+          <section class="batch-config-pane inline-config-pane">
+            <div class="batch-active-prop"><span>${escapeHtml(prop.propName)}</span>${propPurchaseTypeTag(prop)}<span class="inline-modified-summary" data-batch-footer-summary>${stats.rowCount ? `已调整 ${stats.propCount} 个道具、${stats.rowCount} 条门店配置` : ""}</span></div>
+            <div class="batch-field-panel ${active.batchPanelExpanded ? "" : "collapsed"}">
+              <button class="batch-field-panel-head inline-section-toggle" data-toggle-inline-batch type="button" aria-expanded="${active.batchPanelExpanded}">
+                <span class="batch-field-panel-title">批量设置</span>
+                <span class="batch-target-summary">${batchSelectionMode ? `已选择 ${selectedStoreIds.length}/${visibleStoreIds.length} 家应用门店` : "勾选字段后选择应用门店"}</span>
+                <span class="inline-collapse-action">${active.batchPanelExpanded ? "收起" : "展开"}<span class="inline-collapse-icon ${active.batchPanelExpanded ? "expanded" : ""}">⌄</span></span>
+              </button>
+              ${active.batchPanelExpanded ? `<div class="batch-fields">
+                ${specField}${qtyField}${supplierField}
+                <button class="btn btn-primary batch-apply-button" data-inline-batch-apply type="button" ${selectedStoreIds.length && anyBatchFieldEnabled ? "" : "disabled"}>${batchSelectionMode ? `应用到已选${selectedStoreIds.length}家门店` : "请先勾选批量字段"}</button>
+              </div>` : ""}
+            </div>
+            ${active.batchNotice ? `<div class="batch-apply-notice"><span>${escapeHtml(active.batchNotice)}</span><button class="btn btn-link" data-inline-batch-undo type="button">撤销本次应用</button></div>` : ""}
+            <div class="batch-store-section">
+              <div class="batch-store-head">
+                <div class="batch-store-head-main">
+                  <strong>门店列表</strong>
+                  ${availableStoreIds.length ? `<div class="batch-store-filter" data-inline-store-filter>
+                    <button class="batch-store-filter-trigger ${active.storeFilterOpen ? "open" : ""}" data-inline-store-filter-trigger type="button" aria-expanded="${active.storeFilterOpen}"><span>${storeFilterLabel}</span><span>⌄</span></button>
+                    <div class="batch-store-filter-panel ${active.storeFilterOpen ? "open" : ""}" data-inline-store-filter-panel>
+                      <input class="batch-store-filter-search" data-inline-store-keyword placeholder="搜索门店名称" value="${escapeAttr(active.storeKeyword)}" aria-label="搜索门店名称">
+                      <div class="batch-store-filter-options" data-inline-store-filter-options>${renderWarehouseBatchStoreFilterOptions()}</div>
+                    </div>
+                  </div>` : ""}
+                </div>
+                <span>${availableStoreIds.length ? (batchSelectionMode ? "批量选择中" : "可逐行调整") : "请先在上方选择采购门店"}</span>
+              </div>
+              ${batchSelectionMode ? `<div class="inline-batch-scope-notice"><span><strong>选择本次批量设置的应用门店</strong>，未勾选门店不会被修改</span><span>已选择 ${selectedStoreIds.length}/${visibleStoreIds.length} 家</span></div>` : ""}
+              ${availableStoreIds.length === 0 ? `<div class="inline-empty-stores">请先在上方勾选需要采购该类型道具的门店</div>` : visibleStoreIds.length ? `<div class="batch-store-table-wrap"><table class="batch-store-table"><thead><tr>${batchSelectionMode ? `<th class="inline-batch-scope-cell" style="width:104px"><label><input type="checkbox" data-inline-batch-store-all ${allBatchStoresSelected ? "checked" : ""} aria-label="全选当前筛选门店"><span>应用门店</span></label></th>` : ""}<th style="width:160px">门店</th><th>规格说明</th><th style="width:120px">数量</th><th style="width:170px">供应商</th></tr></thead><tbody>${storeRows}</tbody></table></div>` : `<div class="inline-empty-stores">当前筛选条件下暂无门店</div>`}
+            </div>
+          </section>
+        </div>
+      </section>`;
+    }
+
+    function renderDetail() {
+      if (state.purchaseMode === "nonStandard") {
+        els.detailPanel.innerHTML = `<div class="position-detail">
+          <div class="detail-header">
+            <div class="detail-header-left">
+              <span>定制道具</span>
+              ${nonStandardFilterHtml()}
+            </div>
+            <div class="detail-header-actions">
+              <button class="btn btn-primary btn-small" data-add-non-standard type="button">采购定制道具</button>
+            </div>
+          </div>
+          ${renderGlobalNonStandardSection()}
+          <div class="detail-footer">
+            <button class="btn" id="draftSaveBtn" type="button">暂存</button>
+            <button class="btn btn-primary" id="nextBtn" ${purchasedPositionCount() === 0 && state.globalNonStandardProps.length === 0 ? "disabled" : ""}>去下单</button>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const position = warehouses.find(item => item.warehouseCode === state.currentPositionCode);
+      if (!position) {
+        els.detailPanel.innerHTML = `<div class="empty-detail">请在左侧选择仓位<div class="detail-footer"><button class="btn btn-primary" disabled>去下单</button></div></div>`;
+        return;
+      }
+
+      const groups = getWarehouseGroups(position.warehouseCode);
+
+      els.detailPanel.innerHTML = `<div class="position-detail">
+        <div class="detail-header">
+          <div class="detail-header-title">
+            <span>仓位：${position.warehouseName}</span>
+            <span class="detail-header-code">仓位编号：${position.warehouseCode}</span>
+          </div>
+        </div>
+        ${renderWarehouseInlineConfig(position, groups)}
+        <div class="detail-footer">
+          <button class="btn" id="draftSaveBtn" type="button">暂存</button>
+          <button class="btn btn-primary" id="nextBtn" ${purchasedPositionCount() === 0 ? "disabled" : ""}>去下单</button>
+        </div>
+      </div>`;
+
+      document.querySelectorAll("input[data-indeterminate='true']").forEach(input => {
+        input.indeterminate = true;
+      });
+      const inlineBatchAll = els.detailPanel.querySelector("[data-inline-batch-store-all]");
+      if (inlineBatchAll) {
+        const visible = getWarehouseBatchVisibleStoreIds();
+        const selected = getWarehouseBatchSelectedStoreIds();
+        inlineBatchAll.indeterminate = selected.length > 0 && selected.length < visible.length;
+      }
+      syncWarehouseBatchStoreFilterAllState(els.detailPanel);
+    }
+
+    function purchasedPositionCount() {
+      return selectedWarehouseCodes().size;
+    }
+
+    function renderCounters() {
+      els.purchasedPositionCount.textContent = purchasedPositionCount();
+    }
+
+    function render() {
+      ensureCurrentPosition();
+      renderStores();
+      renderTabs();
+      renderLocations();
+      renderPropTypeFilter();
+      renderWarehouseTypeFilter();
+      renderApplicableAreaFilter();
+      els.mainContent.classList.toggle("non-standard-mode", state.purchaseMode === "nonStandard");
+      els.keywordInput.placeholder = state.purchaseMode === "standard" ? "搜索仓位名称/编号" : "搜索定制道具名称";
+      els.locationSelect.closest(".filter-row").style.display = state.purchaseMode === "standard" ? "" : "none";
+      els.typeFilterRow.style.display = state.purchaseMode === "standard" ? "" : "none";
+      renderPositions();
+      renderDetail();
+      renderCounters();
+    }
+
+    els.modeTabs.addEventListener("click", event => {
+      const button = event.target.closest("[data-mode]");
+      if (!button) return;
+      state.purchaseMode = button.dataset.mode;
+      render();
+    });
+
+    els.imageTabs.addEventListener("click", event => {
+      const button = event.target.closest("[data-image]");
+      if (!button) return;
+      state.currentImage = button.dataset.image;
+      state.location = "";
+      render();
+    });
+
+    els.searchBtn.addEventListener("click", () => {
+      state.keyword = els.keywordInput.value.trim();
+      render();
+    });
+
+    els.keywordInput.addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        state.keyword = els.keywordInput.value.trim();
+        render();
+      }
+    });
+
+    els.keywordInput.addEventListener("input", () => {
+      if (!els.keywordInput.value) {
+        state.keyword = "";
+        render();
+      }
+    });
+
+    els.locationSelect.addEventListener("change", () => {
+      state.location = els.locationSelect.value;
+      render();
+    });
+
+    els.selectedSelect.addEventListener("change", () => {
+      state.selectedFilter = els.selectedSelect.value;
+      render();
+    });
+
+    els.propTypeTrigger.addEventListener("click", event => {
+      event.stopPropagation();
+      state.propTypePanelOpen = !state.propTypePanelOpen;
+      state.warehouseTypePanelOpen = false;
+      render();
+    });
+
+    els.propTypePanel.addEventListener("change", event => {
+      const input = event.target.closest("input[type='checkbox']");
+      if (!input) return;
+      const selected = new Set(state.propTypes);
+      if (input.checked) selected.add(input.value);
+      else selected.delete(input.value);
+      state.propTypes = [...selected];
+      state.propTypePanelOpen = true;
+      render();
+    });
+
+    els.warehouseTypeTrigger.addEventListener("click", event => {
+      event.stopPropagation();
+      state.warehouseTypePanelOpen = !state.warehouseTypePanelOpen;
+      state.propTypePanelOpen = false;
+      render();
+    });
+
+    els.warehouseTypePanel.addEventListener("change", event => {
+      const input = event.target.closest("input[type='checkbox']");
+      if (!input) return;
+      const selected = new Set(state.warehouseTypes);
+      if (input.checked) selected.add(input.value);
+      else selected.delete(input.value);
+      state.warehouseTypes = [...selected];
+      state.warehouseTypePanelOpen = true;
+      render();
+    });
+
+    els.applicableAreaSelect.addEventListener("change", () => {
+      state.applicableArea = els.applicableAreaSelect.value;
+      render();
+    });
+
+    document.addEventListener("click", event => {
+      if (!els.propTypeFilter.contains(event.target) && state.propTypePanelOpen) {
+        state.propTypePanelOpen = false;
+        render();
+      }
+      if (!els.warehouseTypeFilter.contains(event.target) && state.warehouseTypePanelOpen) {
+        state.warehouseTypePanelOpen = false;
+        render();
+      }
+    });
+
+    els.positionList.addEventListener("click", event => {
+      const item = event.target.closest("[data-code]");
+      if (!item) return;
+      state.currentPositionCode = item.dataset.code;
+      render();
+    });
+
+    function areaTooltip() {
+      let tooltip = document.getElementById("areaTooltipFloating");
+      if (!tooltip) {
+        tooltip = document.createElement("div");
+        tooltip.id = "areaTooltipFloating";
+        tooltip.className = "area-tooltip-floating";
+        document.body.appendChild(tooltip);
+      }
+      return tooltip;
+    }
+
+    function moveAreaTooltip(event) {
+      const tooltip = areaTooltip();
+      const gap = 12;
+      let left = event.clientX + gap;
+      let top = event.clientY + gap;
+      const rect = tooltip.getBoundingClientRect();
+      if (left + rect.width > window.innerWidth - gap) {
+        left = Math.max(gap, window.innerWidth - rect.width - gap);
+      }
+      if (top + rect.height > window.innerHeight - gap) {
+        top = Math.max(gap, event.clientY - rect.height - gap);
+      }
+      tooltip.style.left = `${left}px`;
+      tooltip.style.top = `${top}px`;
+    }
+
+    els.positionList.addEventListener("mouseover", event => {
+      const target = event.target.closest(".pos-area-tag[data-area-tooltip]");
+      if (!target || !els.positionList.contains(target)) return;
+      const tooltip = areaTooltip();
+      tooltip.textContent = target.dataset.areaTooltip || "-";
+      tooltip.style.display = "block";
+      moveAreaTooltip(event);
+    });
+
+    els.positionList.addEventListener("mousemove", event => {
+      if (document.getElementById("areaTooltipFloating")?.style.display === "block") {
+        moveAreaTooltip(event);
+      }
+    });
+
+    els.positionList.addEventListener("mouseout", event => {
+      const target = event.target.closest(".pos-area-tag[data-area-tooltip]");
+      if (!target || target.contains(event.relatedTarget)) return;
+      areaTooltip().style.display = "none";
+    });
+
+    els.detailPanel.addEventListener("click", event => {
+      if (event.target.closest("[data-toggle-inline-stores]") && state.activeWarehouseConfig?.mode === "inline") {
+        state.activeWarehouseConfig.storeSelectorExpanded = !state.activeWarehouseConfig.storeSelectorExpanded;
+        render();
+        return;
+      }
+
+      if (event.target.closest("[data-toggle-inline-batch]") && state.activeWarehouseConfig?.mode === "inline") {
+        state.activeWarehouseConfig.batchPanelExpanded = !state.activeWarehouseConfig.batchPanelExpanded;
+        render();
+        return;
+      }
+
+      const inlineStoreFilterTrigger = event.target.closest("[data-inline-store-filter-trigger]");
+      if (inlineStoreFilterTrigger && state.activeWarehouseConfig?.mode === "inline") {
+        const active = state.activeWarehouseConfig;
+        active.storeFilterOpen = !active.storeFilterOpen;
+        inlineStoreFilterTrigger.classList.toggle("open", active.storeFilterOpen);
+        inlineStoreFilterTrigger.setAttribute("aria-expanded", String(active.storeFilterOpen));
+        els.detailPanel.querySelector("[data-inline-store-filter-panel]")?.classList.toggle("open", active.storeFilterOpen);
+        if (active.storeFilterOpen) {
+          window.setTimeout(() => els.detailPanel.querySelector("[data-inline-store-keyword]")?.focus(), 0);
+        }
+        return;
+      }
+
+      if (state.activeWarehouseConfig?.mode === "inline" && state.activeWarehouseConfig.storeFilterOpen && !event.target.closest("[data-inline-store-filter]")) {
+        state.activeWarehouseConfig.storeFilterOpen = false;
+        els.detailPanel.querySelector("[data-inline-store-filter-trigger]")?.classList.remove("open");
+        els.detailPanel.querySelector("[data-inline-store-filter-trigger]")?.setAttribute("aria-expanded", "false");
+        els.detailPanel.querySelector("[data-inline-store-filter-panel]")?.classList.remove("open");
+      }
+
+      const inlineBatchType = event.target.closest("[data-inline-batch-type]");
+      if (inlineBatchType && state.activeWarehouseConfig?.mode === "inline") {
+        activateWarehouseBatchType(inlineBatchType.dataset.inlineBatchType);
+        return;
+      }
+
+      const inlineBatchProp = event.target.closest("[data-inline-batch-prop]");
+      if (inlineBatchProp && state.activeWarehouseConfig?.mode === "inline") {
+        activateWarehouseBatchProp(inlineBatchProp.dataset.inlineBatchProp);
+        return;
+      }
+
+      if (event.target.closest("[data-inline-batch-apply]") && state.activeWarehouseConfig?.mode === "inline") {
+        applyWarehouseBatchValues();
+        return;
+      }
+
+      if (event.target.closest("[data-inline-batch-undo]") && state.activeWarehouseConfig?.mode === "inline") {
+        undoWarehouseBatchApply();
+        return;
+      }
+
+      const warehouseBatchButton = event.target.closest("[data-open-warehouse-batch]");
+      if (warehouseBatchButton) {
+        openWarehouseConfigModal(warehouseBatchButton.dataset.openWarehouseBatch);
+        return;
+      }
+
+      const groupToggle = event.target.closest("[data-toggle-group]");
+      if (groupToggle) {
+        const key = groupToggle.dataset.toggleGroup;
+        if (state.expandedGroups.has(key)) {
+          state.expandedGroups.delete(key);
+        } else {
+          const code = key.split("_")[0];
+          [...state.expandedGroups].forEach(item => {
+            if (item.startsWith(`${code}_`)) state.expandedGroups.delete(item);
+          });
+          state.expandedGroups.add(key);
+        }
+        render();
+        return;
+      }
+
+      const configToggle = event.target.closest("[data-toggle-config]");
+      if (configToggle) {
+        const key = configToggle.dataset.toggleConfig;
+        if (state.expandedConfig.has(key)) state.expandedConfig.delete(key);
+        else state.expandedConfig.add(key);
+        render();
+        return;
+      }
+
+      const purchaseBtn = event.target.closest("[data-purchase-prop]");
+      if (purchaseBtn) {
+        const [warehouseCode, propType, propName] = purchaseBtn.dataset.purchaseProp.split("|");
+        openPurchaseModal(warehouseCode, propType, propName);
+        return;
+      }
+
+      const addNonStandardBtn = event.target.closest("[data-add-non-standard]");
+      if (addNonStandardBtn) {
+        openNonStandardAddModal();
+        return;
+      }
+
+      const editNonStandardBtn = event.target.closest("[data-edit-non-standard]");
+      if (editNonStandardBtn) {
+        openNonStandardAddModal(Number(editNonStandardBtn.dataset.editNonStandard));
+        return;
+      }
+
+      const deleteNonStandardBtn = event.target.closest("[data-delete-non-standard]");
+      if (deleteNonStandardBtn) {
+        state.globalNonStandardProps.splice(Number(deleteNonStandardBtn.dataset.deleteNonStandard), 1);
+        render();
+        showToast("定制道具已删除");
+        return;
+      }
+
+      if (event.target.closest("#draftSaveBtn")) {
+        saveDraft();
+        return;
+      }
+
+      if (event.target.id === "nextBtn") {
+        const missingStores = stores.filter(store => {
+          return !Object.values(state.selections).some(ids => ids.includes(store.id));
+        });
+        if (missingStores.length) {
+          showToast(`以下门店未选择仓位道具：${missingStores.map(s => s.storeName).join("、")}`);
+          return;
+        }
+        window.location.href = "createOrderWarehouse.html";
+      }
+    });
+
+    els.detailPanel.addEventListener("change", event => {
+      const allInput = event.target.closest("[data-select-all]");
+      if (allInput) {
+        const key = allInput.dataset.selectAll;
+        state.selections[key] = allInput.checked ? stores.map(store => store.id) : [];
+        render();
+        return;
+      }
+
+      const storeInput = event.target.closest("[data-store-check]");
+      if (storeInput) {
+        const key = storeInput.dataset.storeCheck;
+        const selected = new Set(state.selections[key] || []);
+        const qtyKey = storeGroupQtyKey(key, storeInput.value);
+        if (storeInput.checked) {
+          selected.add(storeInput.value);
+          if (state.storeGroupPurchaseQty[qtyKey] == null) {
+            state.storeGroupPurchaseQty[qtyKey] = 1;
+          }
+        } else {
+          selected.delete(storeInput.value);
+        }
+        state.selections[key] = [...selected];
+        render();
+        return;
+      }
+
+      const propTypeFilter = event.target.closest("[data-inline-prop-type-filter]");
+      if (propTypeFilter && state.activeWarehouseConfig?.mode === "inline") {
+        state.activeWarehouseConfig.propPurchaseTypeFilter = propTypeFilter.value;
+        syncWarehouseBatchActivePropToFilter();
+        render();
+        return;
+      }
+
+      const storeFilterAll = event.target.closest("[data-batch-store-filter-all]");
+      if (storeFilterAll && state.activeWarehouseConfig?.mode === "inline") {
+        const active = state.activeWarehouseConfig;
+        const filterIds = new Set(active.storeFilterIdsByType[active.activePropType] || []);
+        getWarehouseBatchStoreSearchResults().forEach(store => {
+          if (storeFilterAll.checked) filterIds.add(store.id);
+          else filterIds.delete(store.id);
+        });
+        active.storeFilterIdsByType[active.activePropType] = [...filterIds];
+        active.storeFilterOpen = true;
+        if (Object.values(active.batchEnabled).some(Boolean)) {
+          active.selectedStoreIdsByType[active.activePropType] = getWarehouseBatchVisibleStoreIds();
+        }
+        render();
+        return;
+      }
+
+      const storeFilterItem = event.target.closest("[data-batch-store-filter-item]");
+      if (storeFilterItem && state.activeWarehouseConfig?.mode === "inline") {
+        const active = state.activeWarehouseConfig;
+        const filterIds = new Set(active.storeFilterIdsByType[active.activePropType] || []);
+        if (storeFilterItem.checked) filterIds.add(storeFilterItem.dataset.batchStoreFilterItem);
+        else filterIds.delete(storeFilterItem.dataset.batchStoreFilterItem);
+        active.storeFilterIdsByType[active.activePropType] = [...filterIds];
+        active.storeFilterOpen = true;
+        if (Object.values(active.batchEnabled).some(Boolean)) {
+          active.selectedStoreIdsByType[active.activePropType] = getWarehouseBatchVisibleStoreIds();
+        }
+        render();
+        return;
+      }
+
+      const batchEnable = event.target.closest("[data-batch-enable]");
+      if (batchEnable && state.activeWarehouseConfig?.mode === "inline") {
+        const active = state.activeWarehouseConfig;
+        const wasBatchSelectionMode = Object.values(active.batchEnabled).some(Boolean);
+        active.batchEnabled[batchEnable.dataset.batchEnable] = batchEnable.checked;
+        active.batchNotice = "";
+        const isBatchSelectionMode = Object.values(active.batchEnabled).some(Boolean);
+        if (!wasBatchSelectionMode && isBatchSelectionMode) {
+          active.selectedStoreIdsByType[active.activePropType] = getWarehouseBatchVisibleStoreIds();
+        }
+        if (!isBatchSelectionMode) {
+          active.selectedStoreIdsByType[active.activePropType] = [];
+        }
+        const fieldName = batchEnable.dataset.batchEnable;
+        render();
+        if (batchEnable.checked) {
+          els.detailPanel.querySelector(`[data-batch-value="${fieldName}"]`)?.focus();
+        }
+        return;
+      }
+
+      const batchStoreAll = event.target.closest("[data-inline-batch-store-all]");
+      if (batchStoreAll && state.activeWarehouseConfig?.mode === "inline") {
+        const active = state.activeWarehouseConfig;
+        const selected = new Set(active.selectedStoreIdsByType[active.activePropType] || []);
+        getWarehouseBatchVisibleStoreIds().forEach(storeId => {
+          if (batchStoreAll.checked) selected.add(storeId);
+          else selected.delete(storeId);
+        });
+        active.selectedStoreIdsByType[active.activePropType] = [...selected];
+        if (!Object.values(active.batchEnabled).some(Boolean)) resetWarehouseBatchFields();
+        render();
+        return;
+      }
+
+      const batchStore = event.target.closest("[data-inline-batch-store]");
+      if (batchStore && state.activeWarehouseConfig?.mode === "inline") {
+        const active = state.activeWarehouseConfig;
+        const selected = new Set(active.selectedStoreIdsByType[active.activePropType] || []);
+        if (batchStore.checked) selected.add(batchStore.dataset.inlineBatchStore);
+        else selected.delete(batchStore.dataset.inlineBatchStore);
+        active.selectedStoreIdsByType[active.activePropType] = [...selected];
+        render();
+        return;
+      }
+
+      const batchValue = event.target.closest("[data-batch-value]");
+      if (batchValue && state.activeWarehouseConfig?.mode === "inline") {
+        state.activeWarehouseConfig.batchValues[batchValue.dataset.batchValue] = batchValue.value;
+        return;
+      }
+
+      const batchRowField = event.target.closest("[data-batch-row-field]");
+      if (batchRowField && state.activeWarehouseConfig?.mode === "inline") {
+        updateWarehouseBatchRowField(batchRowField);
+      }
+    });
+
+    els.reselectBtn.addEventListener("click", () => {
+      showToast("静态复原页：这里会返回“选择门店”页面");
+    });
+
+    els.purchaseModal.addEventListener("click", event => {
+      if (event.target === els.purchaseModal || event.target.closest("[data-modal-close]")) {
+        if (state.activeWarehouseConfig) requestCloseWarehouseBatch();
+        else closePurchaseModal();
+        return;
+      }
+
+      const storeFilterTrigger = event.target.closest("[data-batch-store-filter-trigger]");
+      if (storeFilterTrigger && state.activeWarehouseConfig) {
+        const active = state.activeWarehouseConfig;
+        active.storeFilterOpen = !active.storeFilterOpen;
+        storeFilterTrigger.classList.toggle("open", active.storeFilterOpen);
+        storeFilterTrigger.setAttribute("aria-expanded", String(active.storeFilterOpen));
+        els.purchaseModal.querySelector("[data-batch-store-filter-panel]")?.classList.toggle("open", active.storeFilterOpen);
+        if (active.storeFilterOpen) {
+          window.setTimeout(() => els.purchaseModal.querySelector("[data-batch-store-keyword]")?.focus(), 0);
+        }
+        return;
+      }
+
+      if (state.activeWarehouseConfig?.storeFilterOpen && !event.target.closest("[data-batch-store-filter]")) {
+        state.activeWarehouseConfig.storeFilterOpen = false;
+        els.purchaseModal.querySelector("[data-batch-store-filter-trigger]")?.classList.remove("open");
+        els.purchaseModal.querySelector("[data-batch-store-filter-trigger]")?.setAttribute("aria-expanded", "false");
+        els.purchaseModal.querySelector("[data-batch-store-filter-panel]")?.classList.remove("open");
+      }
+
+      const batchTypeTab = event.target.closest("[data-batch-type]");
+      if (batchTypeTab && state.activeWarehouseConfig) {
+        activateWarehouseBatchType(batchTypeTab.dataset.batchType);
+        return;
+      }
+
+      const batchPropButton = event.target.closest("[data-batch-prop]");
+      if (batchPropButton && state.activeWarehouseConfig) {
+        activateWarehouseBatchProp(batchPropButton.dataset.batchProp);
+        return;
+      }
+
+      if (event.target.closest("[data-batch-apply]") && state.activeWarehouseConfig) {
+        applyWarehouseBatchValues();
+        return;
+      }
+
+      if (event.target.closest("[data-batch-undo]") && state.activeWarehouseConfig) {
+        undoWarehouseBatchApply();
+        return;
+      }
+
+      if (event.target.closest("[data-batch-save]") && state.activeWarehouseConfig) {
+        saveWarehouseBatchConfig();
+        return;
+      }
+
+      if (event.target.closest("[data-batch-cancel]") && state.activeWarehouseConfig) {
+        requestCloseWarehouseBatch();
+        return;
+      }
+
+      if (event.target.closest("[data-store-select-trigger]") && state.activeNonStandardAdd) {
+        state.activeNonStandardAdd.storePanelOpen = !state.activeNonStandardAdd.storePanelOpen;
+        const panel = els.purchaseModal.querySelector("[data-store-select-panel]");
+        const trigger = els.purchaseModal.querySelector("[data-store-select-trigger]");
+        panel?.classList.toggle("open", state.activeNonStandardAdd.storePanelOpen);
+        trigger?.classList.toggle("open", state.activeNonStandardAdd.storePanelOpen);
+        return;
+      }
+
+      if (!event.target.closest("[data-store-multi-select]") && state.activeNonStandardAdd?.storePanelOpen) {
+        state.activeNonStandardAdd.storePanelOpen = false;
+        els.purchaseModal.querySelector("[data-store-select-panel]")?.classList.remove("open");
+        els.purchaseModal.querySelector("[data-store-select-trigger]")?.classList.remove("open");
+      }
+
+      if (event.target.closest("[data-modal-save]")) {
+        savePurchaseConfig();
+        return;
+      }
+
+      const restoreDraftBtn = event.target.closest("[data-restore-draft]");
+      if (restoreDraftBtn) {
+        restoreDraft(restoreDraftBtn.dataset.restoreDraft);
+        return;
+      }
+
+      const deleteDraftBtn = event.target.closest("[data-delete-draft]");
+      if (deleteDraftBtn) {
+        deleteDraft(deleteDraftBtn.dataset.deleteDraft);
+        return;
+      }
+
+      if (event.target.closest("[data-save-non-standard]")) {
+        saveNonStandardProp();
+        return;
+      }
+
+      const uploadTrigger = event.target.closest("[data-upload-trigger]");
+      if (uploadTrigger && state.activeNonStandardAdd) {
+        els.purchaseModal.querySelector('[data-non-standard-field="imageName"]')?.click();
+      }
+
+    });
+
+    els.purchaseModal.addEventListener("input", event => {
+      const propKeyword = event.target.closest("[data-batch-prop-keyword]");
+      if (propKeyword && state.activeWarehouseConfig) {
+        state.activeWarehouseConfig.propKeyword = propKeyword.value;
+        if (syncWarehouseBatchActivePropToFilter()) {
+          renderWarehouseConfigModal();
+          const nextKeyword = els.purchaseModal.querySelector("[data-batch-prop-keyword]");
+          if (nextKeyword) {
+            nextKeyword.focus();
+            nextKeyword.setSelectionRange(nextKeyword.value.length, nextKeyword.value.length);
+          }
+          return;
+        }
+        const list = els.purchaseModal.querySelector("[data-batch-prop-list]");
+        if (list) list.innerHTML = renderWarehouseBatchPropList();
+        return;
+      }
+
+      const storeKeyword = event.target.closest("[data-batch-store-keyword]");
+      if (storeKeyword && state.activeWarehouseConfig) {
+        state.activeWarehouseConfig.storeKeyword = storeKeyword.value;
+        const options = els.purchaseModal.querySelector("[data-batch-store-filter-options]");
+        if (options) options.innerHTML = renderWarehouseBatchStoreFilterOptions();
+        syncWarehouseBatchStoreFilterAllState();
+        return;
+      }
+
+      const batchValue = event.target.closest("[data-batch-value]");
+      if (batchValue && state.activeWarehouseConfig) {
+        state.activeWarehouseConfig.batchValues[batchValue.dataset.batchValue] = batchValue.value;
+        return;
+      }
+
+      const batchRowField = event.target.closest("[data-batch-row-field]");
+      if (batchRowField && state.activeWarehouseConfig) {
+        updateWarehouseBatchRowField(batchRowField);
+        return;
+      }
+
+      const field = event.target.closest("[data-config-field]");
+      if (!field || !state.activePurchase) return;
+      const { warehouseCode, propType, propName } = state.activePurchase;
+      const configKey = propConfigKey(warehouseCode, propType, propName);
+      const storeId = field.dataset.storeId;
+      if (!state.storePropConfigs[configKey]) state.storePropConfigs[configKey] = {};
+      if (!state.storePropConfigs[configKey][storeId]) state.storePropConfigs[configKey][storeId] = {};
+      state.storePropConfigs[configKey][storeId][field.dataset.configField] = field.dataset.configField === "qty"
+        ? Number(field.value || 0)
+        : field.value;
+    });
+
+    els.detailPanel.addEventListener("input", event => {
+      const keywordInput = event.target.closest("[data-non-standard-keyword]");
+      if (keywordInput) {
+        state.nonStandardKeyword = keywordInput.value;
+        renderDetail();
+        return;
+      }
+      const propKeyword = event.target.closest("[data-inline-prop-keyword]");
+      if (propKeyword && state.activeWarehouseConfig?.mode === "inline") {
+        state.activeWarehouseConfig.propKeyword = propKeyword.value;
+        if (syncWarehouseBatchActivePropToFilter()) {
+          render();
+          const nextKeyword = els.detailPanel.querySelector("[data-inline-prop-keyword]");
+          if (nextKeyword) {
+            nextKeyword.focus();
+            nextKeyword.setSelectionRange(nextKeyword.value.length, nextKeyword.value.length);
+          }
+          return;
+        }
+        const list = els.detailPanel.querySelector(".inline-prop-list");
+        if (list) list.innerHTML = renderWarehouseInlinePropCards();
+        return;
+      }
+      const storeKeyword = event.target.closest("[data-inline-store-keyword]");
+      if (storeKeyword && state.activeWarehouseConfig?.mode === "inline") {
+        state.activeWarehouseConfig.storeKeyword = storeKeyword.value;
+        const options = els.detailPanel.querySelector("[data-inline-store-filter-options]");
+        if (options) options.innerHTML = renderWarehouseBatchStoreFilterOptions();
+        syncWarehouseBatchStoreFilterAllState(els.detailPanel);
+        return;
+      }
+      const qtyInput = event.target.closest("[data-store-purchase-qty]");
+      if (!qtyInput) return;
+      const qty = Number(qtyInput.value);
+      if (Number.isInteger(qty) && qty >= 1) {
+        state.storeGroupPurchaseQty[qtyInput.dataset.storePurchaseQty] = qty;
+      }
+    });
+
+    els.detailPanel.addEventListener("change", event => {
+      const qtyInput = event.target.closest("[data-store-purchase-qty]");
+      if (!qtyInput) return;
+      const qty = Number(qtyInput.value);
+      if (!Number.isInteger(qty) || qty < 1) {
+        qtyInput.value = state.storeGroupPurchaseQty[qtyInput.dataset.storePurchaseQty] ?? 1;
+        showToast("采购仓位数请输入大于0的整数");
+        return;
+      }
+      state.storeGroupPurchaseQty[qtyInput.dataset.storePurchaseQty] = qty;
+    });
+
+    els.purchaseModal.addEventListener("change", event => {
+      const propTypeFilter = event.target.closest("[data-batch-prop-type-filter]");
+      if (propTypeFilter && state.activeWarehouseConfig) {
+        state.activeWarehouseConfig.propPurchaseTypeFilter = propTypeFilter.value;
+        syncWarehouseBatchActivePropToFilter();
+        renderWarehouseConfigModal();
+        return;
+      }
+
+      const storeFilterAll = event.target.closest("[data-batch-store-filter-all]");
+      if (storeFilterAll && state.activeWarehouseConfig) {
+        const active = state.activeWarehouseConfig;
+        const filterIds = new Set(active.storeFilterIdsByType[active.activePropType] || []);
+        getWarehouseBatchStoreSearchResults().forEach(store => {
+          if (storeFilterAll.checked) filterIds.add(store.id);
+          else filterIds.delete(store.id);
+        });
+        active.storeFilterIdsByType[active.activePropType] = [...filterIds];
+        resetWarehouseBatchFields();
+        active.storeFilterOpen = true;
+        renderWarehouseConfigModal();
+        return;
+      }
+
+      const storeFilterItem = event.target.closest("[data-batch-store-filter-item]");
+      if (storeFilterItem && state.activeWarehouseConfig) {
+        const active = state.activeWarehouseConfig;
+        const filterIds = new Set(active.storeFilterIdsByType[active.activePropType] || []);
+        if (storeFilterItem.checked) filterIds.add(storeFilterItem.dataset.batchStoreFilterItem);
+        else filterIds.delete(storeFilterItem.dataset.batchStoreFilterItem);
+        active.storeFilterIdsByType[active.activePropType] = [...filterIds];
+        resetWarehouseBatchFields();
+        active.storeFilterOpen = true;
+        renderWarehouseConfigModal();
+        return;
+      }
+
+      const batchEnable = event.target.closest("[data-batch-enable]");
+      if (batchEnable && state.activeWarehouseConfig) {
+        const active = state.activeWarehouseConfig;
+        active.batchEnabled[batchEnable.dataset.batchEnable] = batchEnable.checked;
+        active.batchNotice = "";
+        const control = batchEnable.closest(".batch-field")?.querySelector("[data-batch-value]");
+        if (control) {
+          control.disabled = !batchEnable.checked;
+          if (batchEnable.checked) control.focus();
+        }
+        const applyButton = els.purchaseModal.querySelector("[data-batch-apply]");
+        if (applyButton) {
+          applyButton.disabled = !getWarehouseBatchSelectedStoreIds().length || !Object.values(active.batchEnabled).some(Boolean);
+        }
+        return;
+      }
+
+      const batchStoreAll = event.target.closest("[data-batch-store-all]");
+      if (batchStoreAll && state.activeWarehouseConfig) {
+        const active = state.activeWarehouseConfig;
+        const selected = new Set(active.selectedStoreIdsByType[active.activePropType] || []);
+        getWarehouseBatchVisibleStoreIds().forEach(storeId => {
+          if (batchStoreAll.checked) selected.add(storeId);
+          else selected.delete(storeId);
+        });
+        active.selectedStoreIdsByType[active.activePropType] = [...selected];
+        if (!Object.values(active.batchEnabled).some(Boolean)) resetWarehouseBatchFields();
+        renderWarehouseConfigModal();
+        return;
+      }
+
+      const batchStore = event.target.closest("[data-batch-store]");
+      if (batchStore && state.activeWarehouseConfig) {
+        const active = state.activeWarehouseConfig;
+        const selected = new Set(active.selectedStoreIdsByType[active.activePropType] || []);
+        if (batchStore.checked) selected.add(batchStore.dataset.batchStore);
+        else selected.delete(batchStore.dataset.batchStore);
+        active.selectedStoreIdsByType[active.activePropType] = [...selected];
+        if (!Object.values(active.batchEnabled).some(Boolean)) resetWarehouseBatchFields();
+        renderWarehouseConfigModal();
+        return;
+      }
+
+      const batchValue = event.target.closest("[data-batch-value]");
+      if (batchValue && state.activeWarehouseConfig) {
+        state.activeWarehouseConfig.batchValues[batchValue.dataset.batchValue] = batchValue.value;
+        return;
+      }
+
+      const batchRowField = event.target.closest("[data-batch-row-field]");
+      if (batchRowField && state.activeWarehouseConfig) {
+        updateWarehouseBatchRowField(batchRowField);
+        renderWarehouseConfigModal();
+        return;
+      }
+
+      const storeInput = event.target.closest("[data-non-standard-store]");
+      if (storeInput && state.activeNonStandardAdd) {
+        const selected = new Set(state.activeNonStandardAdd.storeIds || []);
+        if (storeInput.checked) selected.add(storeInput.value);
+        else selected.delete(storeInput.value);
+        state.activeNonStandardAdd.storeIds = [...selected];
+        const label = els.purchaseModal.querySelector("[data-store-select-label]");
+        if (label) {
+          label.textContent = state.activeNonStandardAdd.storeIds.length
+            ? stores.filter(store => state.activeNonStandardAdd.storeIds.includes(store.id)).map(store => store.storeName).join("、")
+            : "请选择采购门店";
+        }
+        return;
+      }
+
+      const unitSelect = event.target.closest('[data-non-standard-field="unit"]');
+      if (unitSelect && state.activeNonStandardAdd) {
+        const suffix = els.purchaseModal.querySelector("[data-non-standard-qty-unit]");
+        if (suffix) suffix.textContent = unitSelect.value || "";
+        return;
+      }
+
+      const imageInput = event.target.closest('[data-non-standard-field="imageName"]');
+      if (imageInput && state.activeNonStandardAdd) {
+        const file = imageInput.files?.[0];
+        if (!file) return;
+        const nameEl = els.purchaseModal.querySelector("#nonStandardImageName");
+        const previewEl = els.purchaseModal.querySelector("#nonStandardImagePreview");
+        if (nameEl) nameEl.textContent = file.name;
+        if (previewEl) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            previewEl.innerHTML = `<img src="${reader.result}" alt="">`;
+          };
+          reader.readAsDataURL(file);
+        }
+        return;
+      }
+
+      const field = event.target.closest("[data-config-field]");
+      if (!field || !state.activePurchase) return;
+      const { warehouseCode, propType, propName } = state.activePurchase;
+      const configKey = propConfigKey(warehouseCode, propType, propName);
+      const storeId = field.dataset.storeId;
+      if (!state.storePropConfigs[configKey]) state.storePropConfigs[configKey] = {};
+      if (!state.storePropConfigs[configKey][storeId]) state.storePropConfigs[configKey][storeId] = {};
+      state.storePropConfigs[configKey][storeId][field.dataset.configField] = field.dataset.configField === "qty"
+        ? Number(field.value || 0)
+        : field.value;
+    });
+
+    const initialDraftId = new URLSearchParams(window.location.search).get("draftId");
+    if (initialDraftId) restoreDraft(initialDraftId);
+    else render();
+  </script>
+</body>
+</html>
