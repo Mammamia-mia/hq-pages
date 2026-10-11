@@ -2326,6 +2326,11 @@ const applicationPending=a=>!!a&&pendingApplicationStatuses.includes(a.status);
 const applicationLocksMaterials=s=>!!s.application&&(applicationPending(s.application)||s.application.status==='已通过');
 const applicationApprovalRole=a=>a?.status==='待陈列中台审批'?'陈列中台':'区域总';
 const applicationApprover=a=>systemUser(a?.[applicationApprovalRole(a)==='区域总'?'areaApproverId':'displayApproverId'])||systemUsers.find(user=>user.role===applicationApprovalRole(a));
+const approvalReceiverName=(item,stage,fallbackRole)=>{
+ const id=item?.[stage==='区域总审批'?'areaApproverId':'displayApproverId'];
+ return systemUser(id)?.name||systemUsers.find(user=>user.role===fallbackRole)?.name||fallbackRole;
+};
+const approvalPersonName=value=>String(value||'').replace(/（.*?）|\(.*?\)/g,'').trim()||'—';
 const canApproveApplication=s=>isPreparing(s)&&applicationPending(s.application)&&canOperateFor([applicationApprover(s.application)?.id]);
 const canChangeApplicationApprover=s=>isPreparing(s)&&applicationPending(s.application)&&(canActAs('区经')||canApproveApplication(s));
 function openingEvidenceState(s){const a=s.application;if(isOpened(s))return '已开业';if(a?.status==='已通过')return '待确认开业';if(a?.status==='待陈列中台审批')return '待陈列中台审批';if(a?.status==='待审批'||a?.status==='待区域总审批')return '待区域总审批';if(a?.status==='已驳回')return '待补充资料';if(a?.status==='已撤回')return '待发起申请';return allPassed(s)?'待发起申请':'待上传资料';}
@@ -2903,13 +2908,13 @@ function approvalInfoPanel(s){
 	 const versions=[...(application.history||[]),application],events=[];
 	 versions.forEach((item,index)=>{
 		 const version=`V${index+1}.0`;
-		 if(item.at)events.push({actor:item.by||s.supervisor,department:'提交人',role:'提交申请',operation:'提交',receiver:'区域负责人',title:item.reason||'未填写开业申请说明',timeLabel:'操作时间',time:item.at,tone:'submitted'});
-		 if(item.areaReviewedAt){const rejected=item.status==='已驳回'&&item.rejectedStage==='区域总审批';events.push({actor:item.areaReviewedBy||'区域总',department:'区域负责人',role:'区域负责人',operation:rejected?'驳回':'通过',receiver:rejected?(item.by||s.supervisor):'陈列中台',title:item.areaComment||'未填写审批意见',timeLabel:'操作时间',time:item.areaReviewedAt,tone:rejected?'rejected':'approved'});}
-		 if(item.displayReviewedAt){const rejected=item.status==='已驳回'&&item.rejectedStage==='陈列中台审批';events.push({actor:item.displayReviewedBy||'陈列中台',department:'陈列中台',role:'陈列中台',operation:rejected?'驳回':'通过',receiver:item.by||s.supervisor,title:item.displayComment||'未填写审批意见',timeLabel:'操作时间',time:item.displayReviewedAt,tone:rejected?'rejected':'approved'});}
-		 if(item.withdrawnAt)events.push({actor:item.withdrawnBy||item.by||s.supervisor,department:'提交人',role:'提交申请',operation:'撤回',receiver:item.by||s.supervisor,title:'开业申请已撤回',timeLabel:'操作时间',time:item.withdrawnAt,tone:'withdrawn'});
+		 if(item.at)events.push({actor:item.by||s.supervisor,department:'提交人',role:'提交申请',operation:'提交',receiver:approvalReceiverName(item,'区域总审批','区域总'),title:item.reason||'未填写开业申请说明',timeLabel:'操作时间',time:item.at,tone:'submitted'});
+		 if(item.areaReviewedAt){const rejected=item.status==='已驳回'&&item.rejectedStage==='区域总审批',submitterName=String(item.by||s.supervisor).replace(/（.*?）|\(.*?\)/g,'').trim()||'—';events.push({actor:item.areaReviewedBy||'区域总',department:'区域负责人',role:'区域负责人',operation:rejected?'驳回':'通过',receiver:rejected?submitterName:approvalReceiverName(item,'陈列中台审批','陈列中台'),title:item.areaComment||'未填写审批意见',timeLabel:'操作时间',time:item.areaReviewedAt,tone:rejected?'rejected':'approved'});}
+		 if(item.displayReviewedAt){const rejected=item.status==='已驳回'&&item.rejectedStage==='陈列中台审批';events.push({actor:item.displayReviewedBy||'陈列中台',department:'陈列中台',role:'陈列中台',operation:rejected?'驳回':'通过',receiver:approvalPersonName(item.by||s.supervisor),title:item.displayComment||'未填写审批意见',timeLabel:'操作时间',time:item.displayReviewedAt,tone:rejected?'rejected':'approved'});}
+		 if(item.withdrawnAt)events.push({actor:item.withdrawnBy||item.by||s.supervisor,department:'提交人',role:'提交申请',operation:'撤回',receiver:approvalPersonName(item.by||s.supervisor),title:'开业申请已撤回',timeLabel:'操作时间',time:item.withdrawnAt,tone:'withdrawn'});
 	 });
 	 const currentVersion=`V${versions.length}.0`;
-	 if(isOpened(s)&&s.openedAt)events.push({actor:s.openedBy||s.supervisor,department:'区域负责人',role:'区域负责人',operation:'通过',receiver:application.by||s.supervisor,title:`门店已确认开业，计划开店时间 ${s.date}`,timeLabel:'操作时间',time:s.openedAt,tone:'confirmed'});
+	 if(isOpened(s)&&s.openedAt)events.push({actor:s.openedBy||s.supervisor,department:'区域负责人',role:'区域负责人',operation:'通过',receiver:approvalPersonName(application.by||s.supervisor),title:`门店已确认开业，计划开店时间 ${s.date}`,timeLabel:'操作时间',time:s.openedAt,tone:'confirmed'});
 	 events.forEach((item,index)=>{item.sequence=index;});
 	 const eventMap=new Map();events.forEach(item=>{const key=[item.role,item.operation,item.time,item.actor].map(value=>String(value||'')).join('|');eventMap.set(key,item);});
 	 const uniqueEvents=[...eventMap.values()];
