@@ -87,6 +87,13 @@
     .date-range { flex: 1; display: flex; align-items: center; gap: 9px; min-width: 0; padding: 0 12px; color: #b8bbc1; cursor: default; }
     .date-range.has-value { color: #606266; }
     .date-range span { white-space: nowrap; }
+    .date-range.goal-date-inputs { gap: 4px; padding: 0 5px 0 8px; }
+    .field .goal-date-inputs input { flex: 1 1 0; width: 0; min-width: 0; padding: 0 2px; font-size: 12px; color: #606266; }
+    .goal-date-inputs input:focus { outline: 1px solid #409eff; outline-offset: -2px; }
+    .goal-date-inputs .goal-date-clear { flex: 0 0 20px; width: 20px; height: 24px; padding: 0; border: 0; background: transparent; color: #909399; cursor: pointer; }
+    .goal-date-inputs .goal-date-clear[hidden] { display: none; }
+    .goal-date-inputs input[aria-invalid="true"] { color: #f56c6c; }
+
     .search-actions { height: 36px; display: flex; align-items: center; gap: 7px; white-space: nowrap; }
     .icon-btn { width: 36px; height: 36px; border: 1px solid var(--primary-2); border-radius: 2px; background: #fff; color: var(--primary-2); display: grid; place-items: center; }
     .icon-btn.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
@@ -223,6 +230,12 @@ body.sa-shell-active{min-width:0}.sa-mobile-menu{display:none}.sa-shell-active .
 .op-heading h2,.op-heading h3{font-size:16px;font-weight:600;margin:0}.op-heading h3{font-size:14px}
 .op-sub{color:#909399;font-size:12px;line-height:1.7}.op-sub:empty{display:none}
 .op-filters{display:grid;grid-template-columns:repeat(5,minmax(0,1fr)) auto;gap:8px}
+@media(min-width:1251px){.op-filters.op-acceptance-filters{grid-template-columns:repeat(4,minmax(0,1fr))}.op-overview-page .op-filters{grid-template-columns:repeat(6,minmax(0,1fr)) auto}}
+.op-acceptance-filters .op-buttons{justify-content:flex-end}
+body .side-link[data-op-menu="acceptance"],body.op-active .side-link[data-op-menu="acceptance"]{position:relative;overflow:visible}
+.op-menu-badge{position:absolute;top:-3px;right:0;display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:10px;background:#f56c6c;color:#fff;font-size:11px;font-weight:600;line-height:1;flex-shrink:0}
+.op-menu-badge[hidden]{display:none}
+.op-current-handler{min-width:110px}
 .op-filters .sa-filter select{border:0;outline:0;background:transparent;min-width:0;flex:1;padding:0 8px;height:34px;color:#606266;font-size:13px}
 .op-buttons{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .op-list-panel{flex:1;min-height:0;display:flex;flex-direction:column;padding-bottom:0}
@@ -235,7 +248,7 @@ body.sa-shell-active{min-width:0}.sa-mobile-menu{display:none}.sa-shell-active .
 .op-table{min-width:920px;width:100%;table-layout:auto;border-top:1px solid #ebeef5}
 .op-table th,.op-table td{padding:10px 12px;height:48px;font-size:13px;vertical-align:middle;white-space:normal;line-height:1.65;overflow:visible;text-overflow:clip}
 .op-table th{white-space:nowrap;font-weight:600}.op-table td:first-child{min-width:190px}.op-table th:last-child,.op-table td:last-child{position:sticky;right:0;background:#fff;min-width:108px;box-shadow:-3px 0 4px #00000004;border-right:0}.op-table th:last-child{background:#f5f7fa}.op-table td .sa-link{font-size:13px}.op-table tbody tr:hover td{background:#f5faff}
-.op-table.op-node-table{min-width:1400px}.op-table.op-acceptance-list-table{min-width:1480px}.op-node-table .op-node-list-owners{min-width:150px;max-width:220px;overflow-wrap:anywhere}.op-node-table .op-node-list-date{min-width:126px;white-space:nowrap}.op-node-table th:last-child,.op-node-table td:last-child{min-width:158px}.op-acceptance-list-table th:last-child,.op-acceptance-list-table td:last-child{min-width:240px}.op-node-table .op-cell-actions{flex-wrap:nowrap}.op-node-table th:nth-last-child(2),.op-node-table td:nth-last-child(2){position:sticky;right:158px;background:#fff;min-width:88px;z-index:2;box-shadow:-3px 0 4px #00000004}.op-acceptance-list-table th:nth-last-child(2),.op-acceptance-list-table td:nth-last-child(2){right:240px}.op-node-table th:nth-last-child(2){background:#f5f7fa}.op-node-table td:nth-last-child(2) .op-tag{white-space:nowrap}
+.op-table.op-node-table{min-width:1400px}.op-table.op-acceptance-list-table{min-width:1590px}.op-node-table .op-node-list-owners{min-width:150px;max-width:220px;overflow-wrap:anywhere}.op-node-table .op-node-list-date{min-width:126px;white-space:nowrap}.op-node-table th:last-child,.op-node-table td:last-child{min-width:158px}.op-acceptance-list-table th:last-child,.op-acceptance-list-table td:last-child{min-width:240px}.op-node-table .op-cell-actions{flex-wrap:nowrap}.op-node-table th:nth-last-child(2),.op-node-table td:nth-last-child(2){position:sticky;right:158px;background:#fff;min-width:88px;z-index:2;box-shadow:-3px 0 4px #00000004}.op-acceptance-list-table th:nth-last-child(2),.op-acceptance-list-table td:nth-last-child(2){right:240px}.op-node-table th:nth-last-child(2){background:#f5f7fa}.op-node-table td:nth-last-child(2) .op-tag{white-space:nowrap}
 .op-list-assets{display:flex;align-items:center;gap:6px;min-width:126px;min-height:48px}.op-list-asset-thumb{position:relative;width:46px;height:46px;flex:none;padding:0;border:1px solid #d9e2ef;border-radius:4px;background:#f5f7fa;overflow:hidden;color:#409eff}.op-list-asset-thumb img,.op-list-asset-thumb video{display:block;width:100%;height:100%;object-fit:cover}.op-list-asset-thumb .op-media-play{width:22px;height:22px;font-size:10px}.op-list-asset-more{display:grid;place-items:center;width:32px;height:32px;flex:none;border-radius:16px;background:#f4f4f5;color:#606266;font-size:11px}.op-list-file-preview{display:grid;grid-template-columns:32px minmax(0,1fr);align-items:center;gap:7px;width:142px;min-height:46px;padding:6px 8px;border:1px solid #d9e2ef;border-radius:4px;background:#fff;text-align:left;color:#606266}.op-list-file-preview:hover,.op-list-asset-thumb:hover{border-color:#409eff;background:#ecf5ff}.op-list-file-preview .op-file-icon{width:32px;height:32px;font-size:9px}.op-list-file-preview span:last-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}.op-list-assets-empty{color:#c0c4cc;font-size:12px;white-space:nowrap}.op-list-upload-input{display:none}.op-list-upload{height:36px;min-width:88px;padding:0 10px;border:1px dashed #a0cfff;border-radius:4px;background:#f5faff;color:#409eff;font-size:12px}.op-list-upload:hover,.op-list-upload:focus{border-style:solid;background:#ecf5ff}
 .op-table .op-cell-actions{display:flex;gap:12px;flex-wrap:wrap}.op-table.op-node-table .op-cell-actions{flex-wrap:nowrap}.op-table .op-cell-actions .sa-link{white-space:nowrap}
 .op-store-name{color:#303133;font-weight:500}.op-store-name:hover{color:#409eff}.op-muted{color:#909399}.op-good{color:#67c23a}.op-danger{color:#f56c6c}.op-warning{color:#e6a23c}
@@ -1090,7 +1103,6 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
       <div class="modal-head"><span id="uploadTitle">导入POS销售日目标数据</span><button class="modal-close" data-action="close-upload">×</button></div>
       <div class="modal-body">
         <div id="uploadRule" style="margin-bottom:12px;color:#606266;line-height:1.7"></div>
-        <div id="uploadError" role="alert" style="margin-bottom:12px;color:#f56c6c;white-space:pre-line;max-height:180px;overflow:auto" hidden></div>
         <label class="upload-drop" for="uploadInput">
           <span class="upload-icon">☁</span>
           <span class="upload-text">将文件拖到此处，或<em>点击上传</em></span>
@@ -1101,6 +1113,13 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
       </div>
       <div class="modal-foot"><button class="modal-btn primary" data-action="confirm-upload">确 定</button><button class="modal-btn" data-action="close-upload">取 消</button></div>
     </div>
+  </div>
+  <div class="modal-mask" id="uploadErrorModal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="uploadErrorTitle">
+      <div class="modal-head"><span id="uploadErrorTitle">导入异常明细</span><button type="button" class="modal-close" data-close-upload-errors aria-label="关闭异常明细">×</button></div>
+      <div class="modal-body"><div id="uploadError" hidden></div></div>
+      <div class="modal-foot"><button type="button" class="modal-btn" data-close-upload-errors>关闭</button><button type="button" class="modal-btn primary" id="returnToUpload">返回修改</button></div>
+    </section>
   </div>
   <div class="toast-wrap" id="toastWrap"></div>
   <script src="./总部端-assets/xlsx.full.min.js"></script>
@@ -1361,13 +1380,13 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
         if (query.supervisor && !row.supervisor.includes(query.supervisor)) return false;
         if (scope === 'month' && query.assessmentMonth) {
           const [start, end] = query.assessmentMonth;
-          if (start && row.assessmentMonth < start) return false;
-          if (end && row.assessmentMonth > end) return false;
+          if (start && String(row.assessmentMonth).replace(/\D/g, '') < start.replace(/\D/g, '')) return false;
+          if (end && String(row.assessmentMonth).replace(/\D/g, '') > end.replace(/\D/g, '')) return false;
         }
         if (scope === 'day' && query.assessmentDay) {
           const [start, end] = query.assessmentDay;
-          if (start && row.assessmentDay < start) return false;
-          if (end && row.assessmentDay > end) return false;
+          if (start && String(row.assessmentDay).replace(/\D/g, '') < start.replace(/\D/g, '')) return false;
+          if (end && String(row.assessmentDay).replace(/\D/g, '') > end.replace(/\D/g, '')) return false;
         }
         return true;
       });
@@ -1456,6 +1475,11 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
     }
 
     function runQuery(scope) {
+      const range = $(`.date-range[data-field^="${scope}."]`);
+      if (range && range.dataset.start && range.dataset.end && range.dataset.start > range.dataset.end) {
+        toast('开始日期不能晚于结束日期，请重新选择。', true);
+        return;
+      }
       state.filtered[scope] = queryRows(scope);
       state.selected[scope].clear();
       scope === 'month' ? renderMonth() : renderDay();
@@ -1520,10 +1544,9 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
     function openUpload(type, mode = 'import') {
       state.uploadMode = mode;
       state.uploadType = type;
-      $('#uploadError').hidden = true;
-      $('#uploadError').textContent = '';
+      clearUploadErrors();
       $('#uploadRule').hidden = mode !== 'import';
-      $('#uploadRule').textContent = `按文件中的年月和门店编码校验：${goalImportRules[type].label}>0时，过去日不能修改，仅允许修改今日及未来日，且导入前后月目标必须一致。空白保留原值，填0表示目标改为0；过去日填写原金额可通过。月目标为0时按首次导入处理。日期按北京时间判断。`;
+      $('#uploadRule').textContent = `按文件中的年月和门店编码校验：${goalImportRules[type].label}>0时，过去日该渠道原日目标大于0时仅HRBP可修改；该渠道原日目标为0，或不存在该日期＋门店记录时，允许补录。已有月目标的导入前后月目标必须一致。空白保留原值，缺失日期留空不创建记录，填0表示目标为0；过去日该渠道原日目标大于0时，即使填写原金额也不可重复导入。月目标为0时按首次导入处理。日期按北京时间判断。`;
       state.uploadFile = null;
       $('#uploadTitle').textContent = `导入${getImportTypeName(type)}数据`;
       $('#uploadFileName').textContent = '';
@@ -1534,6 +1557,7 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
     function closeUpload() {
       state.uploadFile = null;
       $('#uploadModal').hidden = true;
+      $('#uploadErrorModal').hidden = true;
       $('#uploadInput').value = '';
       $('#uploadFileName').textContent = '';
     }
@@ -1643,7 +1667,7 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
             days[day] = amount;
           });
           if (!Object.keys(days).length) throw new Error(`${location}：请至少填写一天的目标金额。`);
-          targets.push({ storeCode, storeName: String(row[nameIndex] ?? '').trim(), month, days });
+          targets.push({ storeCode, storeName: String(row[nameIndex] ?? '').trim(), month, days, sheetName: name, line });
         });
       });
       if (!targets.length) throw new Error('文件中没有可导入的门店目标数据。');
@@ -1656,6 +1680,7 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
       const errors = [];
       const plans = [];
       targets.forEach(target => {
+        const addError = (reason, detail = {}) => errors.push({ storeCode: target.storeCode, storeName: target.storeName, period: `${target.month.slice(0, 4)}-${target.month.slice(4)}`, channel: getImportTypeName(type), source: target.sheetName ? `${target.sheetName} · 第${target.line}行` : '—', reason, ...detail });
         const context = `${target.storeCode}｜${target.month.slice(0, 4)}年${target.month.slice(4)}月`;
         const monthRows = state.monthRows.filter(row => String(row.storeCode).trim() === target.storeCode && String(row.assessmentMonth).replace(/\D/g, '') === target.month);
         const dayRows = state.dayRows.filter(row => String(row.storeCode).trim() === target.storeCode && String(row.assessmentDay).replace(/\D/g, '').slice(0, 6) === target.month);
@@ -1663,7 +1688,7 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
         const existing = amounts.some(amount => amount > 0);
         const before = amounts.find(amount => amount > 0) || 0;
         if (existing && amounts.some(amount => amount !== before)) {
-          errors.push(`${context}：原月目标数据不一致，请先核对。`);
+          addError('原月目标数据不一致，请先核对。');
           return;
         }
         const oldDays = new Map();
@@ -1673,36 +1698,43 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
           oldDays.set(day, row);
         });
         const length = goalMonthDays(target.month);
-        // 已有目标必须掌握整月明细，不能把缺失日期当作0绕过校验。
-        if (existing && Array.from({ length }, (_, index) => index + 1).some(day => !oldDays.has(day) || oldDays.get(day)[rule.dayField] == null)) {
-          errors.push(`${context}：整月日目标明细不完整，无法校验过去日及月总额，请先补齐原始数据。`);
+        // 不存在的日期允许补录；已有记录缺失金额仍不能当作0覆盖。
+        if (existing && [...oldDays.values()].some(row => row[rule.dayField] == null)) {
+          addError('已有日目标记录缺少金额，无法校验，请先核对原始数据。');
           return;
         }
         const days = [];
-        let originalTotal = 0;
+        let originalTotal = 0, zeroFillTotal = 0;
         for (let day = 1; day <= length; day++) {
           const oldRow = oldDays.get(day);
           const oldAmount = goalAmountCents(oldRow ? (oldRow[rule.dayField] ?? 0) : 0, `${context} ${day}日原目标`);
           originalTotal += oldAmount;
-          const amount = Object.prototype.hasOwnProperty.call(target.days, day) ? target.days[day] : oldAmount;
+          const supplied = Object.prototype.hasOwnProperty.call(target.days, day);
+          const amount = supplied ? target.days[day] : oldAmount;
+          if (oldRow && oldAmount === 0 && supplied && amount > 0) zeroFillTotal += amount;
           const date = `${target.month}${String(day).padStart(2, '0')}`;
-          if (existing && date < today && amount !== oldAmount && document.getElementById('hqGoalRole')?.value !== 'HRBP') {
-            errors.push(`${context} ${day}日：过去日目标不可修改（原${(oldAmount / 100).toFixed(2)}元，导入${(amount / 100).toFixed(2)}元）。`);
+          if (existing && oldRow && oldAmount > 0 && supplied && date < today && document.getElementById('hqGoalRole')?.value !== 'HRBP') {
+            addError('该门店该日期的本渠道原目标大于0，过去日不可重复导入或修改（金额相同也会拦截），仅HRBP可调整。', { period: `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6)}`, before: oldAmount, after: amount, existingRecord: { storeCode: oldRow.storeCode, day: date, updateUser: oldRow.updateUser || '—', updateTime: oldRow.updateTime || '—' } });
           }
-          days.push({ date, amount });
+          if (oldRow || supplied) days.push({ date, amount, isNew: !oldRow, supplied });
         }
-        if (existing && originalTotal !== before) errors.push(`${context}：原日目标合计与原月目标不一致，请先核对。`);
         const after = days.reduce((sum, day) => sum + day.amount, 0);
+        // 其他渠道先创建日期行时，本渠道可能仍为0；允许本次补录补齐原月目标。
+        const repairsZeroTargets = zeroFillTotal > 0 && originalTotal < before && after === before;
+        if (existing && oldDays.size === length && originalTotal !== before && !repairsZeroTargets) addError('原日目标合计与原月目标不一致，请先核对。');
         if (!Number.isSafeInteger(after)) throw new Error(`${context}：月目标合计超出允许范围。`);
         if (existing && after !== before) {
-          const diff = after - before;
-          errors.push(`${context}：${rule.label}必须保持不变，导入前${(before / 100).toFixed(2)}元，导入后${(after / 100).toFixed(2)}元，差额${diff > 0 ? '+' : ''}${(diff / 100).toFixed(2)}元。`);
+          addError(`${rule.label}必须保持不变，请核对补录金额或调整今日及未来日金额，使整月合计一致。`, { before, after });
         }
         const metadata = monthRows[0] || dayRows[0] || [...state.monthRows, ...state.dayRows].find(row => String(row.storeCode).trim() === target.storeCode);
-        if (!metadata) errors.push(`${context}：门店不存在，请核对门店编码。`);
+        if (!metadata) addError('门店不存在，请核对门店编码。');
         plans.push({ ...target, days, monthAmount: after, metadata });
       });
-      if (errors.length) throw new Error('本次导入未执行，所有数据均未修改：\n' + errors.join('\n'));
+      if (errors.length) {
+        const error = new Error('本次导入未执行，所有数据均未修改：\n' + errors.map(item => `${item.storeCode}｜${item.period}：${item.reason}`).join('\n'));
+        error.details = errors;
+        throw error;
+      }
       return plans;
     }
 
@@ -1712,9 +1744,11 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
       const dayRows = state.dayRows.map(row => ({ ...row }));
       let nextId = Math.max(0, ...monthRows.map(row => Number(row.id) || 0), ...dayRows.map(row => Number(row.id) || 0)) + 1;
       const timestamp = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Shanghai' });
+      const result = { inserted: 0, updated: 0, unchanged: 0 };
       plans.forEach(plan => {
         const source = plan.metadata;
-        const base = { storeCode: plan.storeCode, storeName: source.storeName || plan.storeName, brandCode: source.brandCode || '', brandName: source.brandName || source.brandCode || '', deptCode: source.deptCode || '', supervisor: source.supervisor || '', storeMonthGoal: 0, privateMonthGoal: 0, instantRetailMonthGoal: 0 };
+        const sameMonth = String(source.assessmentMonth || source.assessmentDay || '').replace(/\D/g, '').slice(0, 6) === plan.month;
+        const base = { storeCode: plan.storeCode, storeName: source.storeName || plan.storeName, brandCode: source.brandCode || '', brandName: source.brandName || source.brandCode || '', deptCode: source.deptCode || '', supervisor: source.supervisor || '', storeMonthGoal: sameMonth ? source.storeMonthGoal || 0 : 0, privateMonthGoal: sameMonth ? source.privateMonthGoal || 0 : 0, instantRetailMonthGoal: sameMonth ? source.instantRetailMonthGoal || 0 : 0 };
         let monthRow = monthRows.find(row => row.storeCode === plan.storeCode && String(row.assessmentMonth).replace(/\D/g, '') === plan.month);
         if (!monthRow) {
           monthRow = { ...base, id: nextId++, assessmentMonth: plan.month, monthGoalNo: `MG${plan.month}${plan.storeCode}` };
@@ -1725,11 +1759,15 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
         monthRow.updateTime = timestamp;
         plan.days.forEach(day => {
           let row = dayRows.find(item => item.storeCode === plan.storeCode && String(item.assessmentDay).replace(/\D/g, '') === day.date);
+          const isNew = !row;
           if (!row) {
             row = { ...base, id: nextId++, assessmentDay: day.date, storeDayGoal: 0, privateDayGoal: 0, instantRetailDayGoal: 0 };
             dayRows.push(row);
           }
-          if (row[rule.dayField] !== day.amount / 100 || row[rule.field] !== plan.monthAmount / 100) {
+          if (isNew) result.inserted++;
+          else if (row[rule.dayField] !== day.amount / 100) result.updated++;
+          else if (day.supplied) result.unchanged++;
+          if (isNew || row[rule.dayField] !== day.amount / 100 || row[rule.field] !== plan.monthAmount / 100) {
             row[rule.dayField] = day.amount / 100;
             row[rule.field] = plan.monthAmount / 100;
             row.updateUser = 'admin';
@@ -1740,7 +1778,102 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
       // 全批校验后一起替换，任一门店失败时不产生部分更新。
       state.monthRows = monthRows;
       state.dayRows = dayRows;
+      return result;
     }
+
+    function showGoalImportResult(plans, result) {
+      const dates = plans.flatMap(plan => plan.days.filter(day => day.supplied).map(day => day.date)).sort();
+      const stores = [...new Set(plans.map(plan => plan.storeCode))];
+      $$('[data-field^="day."]').forEach(field => {
+        if (field.classList.contains('date-range')) setDateRange('day', '', '');
+        else if ('value' in field) field.value = '';
+      });
+      $('[data-field="day.storeCode"]').value = stores.length === 1 ? stores[0] : '';
+      if (dates.length) setDateRange('day', dates[0], dates.at(-1));
+      showGoalPage('day');
+      runQuery('day'); runQuery('month');
+      const scroller = $('#dayPage .table-scroller');
+      scroller.scrollTop = 0; scroller.scrollLeft = 0;
+      let summary = $('#goalImportResult');
+      if (!summary) {
+        summary = document.createElement('div'); summary.id = 'goalImportResult'; summary.className = 'gl-panel'; summary.setAttribute('role', 'status');
+        $('#dayPage .table-toolbar').after(summary);
+      }
+      summary.textContent = `导入成功：新增 ${result.inserted} 条日目标，更新 ${result.updated} 条，金额未变化 ${result.unchanged} 条。已按本次导入的${stores.length === 1 ? '门店和' : ''}日期范围筛选，请在下方核对。`;
+      toast(`导入成功：新增${result.inserted}条，更新${result.updated}条`);
+    }
+
+    let uploadErrorRows = [], uploadErrorPage = 1, uploadErrorPageSize = 10, uploadErrorQuery = '';
+    function clearUploadErrors() {
+      uploadErrorRows = []; uploadErrorPage = 1; uploadErrorQuery = '';
+      $('#uploadError').hidden = true;
+      $('#uploadError').replaceChildren();
+      $('#uploadErrorModal').hidden = true;
+    }
+    function uploadErrorMoney(value, signed = false) {
+      return typeof value === 'number' ? `${signed && value > 0 ? '+' : ''}${(value / 100).toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '—';
+    }
+    function showUploadErrors(error) {
+      uploadErrorRows = Array.isArray(error.details) && error.details.length ? error.details : [{ reason: error.message || '导入校验失败，请检查文件后重试。', channel: getImportTypeName(state.uploadType) }];
+      uploadErrorPage = 1; uploadErrorPageSize = 10; uploadErrorQuery = '';
+      const stores = new Set(uploadErrorRows.map(row => row.storeCode).filter(Boolean));
+      $('#uploadModal').hidden = true;
+      $('#uploadErrorTitle').textContent = `${getImportTypeName(state.uploadType)}导入异常明细`;
+      $('#uploadErrorModal').hidden = false;
+      $('#uploadError').hidden = false;
+      $('#uploadError').innerHTML = `<div class="upload-error-summary" role="alert"><strong>导入失败：发现 ${uploadErrorRows.length} 项异常${stores.size ? `，涉及 ${stores.size} 家门店` : ''}</strong><div>本次导入未执行，所有数据均未修改。请修正文件后重新上传。</div></div><div class="upload-error-tools"><label for="uploadErrorSearch">查找异常</label><input id="uploadErrorSearch" type="search" placeholder="搜索门店、日期或异常原因"><button type="button" class="modal-btn" id="uploadErrorExport">导出全部异常</button></div><div class="upload-error-scroll" tabindex="0" aria-label="异常明细，可滚动查看"><table class="upload-error-table"><thead><tr><th>门店／文件位置</th><th>目标日期／月份</th><th>异常原因</th><th>原目标（元）</th><th>导入后目标（元）</th><th>差额（元）</th></tr></thead><tbody id="uploadErrorBody"></tbody></table></div><div class="upload-error-pager"><span id="uploadErrorCount" aria-live="polite"></span><label>每页 <select id="uploadErrorPageSize"><option value="10">10 条</option><option value="20">20 条</option><option value="50">50 条</option></select></label><button type="button" class="modal-btn" id="uploadErrorPrev">上一页</button><span id="uploadErrorPage"></span><button type="button" class="modal-btn" id="uploadErrorNext">下一页</button></div><div class="upload-error-note">按系统全部记录判断是否存在，不受当前筛选与分页影响。同一行可有多项异常；整月异常的金额为月合计。差额 = 导入后目标 − 原目标。</div>`;
+      $('#uploadErrorSearch').oninput = event => { uploadErrorQuery = event.target.value.trim().toLowerCase(); uploadErrorPage = 1; renderUploadErrors(); };
+      $('#uploadErrorPageSize').onchange = event => { uploadErrorPageSize = Number(event.target.value); uploadErrorPage = 1; renderUploadErrors(); };
+      $('#uploadErrorPrev').onclick = () => { uploadErrorPage--; renderUploadErrors(); };
+      $('#uploadErrorNext').onclick = () => { uploadErrorPage++; renderUploadErrors(); };
+      $('#uploadErrorExport').onclick = () => {
+        const data = [['门店编码', '门店名称', '文件位置', '目标日期／月份', '渠道', '异常原因', '原目标（元）', '导入后目标（元）', '差额（元）'], ...uploadErrorRows.map(row => [row.storeCode || '', row.storeName || '', row.source || '', row.period || '', row.channel || '', row.reason, typeof row.before === 'number' ? row.before / 100 : '', typeof row.after === 'number' ? row.after / 100 : '', typeof row.before === 'number' && typeof row.after === 'number' ? (row.after - row.before) / 100 : ''])];
+        const book = XLSX.utils.book_new();
+        const sheet = XLSX.utils.aoa_to_sheet(data);
+        sheet['!cols'] = [16, 28, 24, 20, 20, 65, 20, 20, 20].map(wch => ({ wch }));
+        XLSX.utils.book_append_sheet(book, sheet, '异常明细');
+        XLSX.writeFile(book, `目标导入异常明细-${Date.now()}.xlsx`);
+      };
+      $('#uploadErrorExport').disabled = typeof XLSX === 'undefined';
+      renderUploadErrors();
+      $('#uploadErrorModal .modal-body').scrollTop = 0;
+      $('#uploadErrorSearch').focus();
+    }
+    function renderUploadErrors() {
+      const rows = uploadErrorRows.filter(row => [row.storeCode, row.storeName, row.source, row.period, row.reason, row.channel].some(value => String(value || '').toLowerCase().includes(uploadErrorQuery)));
+      const pages = Math.max(1, Math.ceil(rows.length / uploadErrorPageSize));
+      uploadErrorPage = Math.max(1, Math.min(uploadErrorPage, pages));
+      const visible = rows.slice((uploadErrorPage - 1) * uploadErrorPageSize, uploadErrorPage * uploadErrorPageSize);
+      $('#uploadErrorBody').innerHTML = visible.length ? visible.map(row => `<tr><td><strong>${escapeHtml(row.storeCode || '—')}</strong>${row.storeName ? `<div>${escapeHtml(row.storeName)}</div>` : ''}<small>${escapeHtml(row.source || '—')}</small></td><td>${escapeHtml(row.period || '—')}${row.period && row.period.length === 7 ? '<small>整月校验</small>' : ''}<small>${escapeHtml(row.channel || '')}</small></td><td class="upload-error-reason">${escapeHtml(row.reason)}${row.existingRecord ? `<details class="upload-existing-record"><summary>查看已有记录</summary><div>门店：${escapeHtml(row.existingRecord.storeCode)}<br>考核日期：${escapeHtml(row.period)}<br>原目标：${uploadErrorMoney(row.before)} 元<br>更新人：${escapeHtml(row.existingRecord.updateUser)}<br>更新时间：${escapeHtml(row.existingRecord.updateTime)}</div></details>` : ''}</td><td class="upload-error-number">${uploadErrorMoney(row.before)}</td><td class="upload-error-number">${uploadErrorMoney(row.after)}</td><td class="upload-error-number upload-error-diff">${uploadErrorMoney(typeof row.before === 'number' && typeof row.after === 'number' ? row.after - row.before : undefined, true)}</td></tr>`).join('') : '<tr><td colspan="6" class="upload-error-empty">未找到匹配的异常，请更换关键词。</td></tr>';
+      $('#uploadErrorCount').textContent = uploadErrorQuery ? `匹配 ${rows.length} / ${uploadErrorRows.length} 项` : `共 ${rows.length} 项异常`;
+      $('#uploadErrorPage').textContent = `${uploadErrorPage} / ${pages}`;
+      $('#uploadErrorPrev').disabled = uploadErrorPage === 1;
+      $('#uploadErrorNext').disabled = uploadErrorPage === pages;
+      $('#uploadError .upload-error-scroll').scrollTop = 0;
+    }
+
+    function closeUploadErrors() {
+      closeUpload();
+      const action = state.uploadMode === 'adjust' ? 'adjust-goal' : 'import';
+      $(`[data-action="${action}"][data-import-type="${state.uploadType}"]`)?.focus();
+    }
+    $$('[data-close-upload-errors]').forEach(button => button.addEventListener('click', closeUploadErrors));
+    $('#returnToUpload').addEventListener('click', () => {
+      $('#uploadErrorModal').hidden = true;
+      $('#uploadModal').hidden = false;
+      $('[data-action="confirm-upload"]').focus();
+    });
+    document.addEventListener('keydown', event => {
+      if ($('#uploadErrorModal').hidden) return;
+      if (event.key === 'Escape') {
+        event.preventDefault(); event.stopImmediatePropagation(); closeUploadErrors();
+      } else if (event.key === 'Tab') {
+        const controls = [...$('#uploadErrorModal').querySelectorAll('button:not(:disabled), input, select, summary, [tabindex="0"]')];
+        const first = controls[0], last = controls.at(-1);
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    }, true);
 
     async function confirmUpload() {
       if (!state.uploadFile) {
@@ -1767,14 +1900,11 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
         }
         const targets = readGoalImportTargets(workbook);
         const plans = planGoalImport(type, targets);
-        applyGoalImport(type, plans);
-        toast('导入成功');
+        const result = applyGoalImport(type, plans);
         closeUpload();
-        runQuery('day');
-        runQuery('month');
+        showGoalImportResult(plans, result);
       } catch (error) {
-        $('#uploadError').textContent = error.message || '导入校验失败，请检查文件后重试。';
-        $('#uploadError').hidden = false;
+        showUploadErrors(error);
       } finally {
         button.disabled = false;
         button.textContent = '确 定';
@@ -1789,6 +1919,9 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
         state.monthRows.push({ ...source, id: 801, assessmentMonth: month, monthGoalNo: `MG${month}${source.storeCode}` });
       }
       state.monthRows.push({ ...source, id: 802, storeCode: 'DPDEMO02', storeName: '华南区-私域待导入演示门店', assessmentMonth: month, monthGoalNo: `MG${month}DPDEMO02`, privateMonthGoal: 0 });
+      const previousDate = new Date(Number(month.slice(0, 4)), Number(month.slice(4)) - 2, 1);
+      const previousMonth = `${previousDate.getFullYear()}${String(previousDate.getMonth() + 1).padStart(2, '0')}`;
+      state.monthRows.push({ ...source, id: 803, storeCode: 'DPDEMO03', storeName: '华南区-过去日待补录演示门店', assessmentMonth: previousMonth, monthGoalNo: `MG${previousMonth}DPDEMO03` });
       let id = 900;
       state.monthRows.forEach(row => {
         const length = goalMonthDays(row.assessmentMonth);
@@ -1806,6 +1939,7 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
         });
         state.dayRows.push(...missing);
       });
+      state.dayRows = state.dayRows.filter(row => !(row.storeCode === 'DPDEMO03' && row.assessmentDay === `${previousMonth}01`));
     }
 
     function formatPercentValue(value, denominatorValue) {
@@ -1916,13 +2050,13 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
           if (query.supervisor && !row.supervisor.includes(query.supervisor)) return false;
           if (scope === 'month' && query.assessmentMonth) {
             const [start, end] = query.assessmentMonth;
-            if (start && row.assessmentMonth < start) return false;
-            if (end && row.assessmentMonth > end) return false;
+            if (start && String(row.assessmentMonth).replace(/\D/g, '') < start.replace(/\D/g, '')) return false;
+            if (end && String(row.assessmentMonth).replace(/\D/g, '') > end.replace(/\D/g, '')) return false;
           }
           if (scope === 'day' && query.assessmentDay) {
             const [start, end] = query.assessmentDay;
-            if (start && row.assessmentDay < start) return false;
-            if (end && row.assessmentDay > end) return false;
+            if (start && String(row.assessmentDay).replace(/\D/g, '') < start.replace(/\D/g, '')) return false;
+            if (end && String(row.assessmentDay).replace(/\D/g, '') > end.replace(/\D/g, '')) return false;
           }
           return true;
         }
@@ -1950,18 +2084,37 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
     }
 
     function setDateRange(scope, start, end) {
-      const fieldNameMap = {
-        month: 'assessmentMonth',
-        day: 'assessmentDay',
-        assistantGoalItem: 'assessmentDayList'
-      };
+      const fieldNameMap = { month: 'assessmentMonth', day: 'assessmentDay', assistantGoalItem: 'assessmentDayList' };
       const el = $(`[data-field="${scope}.${fieldNameMap[scope]}"]`);
       if (!el) return;
-      el.dataset.start = start || '';
-      el.dataset.end = end || '';
-      el.classList.toggle('has-value', Boolean(start || end));
-      const labels = scope === 'month' ? ['开始月份', '结束月份'] : ['开始日期', '结束日期'];
-      el.innerHTML = `<span>${escapeHtml(start || labels[0])}</span><span>-</span><span>${escapeHtml(end || labels[1])}</span>`;
+      const month = scope === 'month';
+      const toInput = value => {
+        const digits = String(value || '').replace(/\D/g, '');
+        if (!digits) return '';
+        return month ? `${digits.slice(0, 4)}-${digits.slice(4, 6)}` : `${digits.slice(0, 4)}-${digits.slice(4, 6)}-${digits.slice(6, 8)}`;
+      };
+      el.classList.add('goal-date-inputs');
+      el.innerHTML = `<input type="${month ? 'month' : 'date'}" data-date-bound="start" aria-label="${month ? '开始月份' : '开始日期'}" value="${escapeHtml(toInput(start))}"><span aria-hidden="true">至</span><input type="${month ? 'month' : 'date'}" data-date-bound="end" aria-label="${month ? '结束月份' : '结束日期'}" value="${escapeHtml(toInput(end))}"><button type="button" class="goal-date-clear" aria-label="清空考核${month ? '月份' : '日期'}" title="清空日期范围">×</button>`;
+      const sync = () => {
+        const first = el.querySelector('[data-date-bound="start"]'), last = el.querySelector('[data-date-bound="end"]');
+        el.dataset.start = first.value.replace(/-/g, '');
+        el.dataset.end = last.value.replace(/-/g, '');
+        const invalid = Boolean(first.value && last.value && first.value > last.value);
+        [first, last].forEach(input => input.setAttribute('aria-invalid', String(invalid)));
+        el.classList.toggle('has-value', Boolean(first.value || last.value));
+        el.querySelector('button').hidden = !first.value && !last.value;
+      };
+      el.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', sync);
+        input.addEventListener('change', sync);
+        input.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); sync(); runQuery(scope); } });
+      });
+      el.querySelector('button').onclick = event => {
+        event.preventDefault();
+        el.querySelectorAll('input').forEach(input => { input.value = ''; });
+        sync(); runQuery(scope);
+      };
+      sync();
     }
 
     function showGoalPage(page) {
@@ -1987,6 +2140,11 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
     }
 
     function runQuery(scope) {
+      const range = $(`.date-range[data-field^="${scope}."]`);
+      if (range && range.dataset.start && range.dataset.end && range.dataset.start > range.dataset.end) {
+        toast('开始日期不能晚于结束日期，请重新选择。', true);
+        return;
+      }
       state.filtered[scope] = queryRows(scope);
       if (state.selected[scope]) state.selected[scope].clear();
       renderScope(scope);
@@ -2163,6 +2321,7 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
         return;
       }
       state.uploadFile = file;
+      clearUploadErrors();
       $('#uploadFileName').textContent = file.name;
     });
     $('#uploadInput').addEventListener('change', event => {
@@ -2174,9 +2333,13 @@ body.op-active .side-link{white-space:nowrap;display:block;height:30px;min-heigh
         return;
       }
       state.uploadFile = file;
+      clearUploadErrors();
       $('#uploadFileName').textContent = file.name;
     });
 
+    $$('.date-range[data-field]').forEach(el => {
+      setDateRange(el.dataset.field.split('.')[0], el.dataset.start, el.dataset.end);
+    });
     initAnnotations();
     initGoalImportExamples();
     state.filtered.month = [...state.monthRows];
@@ -2459,7 +2622,7 @@ const reviewGroups=[
 ];
 const requiredProjectNodeKeys=['report','open','drawing','acceptance'],optionalProjectNodeKeys=[],allProjectNodeKeys=[...requiredProjectNodeKeys];
 function projectNodeSelected(s,key){return requiredProjectNodeKeys.includes(key);}
-const root=$('#openingRoot');const projectStatuses=['筹建中','已开业'],hasAllPermissions=true;let stores,active='overview',selected=null,role='超级管理员',currentUserId='0',filter={name:'',mode:'',type:'',supervisor:'',status:''},statusTab='',overviewMetric='all',prepDetailTab='overview',applicationApprovalTab='summary',applicationApprovalMode=false,milestoneView='cards',prepRiskFilter='pending',prepNodeFilter='',prepPendingOnly=false,taskStatusFilter='',constructionRecordTab='issues',constructionCardState={plan:true,'daily-log':true,'concealed-acceptance':true,'exit-acceptance':true,delay:true},dialog=null,lastFocus=null,serial=50;
+const root=$('#openingRoot');const projectStatuses=['筹建中','已开业','已作废'],hasAllPermissions=true;let stores,active='overview',selected=null,role='超级管理员',currentUserId='0',filter={name:'',mode:'',type:'',region:'',supervisor:'',handler:'',status:''},statusTab='',overviewMetric='all',prepDetailTab='overview',applicationApprovalTab='summary',applicationApprovalMode=false,milestoneView='cards',prepRiskFilter='pending',prepNodeFilter='',prepPendingOnly=false,taskStatusFilter='',constructionRecordTab='issues',constructionCardState={plan:true,'daily-log':true,'concealed-acceptance':true,'exit-acceptance':true,delay:true},dialog=null,lastFocus=null,serial=50;
 const canActAs=(...roles)=>hasAllPermissions||roles.includes(role);
 const canOperateFor=ids=>hasAllPermissions||(ids||[]).includes(currentUserId);
 const overviewDate='2026-09-18';
@@ -2481,11 +2644,16 @@ const evidence=()=>[seedFile('示例验收表.xlsx','table'),seedFile('示例现
 function seed(){
 	 const base=(id,name,mode,type,region,supervisor,projectStatus='未开始')=>({id,name:'示例·'+name,mode,type,region,supervisor,projectStatus,date:'2026-10-08',report:true,open:true,drawing:true,projectNodes:[...requiredProjectNodeKeys],projectOwners:{project:['1'],report:['1'],drawing:['9']},coStarted:false,coDone:false,coSkipped:false,initiatorId:'1',tasks:[],buildStarted:false,buildDone:false,buildPlanFiles:[],records:[],progressRecords:[],delays:[],concealedAcceptance:null,exitAcceptance:null,acceptStarted:false,files:[],reviews:[],application:null,log:[]});
 	 const data=[base('1','滨江中心店','直营','标准店','华东区','张三','筹建中'),base('2','海湾季节店','直营','季节店','华南区','李四','筹建中'),base('3','星湖广场店','联营','标准店','西南区','赵宁','筹建中'),base('4','云谷奥莱店','联营','季节店','华中区','王璇','筹建中'),base('5','南城购物中心店','直营','标准店','华南区','张三','筹建中'),base('6','武汉首创奥莱店','联营','标准店','华中区','赵宁','筹建中'),base('7','东岸季节店','直营','季节店','华东区','李四','筹建中'),base('8','湖畔季节店','联营','季节店','西南区','王璇','筹建中')];
-	 // 全流程进度演示数据：开业筹备从报店申请完成后开始，继续覆盖建档未完成、图纸已完成等后续分支。
+	 // 全流程进度演示数据：保留已完成报店申请的存量场景，并补充未完成报店申请及项目作废场景。
 	 data.push(base('10','报店申请已完成演示店','直营','标准店','华北区','陈璐','筹建中'));
 	 data.push(base('11','待门店建档演示店','联营','标准店','华南区','周凯','筹建中'));
 	 data[8].report=true;data[8].open=false;data[8].drawing=false;
 	 data[9].report=true;data[9].open=false;data[9].drawing=true;
+ const reportPending=base('12','报店申请未完成演示店','直营','标准店','华北区','陈璐','筹建中');
+ Object.assign(reportPending,{report:false,open:false,drawing:false});
+ const voided=base('13','开业筹备已作废演示店','联营','季节店','华南区','周凯','已作废');
+ Object.assign(voided,{open:false,drawing:false});
+ data.push(reportPending,voided);
  data.forEach(s=>{s.nodeFiles={report:[{...seedFile(`${s.name}报店申请资料.pdf`,'table'),summary:'门店基础资料、商务条件及报店审批资料。'}],open:[{...seedFile(`${s.name}门店建档资料.xlsx`,'table'),summary:'门店基本信息与建档资料。'}],drawing:[{...seedFile(`${s.name}图纸设计资料.pdf`,'table'),summary:'平面图、效果图和施工图确认资料。'}]};});
  data[0].nodeFiles={
   report:[{...seedFile('示例报店审批资料.pdf','table'),summary:'门店基础资料、商务条件及报店审批资料。'}],
@@ -2513,7 +2681,7 @@ function seed(){
 	 data[2].application={status:'已通过',date:'2026-09-28',reason:'现场验收资料已完整上传。',by:'张三（区经）',at:'2026-09-18 10:00',areaComment:'验收资料完整，同意提交陈列中台审批。',areaReviewedBy:'王敏（区域总）',areaReviewedAt:'2026-09-18 14:00',displayComment:'陈列及店铺形象符合开业要求。',displayReviewedBy:'孙倩（陈列中台）',displayReviewedAt:'2026-09-18 15:10',...openingEvidence('星湖广场店',{interior:4,videos:3}),history:[]};
 	 data[3].application={status:'已驳回',rejectedStage:'陈列中台审批',date:'2026-09-25',reason:'已提交现场验收资料。',by:'张三（区经）',at:'2026-09-17 10:00',areaComment:'资料完整，同意提交陈列中台审批。',areaReviewedBy:'王敏（区域总）',areaReviewedAt:'2026-09-17 14:20',displayComment:'店内陈列角度不足，请补充试衣区和收银区照片后重新提交。',displayReviewedBy:'孙倩（陈列中台）',displayReviewedAt:'2026-09-17 15:20',comment:'店内陈列角度不足，请补充试衣区和收银区照片后重新提交。',...openingEvidence('云谷奥莱店',{entrance:2,interior:5,videos:2}),history:[]};
 	 data[5].application={status:'待区域总审批',date:'2026-10-08',reason:'开业验收已完成，门头、多角度现场照片、验收视频及验收表均已上传。',by:'赵宁（区经）',at:'2026-09-18 10:00',...wuhanAcceptanceEvidence(),history:[]};
-	 data[1].application={status:'待陈列中台审批',date:'2026-09-17',reason:'验收资料已由区域总复核通过，待陈列中台审批。',by:'李四（区经）',at:'2026-09-17 09:00',areaComment:'现场及资料符合区域开业要求。',areaReviewedBy:'王敏（区域总）',areaReviewedAt:'2026-09-17 11:20',...openingEvidence('海湾季节店',{entrance:1,interior:4,videos:1}),history:[]};
+	 data[1].application={status:'待陈列中台审批',displayApproverId:'0',date:'2026-09-17',reason:'验收资料已由区域总复核通过，待陈列中台审批。',by:'李四（区经）',at:'2026-09-17 09:00',areaComment:'现场及资料符合区域开业要求。',areaReviewedBy:'王敏（区域总）',areaReviewedAt:'2026-09-17 11:20',...openingEvidence('海湾季节店',{entrance:1,interior:4,videos:1}),history:[]};
 	 data[5].nodeFiles={
 	  report:[{...seedFile('武汉首创奥莱店报店审批资料.pdf','table'),uploadedAt:'2026-08-20 10:15'}],
 	  open:[{...seedFile('武汉首创奥莱店建档信息.xlsx','table'),uploadedAt:'2026-08-25 14:30'}],
@@ -2536,7 +2704,18 @@ function seed(){
 	 opened.reviews=makeReviews(opened).map(r=>({...r,status:'已通过',comment:'现场验收符合要求。',by:systemUser(r.ownerId)?.name||r.key,at:'2026-09-15 09:00'}));
 	 opened.application={status:'已通过',date:opened.date,reason:'开业验收已提交。',by:'张三（区经）',at:'2026-09-15 10:00',areaComment:'验收资料完整，同意提交陈列中台审批。',areaReviewedBy:'王敏（区域总）',areaReviewedAt:'2026-09-15 15:00',displayComment:'陈列及店铺形象符合开业要求。',displayReviewedBy:'孙倩（陈列中台）',displayReviewedAt:'2026-09-15 16:00',...openingEvidence('青禾中心店',{entrance:2,interior:4,videos:2}),history:[]};
 	 opened.openedBy='张三（区经）';opened.openedAt='2026-09-16 08:30';
+ // 未完成节点不预置已完成交付物；作废项目保留作废前已完成的报店申请资料。
+ reportPending.nodeFiles={report:[],open:[],drawing:[]};
+ voided.nodeFiles.open=[];voided.nodeFiles.drawing=[];
  data.push(opened);
+ // 99 家待上传资料门店加上既有的 1 条审批待办，覆盖默认登录人 100 条待办及 99+ 角标场景。
+ for(let index=1;index<=99;index++){
+  const demo=base(String(1000+index),`角标演示${String(index).padStart(3,'0')}店`,index%2?'直营':'联营',index%3?'标准店':'季节店',['华东区','华南区','华中区','西南区','华北区'][(index-1)%5],'超级管理员','筹建中');
+  demo.supervisorId='0';
+  demo.projectOwners={project:['0'],report:['0'],drawing:['9']};
+  demo.nodeFiles=Object.fromEntries(Object.entries(data[0].nodeFiles).map(([key,files])=>[key,files.map(file=>({...file}))]));
+  data.push(demo);
+ }
  data.forEach(s=>{s.originalOpenDate=s.date;});
  data[1].originalOpenDate='2026-09-14';
  data[1].delays.push({id:'24',oldDate:'2026-09-14',newDate:'2026-09-17',reason:'商场交场时间调整，施工进场顺延。',plan:'调整工程进场安排并同步各协同负责人。',status:'已通过',by:'区经',at:'2026-09-10 09:00',comment:'同意调整，按新计划推进。',reviewedAt:'2026-09-10 15:00',files:[]});
@@ -2580,7 +2759,27 @@ const approvalReceiverName=(item,stage,fallbackRole)=>{
 const approvalPersonName=value=>String(value||'').replace(/（.*?）|\(.*?\)/g,'').trim()||'—';
 const canApproveApplication=s=>isPreparing(s)&&applicationPending(s.application)&&canOperateFor([applicationApprover(s.application)?.id]);
 const canChangeApplicationApprover=s=>isPreparing(s)&&applicationPending(s.application)&&(canActAs('区经')||canApproveApplication(s));
-function openingEvidenceState(s){const a=s.application;if(isOpened(s))return '已开业';if(a?.status==='已通过')return '待确认开业';if(a?.status==='待陈列中台审批')return '待陈列中台审批';if(a?.status==='待审批'||a?.status==='待区域总审批')return '待区域总审批';if(a?.status==='已驳回')return '待补充资料';if(a?.status==='已撤回')return '待发起申请';return allPassed(s)?'待发起申请':'待上传资料';}
+function openingEvidenceState(s){const a=s.application;if(projectStatus(s)==='已作废')return '已作废';if(isOpened(s))return '已开业';if(a?.status==='已通过')return '待确认开业';if(a?.status==='待陈列中台审批')return '待陈列中台审批';if(a?.status==='待审批'||a?.status==='待区域总审批')return '待区域总审批';if(a?.status==='已驳回')return '待补充资料';if(a?.status==='已撤回')return '待发起申请';return allPassed(s)?'待发起申请':'待上传资料';}
+function acceptanceHandler(s){
+ const status=openingEvidenceState(s);
+ if(['已开业','已作废'].includes(status))return null;
+ if(['待区域总审批','待陈列中台审批'].includes(status))return applicationApprover(s.application)||null;
+ if(['待上传资料','待补充资料','待确认开业','待发起申请'].includes(status)){
+  const name=approvalPersonName(s.supervisor);
+  return systemUser(s.supervisorId)||systemUsers.find(user=>user.name===name)||(name==='—'?null:{id:'',name});
+ }
+ return null;
+}
+const acceptanceHandlerKey=user=>user?(user.id?`user:${user.id}`:`name:${user.name}`):'';
+function acceptancePendingCount(userId){return stores.filter(s=>acceptanceHandler(s)?.id===userId).length;}
+function updateAcceptanceMenuBadge(){
+ const menu=$('[data-op-menu="acceptance"]');if(!menu)return;
+ const count=acceptancePendingCount(currentUserId);
+ let badge=menu.querySelector('.op-menu-badge');
+ if(!badge){badge=document.createElement('span');badge.className='op-menu-badge';menu.appendChild(badge);}
+ badge.textContent=count>99?'99+':String(count);badge.hidden=count===0;
+ menu.setAttribute('aria-label',`开业验收，${count} 条待处理`);menu.title=`我的待处理：${count} 条`;
+}
 function overallState(s){if(!s.open)return '待门店建档';if(!s.drawing)return '待图纸完成';if(!acceptanceReady(s))return '待前置完成';if(!allPassed(s))return '待上传资料';return openingEvidenceState(s);}
 function reviewGroupState(s,groupKey){if(!acceptanceReady(s))return '待前置';const group=reviewGroup(groupKey),reviews=s.reviews.filter(r=>r.group===groupKey);if(!reviews.length&&group?.optional)return '可选';if(reviews.some(r=>r.status==='未通过'))return '待整改';if(reviews.some(r=>r.status==='待复验'))return '待复验';if(reviews.length&&reviews.every(r=>r.status==='已通过'&&r.comment?.trim()))return '已通过';return '验收中';}
 const pendingAcceptanceRectifications=s=>s.reviews.filter(r=>r.status==='未通过').length;
@@ -2599,7 +2798,7 @@ const sortedProgress=s=>[...s.progressRecords].sort((a,b)=>b.recordDate.localeCo
 const latestProgress=s=>sortedProgress(s)[0];
 const constructionProgress=s=>s.buildDone?'100%':latestProgress(s)?`${latestProgress(s).percent}%`:'未填报';
 function projectStatus(s){return s.projectStatus||'未开始';}
-function nodeCompleted(s,key){if(!projectNodeSelected(s,key))return true;if(key==='report')return !!s.report;if(key==='open')return !!s.open;if(key==='drawing')return !!s.drawing;if(key==='acceptance')return isOpened(s);return s.application?.status==='已通过';}
+function nodeCompleted(s,key){if(projectStatus(s)==='已作废')return false;if(!projectNodeSelected(s,key))return true;if(key==='report')return !!s.report;if(key==='open')return !!s.open;if(key==='drawing')return !!s.drawing;if(key==='acceptance')return isOpened(s);return s.application?.status==='已通过';}
 function listStatus(s){return active==='overview'?projectStatus(s):state(s);}
 function state(s,v=active){if(v==='overview')return projectStatus(s);if(v==='application')return openingEvidenceState(s);if(!projectNodeSelected(s,v))return '未纳入';if(v==='acceptance')return !acceptanceReady(s)?'待前置完成':isOpened(s)?'已开业':openingEvidenceState(s);return openingEvidenceState(s);}
 function badge(v){const color=['已完成','资料已完成','已开业','无需协同','全部通过','已通过'].includes(v)?'green':['筹建中','待审批','审批中','待区域总审批','待陈列中台审批','待确认开业','进行中','协同中','施工中','验收中','待复验','协同/施工中','开业审批中'].includes(v)?'blue':['已驳回','未通过'].includes(v)?'red':['待发起','待发起申请','待进场','待申请','待上传资料','待补充资料','待验收通过','待门店建档','待门店建档完成','待图纸完成','待协同/施工','待交场验收','申请需重提'].includes(v)?'orange':'';return `<span class="op-tag ${color}">${esc(v)}</span>`;}
@@ -2676,10 +2875,10 @@ function applicationPreview(file,galleryKeys=[],index=0){
 function closeApplicationPreview(){if(dialog?.kind!=='application')return;$('.op-attachment-overlay',$('#openingModal'))?.remove();dialog.applicationPreviewGallery=null;const focus=dialog.applicationPreviewLastFocus;dialog.applicationPreviewLastFocus=null;focus?.isConnected&&focus.focus();}
 const empty=(title,detail='')=>`<div class="op-empty"><strong>${title}</strong>${detail}</div>`;
 function show(v,id=null,write=true,mode=''){if(!names[v])return;prepDetailTab='overview';applicationApprovalTab='summary';approvalFlowExpanded=false;milestoneView='cards';prepRiskFilter='pending';prepNodeFilter='';prepPendingOnly=false;taskStatusFilter='';constructionRecordTab='issues';active=v;selected=id&&stores.some(s=>s.id===id)?id:null;applicationApprovalMode=active==='application'&&!!selected&&mode==='approval';closeDialog();document.body.classList.add('sa-shell-active','op-active');document.body.classList.remove('sa-menu-open');$$('.view-stack > *').forEach(n=>n.hidden=n!==root);$$('.side-link').forEach(n=>n.classList.toggle('active',n.dataset.opMenu===v));$$('.work-tab').forEach(n=>n.classList.remove('active'));let tab=$(`[data-op-work="${v}"]`);if(!tab){tab=document.createElement('button');tab.className='work-tab';tab.dataset.opWork=v;tab.textContent=names[v];$('.work-tabs').insertBefore(tab,$('.work-tabs-spacer'));}tab.classList.add('active');tab.scrollIntoView({block:'nearest',inline:'nearest'});document.title='RMS-零售管理系统 - '+names[v];if(write)history.replaceState(null,'',`#opening-${v}${selected?'/'+selected:''}${applicationApprovalMode?'/approval':''}`);render();}
-function render(){stores.forEach(ensureAcceptance);root.innerHTML=selected?detail():list();$$('.op-process-head',root).forEach(cell=>cell.colSpan=overviewStages.length);$$('.op-overview-table td[colspan]',root).forEach(cell=>cell.colSpan=overviewStages.length+7);if(active==='acceptance'){root.querySelector('.op-detail-footer > .sa-btn')?.remove();root.querySelector('.op-detail-footer-actions > .op-tag')?.remove();}initPersonPicker(root);}
+function render(){stores.forEach(ensureAcceptance);updateAcceptanceMenuBadge();root.innerHTML=selected?detail():list();$$('.op-process-head',root).forEach(cell=>cell.colSpan=overviewStages.length);$$('.op-overview-table td[colspan]',root).forEach(cell=>cell.colSpan=overviewStages.length+7);if(active==='acceptance'){root.querySelector('.op-detail-footer > .sa-btn')?.remove();root.querySelector('.op-detail-footer-actions > .op-tag')?.remove();}initPersonPicker(root);}
 function options(arr,value,all='全部'){return `<option value="">${all}</option>`+arr.map(v=>`<option value="${esc(v)}" ${value===v?'selected':''}>${esc(v)}</option>`).join('');}
-function stageDefinition(s,key){if(!projectNodeSelected(s,key))return {status:'未纳入',detail:'当前流程不包含此节点',done:true,skipped:true};if(key==='report')return {status:s.report?'已完成':'待申请',detail:s.report?'资料与审批完成':'待提交',done:s.report};if(key==='open')return {status:s.open?'已完成':'待申请',detail:s.open?'建档完成':'待建档',done:s.open};if(key==='drawing')return {status:s.drawing?'已完成':'待上传',detail:s.drawing?'图纸已确认':'待图纸',done:s.drawing};if(key==='acceptance'){if(!acceptanceReady(s))return {status:'待前置',detail:'报店、建档或图纸节点未完成',done:false};const status=openingEvidenceState(s);return {status,detail:allPassed(s)?status:'',done:isOpened(s)};}const a=s.application;if(!allPassed(s))return {status:'待上传资料',detail:'开业验收未完成',done:false};return {status:openingEvidenceState(s),detail:a?.status==='已通过'?'等待区经确认开业':'区经发起申请 / 区域总审批',done:isOpened(s)};}
-function stageCell(s,key){const d=stageDefinition(s,key);const entry={report:{action:'legacy-node',node:'report'},open:{action:'legacy-node',node:'open'},drawing:{action:'legacy-node',node:'drawing'},collaboration:{action:'jump-node',view:'collaboration'},construction:{action:'jump-node',view:'construction'},acceptance:{action:'jump-node',view:'acceptance'},application:{action:'jump-node',view:'application'}}[key];const tone=d.skipped?'skipped':d.status==='待整改'?'danger':d.done?'done':d.status==='施工中'||d.status==='协同中'||d.status==='验收中'?'current':'pending';return `<button type="button" class="op-stage-cell ${tone}" data-op-action="${entry.action}" data-node="${entry.node||''}" data-view="${entry.view||''}" data-id="${s.id}"><strong>${d.done?'已完成':'未完成'}</strong></button>`;}
+function stageDefinition(s,key){if(projectStatus(s)==='已作废')return {status:'已作废',detail:'项目已作废',done:false,voided:true};if(!projectNodeSelected(s,key))return {status:'未纳入',detail:'当前流程不包含此节点',done:true,skipped:true};if(key==='report')return {status:s.report?'已完成':'待申请',detail:s.report?'资料与审批完成':'待提交',done:s.report};if(key==='open')return {status:s.open?'已完成':'待申请',detail:s.open?'建档完成':'待建档',done:s.open};if(key==='drawing')return {status:s.drawing?'已完成':'待上传',detail:s.drawing?'图纸已确认':'待图纸',done:s.drawing};if(key==='acceptance'){if(!acceptanceReady(s))return {status:'待前置',detail:'报店、建档或图纸节点未完成',done:false};const status=openingEvidenceState(s);return {status,detail:allPassed(s)?status:'',done:isOpened(s)};}const a=s.application;if(!allPassed(s))return {status:'待上传资料',detail:'开业验收未完成',done:false};return {status:openingEvidenceState(s),detail:a?.status==='已通过'?'等待区经确认开业':'区经发起申请 / 区域总审批',done:isOpened(s)};}
+function stageCell(s,key){const d=stageDefinition(s,key);const entry={report:{action:'legacy-node',node:'report'},open:{action:'legacy-node',node:'open'},drawing:{action:'legacy-node',node:'drawing'},collaboration:{action:'jump-node',view:'collaboration'},construction:{action:'jump-node',view:'construction'},acceptance:{action:'jump-node',view:'acceptance'},application:{action:'jump-node',view:'application'}}[key];const tone=d.skipped?'skipped':d.status==='待整改'?'danger':d.done?'done':d.status==='施工中'||d.status==='协同中'||d.status==='验收中'?'current':'pending';return `<button type="button" class="op-stage-cell ${tone}" data-op-action="${entry.action}" data-node="${entry.node||''}" data-view="${entry.view||''}" data-id="${s.id}"><strong>${milestoneState(s,key)}</strong></button>`;}
 
 const overviewStages=[['report','报店申请'],['open','门店建档'],['drawing','图纸设计'],['acceptance','开业验收']];
 const selectedOverviewStages=s=>overviewStages.filter(([key])=>projectNodeSelected(s,key));
@@ -2688,7 +2887,7 @@ const isPreparing=s=>projectStatus(s)==='筹建中';
 const daysFromOverview=date=>Math.round((Date.parse(date+'T00:00:00Z')-Date.parse(overviewDate+'T00:00:00Z'))/86400000);
 const readyToOpen=s=>isPreparing(s)&&s.application?.status==='已通过'&&!pendingRisks(s);
 const overviewMetrics=[
-	 {key:'all',label:'全部开业筹建门店',note:'含筹建中及已开业门店',tone:'',match:()=>true},
+	 {key:'all',label:'全部开业筹建门店',note:'含筹建中、已开业及已作废门店',tone:'',match:()=>true},
  {key:'soon',label:'14天内计划开店',note:'含统计当日，未来14天内',tone:'blue',match:s=>isPreparing(s)&&daysFromOverview(s.date)>=0&&daysFromOverview(s.date)<=14},
  {key:'delayed',label:'已延期门店',note:'已超计划日期，尚未开业',tone:'red',match:s=>isPreparing(s)&&daysFromOverview(s.date)<0},
  {key:'ready',label:'具备开业条件',note:'验收全部通过，待开业',tone:'green',match:readyToOpen},
@@ -2710,16 +2909,17 @@ function isHighRisk(r){return riskLevelLabel(r.level)==='高风险';}
 function list(){
  const overview=active==='overview';
  const metric=overviewMetrics.find(m=>m.key===overviewMetric)||overviewMetrics[0];
-	 const acceptanceStatusOrder=['待上传资料','待陈列中台审批','待区域总审批','待补充资料','待确认开业','已开业'];
+	 const acceptanceStatusOrder=['待上传资料','待陈列中台审批','待区域总审批','待补充资料','待确认开业','已开业','已作废'];
  const states=overview?projectStatuses:active==='acceptance'?acceptanceStatusOrder:[...new Set(stores.map(s=>state(s)))];
  const supervisors=[...new Set(stores.map(s=>s.supervisor).filter(Boolean))];
- const baseCohort=stores.filter(s=>(!overview||metric.match(s))&&(!filter.name||s.name.includes(filter.name))&&(!filter.mode||s.mode===filter.mode)&&(!filter.type||s.type===filter.type)&&(!filter.supervisor||s.supervisor===filter.supervisor));
+ const regions=[...new Set(stores.map(s=>s.region).filter(Boolean))];
+ const baseCohort=stores.filter(s=>(!overview||metric.match(s))&&(!filter.name||s.name.includes(filter.name))&&(!filter.mode||s.mode===filter.mode)&&(!filter.type||s.type===filter.type)&&((!overview&&active!=='acceptance')||!filter.region||s.region===filter.region)&&(active!=='acceptance'||!filter.handler||(acceptanceHandler(s)?.name||'').includes(filter.handler))&&(!filter.supervisor||s.supervisor===filter.supervisor));
  const matchesStatus=s=>(!filter.status||listStatus(s)===filter.status)&&(!statusTab||listStatus(s)===statusTab);
  const cohort=baseCohort;
  const rows=cohort.filter(matchesStatus);
 	 const acceptanceAssetHead=active==='acceptance'?'<th>门口照片</th><th>店内多角度照片</th><th>验收视频</th><th>开业验收表</th>':'';
 	 const nodeProgressHead=active==='acceptance'?'':'<th>资料与审批</th>';
-	 const head=overview?`<thead><tr><th rowspan="2">门店名称</th><th rowspan="2">门店类型 / 店铺属性</th><th rowspan="2">所属区域</th><th rowspan="2">区经</th><th rowspan="2">预计开店时间</th><th colspan="${overviewStages.length}" class="op-process-head">全流程进度</th><th rowspan="2">状态</th><th rowspan="2">操作</th></tr><tr class="op-process-subhead">${overviewStages.map(([,label])=>`<th>${label}</th>`).join('')}</tr></thead>`:`<thead><tr><th>门店名称</th><th>门店类型 / 店铺属性</th><th>所属区域</th><th>区经</th><th>预计开店时间</th>${nodeProgressHead}${acceptanceAssetHead}<th>状态</th><th>操作</th></tr></thead>`;
+	 const head=overview?`<thead><tr><th rowspan="2">门店名称</th><th rowspan="2">门店类型 / 店铺属性</th><th rowspan="2">所属区域</th><th rowspan="2">区经</th><th rowspan="2">预计开店时间</th><th colspan="${overviewStages.length}" class="op-process-head">全流程进度</th><th rowspan="2">状态</th><th rowspan="2">操作</th></tr><tr class="op-process-subhead">${overviewStages.map(([,label])=>`<th>${label}</th>`).join('')}</tr></thead>`:`<thead><tr><th>门店名称</th><th>门店类型 / 店铺属性</th><th>所属区域</th><th>区经</th><th>预计开店时间</th>${nodeProgressHead}${acceptanceAssetHead}${active==='acceptance'?'<th class="op-current-handler">当前处理人</th>':''}<th>状态</th><th>操作</th></tr></thead>`;
  const body=rows.length?rows.map(s=>{
 	  const dateNote=active==='acceptance'&&isOpened(s)&&s.actualOpenDate?`<div class="op-row-progress op-good">实际开业 ${s.actualOpenDate}</div>`:overview&&overviewMetrics[2].match(s)?`<div class="op-row-progress op-danger">已延期 ${-daysFromOverview(s.date)} 天</div>`:'';
 	  const basic=`<td>${link(esc(s.name),'detail',`data-id="${s.id}" `)}</td><td>${s.mode} / ${s.type}</td><td>${s.region}</td><td>${esc(s.supervisor)}</td><td>${s.date}${dateNote}</td>`;
@@ -2727,9 +2927,9 @@ function list(){
 	  const nodeProgressCell=active==='acceptance'?'':`<td>${progress(s)}</td>`;
 	  const approvalEntry=(active==='application'||active==='acceptance')&&isPreparing(s)&&applicationPending(s.application)?link('审批','application-approve',`data-id="${s.id}"`):'';
  	  const acceptanceQuickAction=active==='acceptance'&&canActAs('区经')&&isPreparing(s)&&s.application?.status==='已通过'?link('确认开业','list-opening-confirm',`data-id="${s.id}"`):active==='acceptance'&&canActAs('区经')&&isPreparing(s)&&applicationPending(s.application)?link('撤回开业申请','list-application-withdraw',`data-id="${s.id}"`):active==='acceptance'&&canActAs('区经')&&isPreparing(s)&&allPassed(s)&&(!s.application||['已驳回','已撤回'].includes(s.application.status))?link(s.application&&s.application.status==='已驳回'?'重新发起开业申请':'发起开业申请','list-application-new',`data-id="${s.id}"`):'';
-			  return overview?`<tr data-op-store="${s.id}">${basic}${overviewStages.map(([k])=>`<td class="op-stage-td">${stageCell(s,k)}</td>`).join('')}<td>${badge(listStatus(s))}</td><td>${overviewActions(s)}</td></tr>`:`<tr data-op-store="${s.id}">${basic}${nodeProgressCell}${acceptanceAssetCells}<td>${badge(listStatus(s))}</td><td><div class="op-cell-actions">${link('查看 / 办理','detail',`data-id="${s.id}"`)}${acceptanceQuickAction}${approvalEntry}</div></td></tr>`;
-		 }).join(''):`<tr><td colspan="${overview?overviewStages.length+7:active==='acceptance'?11:8}">${empty('暂无符合条件的门店','请调整查询条件或点击重置')}</td></tr>`;
-	 return `<div class="op-page ${overview?'op-overview-page':''}">${overview?overviewHeader():''}<section class="op-panel">${!overview?`<div class="op-heading"><h2>${names[active]}</h2><span class="op-sub">门店管理 / 开店管理</span></div>`:''}<div class="op-filters"><label class="sa-filter"><span>门店名称</span><input id="opQueryName" placeholder="请输入门店名称" value="${esc(filter.name)}"></label><label class="sa-filter"><span>门店类型</span><select id="opQueryMode">${options(['直营','联营'],filter.mode)}</select></label><label class="sa-filter"><span>店铺属性</span><select id="opQueryType">${options(['标准店','季节店'],filter.type)}</select></label><label class="sa-filter"><span>区经</span><select id="opQuerySupervisor">${options(supervisors,filter.supervisor)}</select></label><label class="sa-filter op-filter-status"><span>状态</span><select id="opQueryStatus">${options(states,filter.status)}</select></label><div class="op-buttons">${btn('查询','query','primary')}${btn('重置','query-reset')}</div></div></section><section class="op-panel op-list-panel">${overview?`<div class="op-heading"><h3>筹备门店进度</h3><div class="op-dashboard-scope"><span>当前范围：${metric.label}</span>${overviewMetric!=='all'?link('清除概览筛选','overview-metric','data-value="all"'):''}</div></div>`:''}<div class="op-status-tabs">${['',...states].map(v=>`<button data-op-action="status-tab" data-value="${esc(v)}" class="${v===statusTab?'active':''}">${v||'全部'}<small>${(overview?cohort:stores).filter(s=>!v||listStatus(s)===v).length}</small></button>`).join('')}</div><div class="op-scroll"><table class="op-table ${overview?'op-overview-table':'op-node-table'} ${active==='acceptance'?'op-acceptance-list-table':''}">${head}<tbody>${body}</tbody></table></div><div class="op-foot"><span>共 ${rows.length} 条</span><span>本页显示全部结果</span></div></section></div>`;
+			  return overview?`<tr data-op-store="${s.id}">${basic}${overviewStages.map(([k])=>`<td class="op-stage-td">${stageCell(s,k)}</td>`).join('')}<td>${badge(listStatus(s))}</td><td>${overviewActions(s)}</td></tr>`:`<tr data-op-store="${s.id}">${basic}${nodeProgressCell}${acceptanceAssetCells}${active==='acceptance'?`<td class="op-current-handler">${esc(acceptanceHandler(s)?.name||'—')}</td>`:''}<td>${badge(listStatus(s))}</td><td><div class="op-cell-actions">${link('查看 / 办理','detail',`data-id="${s.id}"`)}${acceptanceQuickAction}${approvalEntry}</div></td></tr>`;
+		 }).join(''):`<tr><td colspan="${overview?overviewStages.length+7:active==='acceptance'?12:8}">${empty('暂无符合条件的门店','请调整查询条件或点击重置')}</td></tr>`;
+	 return `<div class="op-page ${overview?'op-overview-page':''}">${overview?overviewHeader():''}<section class="op-panel">${!overview?`<div class="op-heading"><h2>${names[active]}</h2><span class="op-sub">门店管理 / 开店管理</span></div>`:''}<div class="op-filters ${active==='acceptance'?'op-acceptance-filters':''}"><label class="sa-filter"><span>门店名称</span><input id="opQueryName" placeholder="请输入门店名称" value="${esc(filter.name)}"></label><label class="sa-filter"><span>门店类型</span><select id="opQueryMode">${options(['直营','联营'],filter.mode)}</select></label><label class="sa-filter"><span>店铺属性</span><select id="opQueryType">${options(['标准店','季节店'],filter.type)}</select></label>${overview||active==='acceptance'?`<label class="sa-filter"><span>区域</span><select id="opQueryRegion">${options(regions,filter.region)}</select></label>`:''}<label class="sa-filter"><span>区经</span><select id="opQuerySupervisor">${options(supervisors,filter.supervisor)}</select></label>${active==='acceptance'?`<label class="sa-filter"><span>当前处理人</span><input id="opQueryHandler" type="text" placeholder="请输入当前处理人姓名" value="${esc(filter.handler)}"></label>`:''}<label class="sa-filter op-filter-status"><span>状态</span><select id="opQueryStatus">${options(states,filter.status)}</select></label><div class="op-buttons">${btn('查询','query','primary')}${btn('重置','query-reset')}</div></div></section><section class="op-panel op-list-panel">${overview?`<div class="op-heading"><h3>筹备门店进度</h3><div class="op-dashboard-scope"><span>当前范围：${metric.label}</span>${overviewMetric!=='all'?link('清除概览筛选','overview-metric','data-value="all"'):''}</div></div>`:''}<div class="op-status-tabs">${['',...states].map(v=>`<button data-op-action="status-tab" data-value="${esc(v)}" class="${v===statusTab?'active':''}">${v||'全部'}<small>${(overview?cohort:stores).filter(s=>!v||listStatus(s)===v).length}</small></button>`).join('')}</div><div class="op-scroll"><table class="op-table ${overview?'op-overview-table':'op-node-table'} ${active==='acceptance'?'op-acceptance-list-table':''}">${head}<tbody>${body}</tbody></table></div><div class="op-foot"><span>共 ${rows.length} 条</span><span>本页显示全部结果</span></div></section></div>`;
 }
 function nextEntry(s){if(!s.open)return {action:'legacy-node',node:'open'};if(!s.drawing)return {action:'legacy-node',node:'drawing'};return {action:'jump-node',view:'acceptance'};}
 const projectOwnerFields=[];
@@ -2789,7 +2989,7 @@ function overviewProgress(s){const legacy=(label,key,done)=>`<button type="butto
 function progress(s){if(active==='overview')return overviewProgress(s);if(active==='collaboration')return `<div class="op-count-line"><span>${completed(s)} / ${activeTasks(s).length}</span><span class="op-progress"><i style="width:${activeTasks(s).length?100*completed(s)/activeTasks(s).length:0}%"></i></span></div>`;if(active==='construction')return `<div>进度 ${constructionProgress(s)}</div><div class="op-row-progress">问题 ${s.records.length} 条 · 待处理 ${issues(s)} 条 · 进度记录 ${s.progressRecords.length} 条</div>`;if(active==='acceptance'){const counts=openingMaterialCounts(s);return `<div>${allPassed(s)?'验收资料已完成':'验收资料待上传'}</div><div class="op-row-progress">门口 ${counts.entrance}/1 · 多角度 ${counts.interior}/3 · 视频 ${counts.videos}/1 · 验收表 ${counts.forms}/1</div>`;}return `<div>${openingEvidenceState(s)}</div>${s.application?`<div class="op-row-progress">${esc(s.application.by)} → 区域总 → 区经确认</div>`:''}`;}
 
 function flow(s){const node=(label,done,cur,small)=>`<div class="op-flow-node ${done?'done':cur?'current':''}">${label}<small>${small||(done?'已完成':'未完成')}</small></div>`;return `<div class="op-flow" aria-label="开店流程">${node('报店申请',s.report,false)}<div class="op-flow-branch">${node('门店建档',s.open,false)}${node('开业协同',s.coDone,active==='collaboration',s.coSkipped?'无需协同':undefined)}${node('图纸设计',s.drawing,false)}${node('进场施工',s.buildDone,active==='construction')}</div>${node('交场验收',allPassed(s),active==='acceptance',allPassed(s)?'已完成':'未完成')}${node('申请开业',s.application?.status==='已通过',active==='application',s.application?.status==='已通过'?'已完成':'未完成')}</div>`;}
-function milestoneState(s,key){return stageDefinition(s,key).done?'已完成':'未完成';}
+function milestoneState(s,key){const stage=stageDefinition(s,key);return stage.voided?'已作废':stage.done?'已完成':'未完成';}
 // 详情沿用附件的摘要与节点卡片样式，状态、日期和入口均来自现有开业流程。
 const prepMilestones={
 	 report:{label:'报店申请',description:'完成门店基础资料、商务条件和报店审批。',owner:'渠道管理',standard:'报店申请审核通过',deliverables:['报店申请资料','审批记录'],before:[]},
@@ -2817,7 +3017,7 @@ function milestoneDocumentBlock(s,key){
 	 return `<div class="op-milestone-documents" data-milestone-documents="${key}"><div class="op-milestone-documents-head"><strong>实际产生的节点资料</strong><span>${rows.length} 份</span></div>${files.length?fileHtml(files):'<p class="op-muted">暂无实际产生的节点资料</p>'}</div>`;
 }
 function prepNodeCard(s,key){
- const node=prepMilestones[key],stage=stageDefinition(s,key),blocked=node.before.filter(k=>!stageDefinition(s,k).done);
+ const node=prepMilestones[key],stage=stageDefinition(s,key),blocked=stage.voided?[]:node.before.filter(k=>!stageDefinition(s,k).done);
 	 const tone=stage.done?'done':blocked.length?'blocked':currentStages(s).includes(key)?'current':'';
  const entry=['report','open','drawing'].includes(key)?btn('查看','legacy-node','primary',`data-node="${key}"`):btn('查看','go','primary',`data-view="${key}"`);
 	 return `<article class="op-milestone-node ${tone}" data-op-node="${key}"><div class="op-milestone-node-head"><strong>${node.label}</strong>${badge(milestoneState(s,key))}${milestoneRequirements(key)}<div class="op-milestone-entry">${entry}</div></div>${milestoneDocumentBlock(s,key)}${blocked.length?`<div class="op-milestone-blocked">前置待完成：${blocked.map(k=>prepMilestones[k].label).join('、')}</div>`:''}</article>`;
@@ -2830,7 +3030,7 @@ function ganttDateInfo(s,keys){
 }
 function ganttOffset(date,info){return Math.round((date-info.minDate)/86400000);}
 function prepGanttRow(s,key,info){
-	 const node=prepMilestones[key],stage=stageDefinition(s,key),blocked=node.before.filter(k=>!stageDefinition(s,k).done),tone=stage.done?'done':blocked.length?'blocked':currentStages(s).includes(key)?'current':'';
+	 const node=prepMilestones[key],stage=stageDefinition(s,key),blocked=stage.voided?[]:node.before.filter(k=>!stageDefinition(s,k).done),tone=stage.done?'done':blocked.length?'blocked':currentStages(s).includes(key)?'current':'';
 	 const meta=Object.fromEntries(prepNodeMeta(s,key)),dates=projectNodePlan(s,key),start=dates.start||dates.end,end=dates.end||dates.start,entry=['report','open','drawing'].includes(key)?btn('查看','legacy-node','',`data-node="${key}"`):btn('查看','go','',`data-view="${key}"`),index=overviewStages.findIndex(([item])=>item===key)+1,today=dateValue(dateIso(new Date())),todayOffset=today&&today>=info.minDate&&today<=info.maxDate?ganttOffset(today,info):null;
  let bar='';
  if(start){const startDate=dateValue(start),endDate=dateValue(end||start),left=Math.max(0,ganttOffset(startDate,info)),right=Math.min(info.days-1,ganttOffset(endDate,info)),width=Math.max(1,right-left+1);bar=`<div class="op-gantt-bar ${tone}" style="left:${left*36+4}px;width:${width*36-8}px" title="${esc(node.label)}：${esc(start)} 至 ${esc(end||start)}">${esc(node.label)}</div>`;}else bar='<span class="op-gantt-empty">计划时间未设置</span>';
@@ -2856,7 +3056,7 @@ function overviewViewLegacy(s){
 }
 
 function projectOverviewViewLegacy(s){
-	 const stages=overviewStages.map(([key,label],index)=>{const stage=stageDefinition(s,key),activeStage=currentStages(s).includes(key);return `<button type="button" class="op-project-stage ${stage.done?'done':activeStage?'current':''}" data-op-action="prep-overview-stage" data-value="${key}"><strong>${String(index+1).padStart(2,'0')}</strong>${label}<small>${stage.done?'已完成':'未完成'}</small></button>`;}).join('');
+	 const stages=overviewStages.map(([key,label],index)=>{const stage=stageDefinition(s,key),activeStage=currentStages(s).includes(key);return `<button type="button" class="op-project-stage ${stage.done?'done':activeStage?'current':''}" data-op-action="prep-overview-stage" data-value="${key}"><strong>${String(index+1).padStart(2,'0')}</strong>${label}<small>${milestoneState(s,key)}</small></button>`;}).join('');
  const pendingKeys=overviewStages.map(([key])=>key).filter(key=>!stageDefinition(s,key).done&&!milestoneBlocked(s,key)).slice(0,4);
  const pending=pendingKeys.length?pendingKeys:overviewStages.map(([key])=>key).filter(key=>stageDefinition(s,key).done).slice(-1);
  const gates=[
@@ -2888,7 +3088,7 @@ function overviewView(s){
 	 return `<div class="op-milestone-plan"><div class="op-heading op-milestone-toolbar"><h3>里程碑执行计划 <span class="op-sub">${progress.done} / ${progress.total} 已完成</span></h3><div class="op-milestone-controls"><div class="op-milestone-view-switch" role="group" aria-label="里程碑视图"><button type="button" data-op-action="milestone-view" data-value="cards" aria-pressed="${milestoneView==='cards'}" class="${milestoneView==='cards'?'active':''}">卡片</button><button type="button" data-op-action="milestone-view" data-value="timeline" aria-pressed="${milestoneView==='timeline'}" class="${milestoneView==='timeline'?'active':''}">时间线</button></div><label><input type="checkbox" id="opPrepPendingOnly" ${prepPendingOnly?'checked':''}> 只看未完成</label><div class="op-milestone-select-actions"><select id="opPrepNodeFilter" aria-label="筛选里程碑节点"><option value="">全部节点</option>${selectedOverviewStages(s).map(([key])=>`<option value="${key}" ${prepNodeFilter===key?'selected':''}>${prepMilestones[key].label}</option>`).join('')}</select></div></div></div>${milestoneView==='timeline'?timeline:`<div class="op-milestone-groups" data-milestone-view="cards">${group('report','报店',report,1)}${group('parallel','并行筹备',branches.length?`<div class="op-milestone-branches ${branches.length===1?'single':''}">${branches.join('')}</div>`:'',2)}${group('completion','开业验收',completion,3)}${!report&&!branches.length&&!completion?empty('暂无符合条件的节点','可调整节点筛选或取消“只看未完成”。'):''}</div>`}</div>`;
 }
 function projectOverviewView(s){
-	 const stages=overviewStages.map(([key,label],index)=>{const stage=stageDefinition(s,key),activeStage=currentStages(s).includes(key);return `<div class="op-project-stage ${stage.done?'done':activeStage?'current':''}" data-overview-stage="${key}"><strong>${String(index+1).padStart(2,'0')}</strong>${label}<small>${stage.done?'已完成':'未完成'}</small></div>`;}).join(''),progress=milestoneProgress(s);
+	 const stages=overviewStages.map(([key,label],index)=>{const stage=stageDefinition(s,key),activeStage=currentStages(s).includes(key);return `<div class="op-project-stage ${stage.done?'done':activeStage?'current':''}" data-overview-stage="${key}"><strong>${String(index+1).padStart(2,'0')}</strong>${label}<small>${milestoneState(s,key)}</small></div>`;}).join(''),progress=milestoneProgress(s);
 	 const groups=overviewStages.map(([key,label],index)=>`<section class="op-milestone-group" data-op-group="${key}"><h4><span class="op-milestone-index" aria-label="第 ${index+1} 个里程碑">${index+1}</span>${label}</h4>${prepNodeCard(s,key)}</section>`).join('');
 	 return `<div class="op-project-overview" data-project-overview><div class="op-project-stage-line" role="group" aria-label="全部里程碑">${stages}</div><section class="op-panel op-all-milestones"><div class="op-heading"><h3>全部里程碑</h3><span class="op-sub">${progress.done} / ${progress.total} 已完成 · 验收标准、交付物和实际节点资料已直接展示</span></div><div class="op-milestone-groups">${groups}</div></section></div>`;
 }
@@ -3421,8 +3621,8 @@ function act(action,b){
   if(key==='acceptance'){show(key,s.id);return;}
   if(key==='application'){show('application',s.id,true,'approval');return;}
  }
- if(action==='overview-metric'&&active==='overview'&&overviewMetrics.some(m=>m.key===b.dataset.value)){overviewMetric=b.dataset.value;filter={name:'',mode:'',type:'',supervisor:'',status:''};statusTab='';render();$(`.op-summary-card[data-value="${overviewMetric}"]`,root)?.focus({preventScroll:true});return;}
-if(action==='detail'){show(active,b.dataset.id);return;}if(action==='application-approve'){const project=stores.find(item=>item.id===b.dataset.id);if(project&&applicationPending(project.application)&&canApproveApplication(project)){show('acceptance',project.id);applicationReview(project);}return;}if(action==='approval-flow-toggle'){approvalFlowExpanded=!approvalFlowExpanded;render();return;}if(action==='application-submit-direct'){if(s)submitApplicationDirect(s);return;}if(action==='application-withdraw'){if(s)withdrawApplication(s);return;}if(action==='legacy-node'){const labels={report:'报店申请',open:'门店建档',drawing:'门店图纸管理'};toast(`快捷入口：${labels[b.dataset.node]}，请从左侧菜单进入`);return;}if(action==='jump-node'){show(b.dataset.view,b.dataset.id);return;}if(action==='go'){show(b.dataset.view,selected);return;}if(action==='back'){show(active);return;}if(action==='modal-close'){closeDialog();return;}if(action==='file-remove'){dialog.files.splice(+b.dataset.index,1);renderFiles();return;}if(action==='query'){filter={name:$('#opQueryName').value.trim(),mode:$('#opQueryMode').value,type:$('#opQueryType').value,supervisor:$('#opQuerySupervisor').value,status:$('#opQueryStatus').value};statusTab='';render();return;}if(action==='query-reset'){filter={name:'',mode:'',type:'',supervisor:'',status:''};statusTab='';overviewMetric='all';render();return;}if(action==='status-tab'){statusTab=b.dataset.value;filter.status='';render();return;}if(action==='reset'){confirm('重置演示数据','将清除本页新增的验收资料、验收意见及审批操作，恢复虚构示例。',()=>{urls.forEach(u=>URL.revokeObjectURL(u));urls.clear();fileRegistry.clear();stores=seed();selected=null;applicationApprovalMode=false;filter={name:'',mode:'',type:'',supervisor:'',status:''};statusTab='';overviewMetric='all';taskStatusFilter='';history.replaceState(null,'',`#opening-${active}`);toast('演示数据已重置');});return;}if(!s)return;
+ if(action==='overview-metric'&&active==='overview'&&overviewMetrics.some(m=>m.key===b.dataset.value)){overviewMetric=b.dataset.value;filter={name:'',mode:'',type:'',region:'',supervisor:'',handler:'',status:''};statusTab='';render();$(`.op-summary-card[data-value="${overviewMetric}"]`,root)?.focus({preventScroll:true});return;}
+if(action==='detail'){show(active,b.dataset.id);return;}if(action==='application-approve'){const project=stores.find(item=>item.id===b.dataset.id);if(project&&applicationPending(project.application)&&canApproveApplication(project)){show('acceptance',project.id);applicationReview(project);}return;}if(action==='approval-flow-toggle'){approvalFlowExpanded=!approvalFlowExpanded;render();return;}if(action==='application-submit-direct'){if(s)submitApplicationDirect(s);return;}if(action==='application-withdraw'){if(s)withdrawApplication(s);return;}if(action==='legacy-node'){const labels={report:'报店申请',open:'门店建档',drawing:'门店图纸管理'};toast(`快捷入口：${labels[b.dataset.node]}，请从左侧菜单进入`);return;}if(action==='jump-node'){show(b.dataset.view,b.dataset.id);return;}if(action==='go'){show(b.dataset.view,selected);return;}if(action==='back'){show(active);return;}if(action==='modal-close'){closeDialog();return;}if(action==='file-remove'){dialog.files.splice(+b.dataset.index,1);renderFiles();return;}if(action==='query'){filter={name:$('#opQueryName').value.trim(),mode:$('#opQueryMode').value,type:$('#opQueryType').value,region:$('#opQueryRegion')?.value||'',supervisor:$('#opQuerySupervisor').value,handler:$('#opQueryHandler')?.value.trim()||'',status:$('#opQueryStatus').value};statusTab='';render();return;}if(action==='query-reset'){filter={name:'',mode:'',type:'',region:'',supervisor:'',handler:'',status:''};statusTab='';overviewMetric='all';render();return;}if(action==='status-tab'){statusTab=b.dataset.value;filter.status='';render();return;}if(action==='reset'){confirm('重置演示数据','将清除本页新增的验收资料、验收意见及审批操作，恢复虚构示例。',()=>{urls.forEach(u=>URL.revokeObjectURL(u));urls.clear();fileRegistry.clear();stores=seed();selected=null;applicationApprovalMode=false;filter={name:'',mode:'',type:'',region:'',supervisor:'',handler:'',status:''};statusTab='';overviewMetric='all';taskStatusFilter='';history.replaceState(null,'',`#opening-${active}`);toast('演示数据已重置');});return;}if(!s)return;
  if(action==='prep-tab'&&active==='overview'&&prepTabs.some(([key])=>key===b.dataset.value)){prepDetailTab=b.dataset.value;render();const tab=$(`#opPrepTab-${prepDetailTab}`,root);if(tab){tab.focus({preventScroll:true});tab.parentElement.scrollLeft=Math.max(0,tab.offsetLeft+tab.offsetWidth-tab.parentElement.clientWidth);}return;}
  if(action==='prep-overview-stage'&&active==='overview'&&prepTabs.some(([key])=>key==='milestones')&&overviewStages.some(([key])=>key===b.dataset.value)){prepDetailTab='milestones';prepNodeFilter=b.dataset.value;prepPendingOnly=false;render();const tab=$('#opPrepTab-milestones',root);tab?.focus({preventScroll:true});return;}
  if(action==='application-approval-tab'&&active==='application'&&canActAs('区域总','陈列中台')&&applicationApprovalTabs.some(([key])=>key===b.dataset.value)){applicationApprovalTab=b.dataset.value;render();const tab=$(`#opApprovalTab-${applicationApprovalTab}`,root);if(tab){tab.focus({preventScroll:true});tab.parentElement.scrollLeft=Math.max(0,tab.offsetLeft+tab.offsetWidth-tab.parentElement.clientWidth);}return;}
@@ -3468,7 +3668,7 @@ if(action==='detail'){show(active,b.dataset.id);return;}if(action==='application
  if(action==='application-approver-edit'){applicationApproverForm(s);return;}
  if(action==='application-new'){applicationForm(s);return;}if(action==='application-review'){applicationReview(s);return;}if(action==='application-pass'){applicationDecision(s,'已通过');return;}if(action==='application-reject'){applicationDecision(s,'已驳回');return;}if(action==='opening-confirm'){confirmOpening(s);return;}
 }
-document.addEventListener('click',e=>{if(datePickerState.active&&!e.target.closest('[data-date-range]'))closeDatePicker();const menu=e.target.closest('[data-op-menu],[data-op-work]');if(menu){filter={name:'',mode:'',type:'',supervisor:'',status:''};statusTab='';overviewMetric='all';show(menu.dataset.opMenu||menu.dataset.opWork);return;}const b=e.target.closest('[data-op-action]');if(b&&!b.disabled)act(b.dataset.opAction,b);});
+document.addEventListener('click',e=>{if(datePickerState.active&&!e.target.closest('[data-date-range]'))closeDatePicker();const menu=e.target.closest('[data-op-menu],[data-op-work]');if(menu){filter={name:'',mode:'',type:'',region:'',supervisor:'',handler:'',status:''};statusTab='';overviewMetric='all';show(menu.dataset.opMenu||menu.dataset.opWork);return;}const b=e.target.closest('[data-op-action]');if(b&&!b.disabled)act(b.dataset.opAction,b);});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-page],[data-sa-menu],[data-sa-work],.side-link');if(b&&!b.dataset.opMenu&&!b.dataset.opWork&&(b.dataset.page||b.dataset.saMenu||b.dataset.saWork||b.textContent.trim()==='门店批量变更')){root.hidden=true;document.body.classList.remove('op-active');$$('[data-op-work]').forEach(n=>n.classList.remove('active'));closeDialog();}},true);
 document.addEventListener('change',e=>{
 	 const applicationMaterialKind=e.target.dataset.applicationMaterialUpload;
@@ -3535,9 +3735,9 @@ document.addEventListener('change',e=>{
  }
 	 const kind=e.target.dataset.opUpload;if(!kind||!dialog)return;const valid=[];for(const f of e.target.files){if(f.size>50*1024*1024){error('文件超过 50 MB：'+f.name);continue;}const isMedia=/^(image|video)\//.test(f.type)||/\.(png|jpe?g|webp|gif|mp4|mov|webm)$/i.test(f.name),isImage=/^image\//.test(f.type)||/\.(png|jpe?g|webp|gif)$/i.test(f.name),isVideo=/^video\//.test(f.type)||/\.(mp4|mov|webm)$/i.test(f.name),isTable=/\.(pdf|docx?|xlsx?)$/i.test(f.name),isReviewDoc=/\.(docx?|xlsx)$/i.test(f.name),isReviewForm=/\.(xlsx|docx?)$/i.test(f.name),isReviewMedia=isMedia,isRectificationDoc=/\.(pdf|pptx|xlsx|docx?)$/i.test(f.name),isConstructionPlan=/\.xlsx$/i.test(f.name),isConstructionReviewForm=/\.(xlsx|docx?)$/i.test(f.name);if(kind==='construction-plan'&&!isImage&&!isConstructionPlan||kind==='construction-review-form'&&!isConstructionReviewForm||kind==='construction-review-media'&&!isReviewMedia||kind==='opening-form'&&!isReviewForm||kind==='opening-video'&&!isVideo||['opening-entrance-photo','opening-interior-photo'].includes(kind)&&!isImage||kind==='media'&&!isMedia||kind==='table'&&!isTable||kind==='other'&&!isMedia&&!isTable||kind==='review'&&!isMedia&&!isReviewDoc||kind==='review-form'&&!isReviewForm||kind==='review-media'&&!isReviewMedia||kind==='rectification'&&!isMedia&&!isRectificationDoc){error('不支持的文件类型：'+f.name);continue;}const url=URL.createObjectURL(f);urls.add(url);valid.push({name:f.name,size:f.size,type:f.type,url,kind,uploadedAt:now()});}dialog.files.push(...valid);e.target.value='';renderFiles();
 });
-document.addEventListener('keydown',e=>{if(e.defaultPrevented)return;if(e.target.dataset.opAction==='prep-tab'&&['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const index=prepTabs.findIndex(([key])=>key===prepDetailTab),next=e.key==='Home'?0:e.key==='End'?prepTabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+prepTabs.length)%prepTabs.length;act('prep-tab',{dataset:{value:prepTabs[next][0]}});return;}if(e.target.dataset.opAction==='application-approval-tab'&&['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const index=applicationApprovalTabs.findIndex(([key])=>key===applicationApprovalTab),next=e.key==='Home'?0:e.key==='End'?applicationApprovalTabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+applicationApprovalTabs.length)%applicationApprovalTabs.length;act('application-approval-tab',{dataset:{value:applicationApprovalTabs[next][0]}});return;}if(e.target.dataset.opAction==='record-tab'&&['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const key=e.key==='Home'?'issues':e.key==='End'?'progress':constructionRecordTab==='issues'?'progress':'issues';act('record-tab',{dataset:{value:key}});return;}if(e.key==='Enter'&&e.target.id==='opQueryName'){e.preventDefault();act('query');}if(dialog?.applicationPreviewGallery?.length){if(e.key==='Escape'){e.preventDefault();closeApplicationPreview();return;}if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();const next=dialog.applicationPreviewIndex+(e.key==='ArrowLeft'?-1:1);if(next>=0&&next<dialog.applicationPreviewGallery.length){dialog.applicationPreviewIndex=next;renderApplicationPreview();}return;}}if(dialog?.attachmentGallery?.length>1&&['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();const next=e.key==='ArrowLeft'?dialog.attachmentIndex-1:dialog.attachmentIndex+1;if(next>=0&&next<dialog.attachmentGallery.length){dialog.attachmentIndex=next;renderAttachmentPreview();$(`[data-op-action="${e.key==='ArrowLeft'?'attachment-previous':'attachment-next'}"]`,$('#openingModal'))?.focus();}return;}if(!dialog)return;if(e.key==='Escape'){closeDialog();return;}if(e.key==='Tab'){const controls=$$('button:not(:disabled),input:not(:disabled),select,textarea,a[href]',$('#openingModal')).filter(n=>n.getClientRects().length),first=controls[0],last=controls.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
+document.addEventListener('keydown',e=>{if(e.defaultPrevented)return;if(e.target.dataset.opAction==='prep-tab'&&['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const index=prepTabs.findIndex(([key])=>key===prepDetailTab),next=e.key==='Home'?0:e.key==='End'?prepTabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+prepTabs.length)%prepTabs.length;act('prep-tab',{dataset:{value:prepTabs[next][0]}});return;}if(e.target.dataset.opAction==='application-approval-tab'&&['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const index=applicationApprovalTabs.findIndex(([key])=>key===applicationApprovalTab),next=e.key==='Home'?0:e.key==='End'?applicationApprovalTabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+applicationApprovalTabs.length)%applicationApprovalTabs.length;act('application-approval-tab',{dataset:{value:applicationApprovalTabs[next][0]}});return;}if(e.target.dataset.opAction==='record-tab'&&['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const key=e.key==='Home'?'issues':e.key==='End'?'progress':constructionRecordTab==='issues'?'progress':'issues';act('record-tab',{dataset:{value:key}});return;}if(e.key==='Enter'&&['opQueryName','opQueryHandler'].includes(e.target.id)){e.preventDefault();act('query');}if(dialog?.applicationPreviewGallery?.length){if(e.key==='Escape'){e.preventDefault();closeApplicationPreview();return;}if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();const next=dialog.applicationPreviewIndex+(e.key==='ArrowLeft'?-1:1);if(next>=0&&next<dialog.applicationPreviewGallery.length){dialog.applicationPreviewIndex=next;renderApplicationPreview();}return;}}if(dialog?.attachmentGallery?.length>1&&['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();const next=e.key==='ArrowLeft'?dialog.attachmentIndex-1:dialog.attachmentIndex+1;if(next>=0&&next<dialog.attachmentGallery.length){dialog.attachmentIndex=next;renderAttachmentPreview();$(`[data-op-action="${e.key==='ArrowLeft'?'attachment-previous':'attachment-next'}"]`,$('#openingModal'))?.focus();}return;}if(!dialog)return;if(e.key==='Escape'){closeDialog();return;}if(e.key==='Tab'){const controls=$$('button:not(:disabled),input:not(:disabled),select,textarea,a[href]',$('#openingModal')).filter(n=>n.getClientRects().length),first=controls[0],last=controls.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
 function restore(){const removed=location.hash.match(/^#opening-(collaboration|construction)/);if(removed){show('overview');return;}const match=location.hash.match(/^#opening-(overview|acceptance|application)(?:\/(\d+))?(?:\/(approval))?$/);if(match)show(match[1],match[2]||null,false,match[3]||'');}
-window.addEventListener('hashchange',restore);window.addEventListener('beforeunload',()=>urls.forEach(u=>URL.revokeObjectURL(u)));restore();
+window.addEventListener('hashchange',restore);window.addEventListener('beforeunload',()=>urls.forEach(u=>URL.revokeObjectURL(u)));updateAcceptanceMenuBadge();restore();
 })();
 
 </script>
@@ -3762,9 +3962,9 @@ window.addEventListener('hashchange',()=>{syncDrawingTypeFromHash();onHash()});s
 #openingModal .op-approver-dialog>footer .primary{background:#526bff;border-color:#526bff}
 @media(max-width:520px){#openingModal .op-approver-readonly,#openingModal .op-approver-form>.op-person-field>label,#openingModal .op-approver-note{grid-template-columns:84px minmax(0,1fr);gap:10px}#openingModal .op-approver-form .op-person-options{left:94px}#openingModal .op-approver-form .op-person-selected{margin-left:94px}}
 </style>
-<link rel="stylesheet" href="../shared-assets/goal-linkage.css">
-<script src="../shared-assets/goal-linkage.js"></script>
-<script src="../shared-assets/hq-goal-linkage.js"></script>
+<link rel="stylesheet" href="./shared-assets/goal-linkage.css">
+<script src="./shared-assets/goal-linkage.js"></script>
+<script src="./shared-assets/hq-goal-linkage.js"></script>
 
 <script id="embedded-drawing-integration">
 (()=>{'use strict';
@@ -3800,4 +4000,6 @@ window.addEventListener('hashchange',restoreEmbeddedDrawingFromHash);
 restoreEmbeddedDrawingFromHash();
 })();
 </script>
+<link rel="stylesheet" href="./shared-assets/demo-launcher.css">
+<script src="./shared-assets/demo-launcher.js"></script>
 </body></html>

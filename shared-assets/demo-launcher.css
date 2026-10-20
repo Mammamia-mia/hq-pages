@@ -1,0 +1,37 @@
+/* 演示入口固定在左下角，业务页面不展示场景控制。 */
+.cx-demo-btn,.so-scenario-bar{display:none!important}
+#demoLauncher{position:fixed;left:22px;bottom:24px;z-index:8000;width:68px;height:68px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:1px solid #c6e2ff;border-radius:50%;background:#409eff;color:#fff;box-shadow:0 5px 18px #409eff40;cursor:pointer;font:11px/1.4 Arial,"Microsoft YaHei",sans-serif}
+#demoLauncher>span:first-child{font-size:24px;line-height:26px}
+#demoLauncher:hover{background:#337ecc;transform:translateY(-2px)}
+#demoLauncher:focus-visible,#demoSceneModal button:focus-visible{outline:3px solid #79bbff;outline-offset:3px}
+#demoSceneModal{position:fixed;inset:0;z-index:9000;background:#0006;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;color:#303133;font:14px/1.6 Arial,"Microsoft YaHei",sans-serif}
+#demoSceneModal[hidden],#demoSceneModal [hidden]{display:none!important}
+#demoSceneModal .demo-dialog{width:920px;max-width:100%;max-height:88vh;background:#fff;border-radius:12px;box-shadow:0 16px 56px #0003;display:flex;flex-direction:column;overflow:hidden}
+#demoSceneModal header{padding:20px 24px 16px;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid #ebeef5;flex-shrink:0}
+#demoSceneModal h2{margin:0;font-size:20px;font-weight:600}
+#demoSceneModal header p{margin:4px 0 0;color:#909399;font-size:13px}
+#demoSceneModal button{font:inherit;cursor:pointer}
+#demoSceneModal header>button{border:0;background:none;color:#909399;font-size:26px;line-height:28px;padding:0 4px}
+#demoSceneTabs{display:flex;gap:8px;padding:14px 24px 0;flex-wrap:wrap;flex-shrink:0}
+#demoSceneTabs button{border:1px solid #dcdfe6;border-radius:6px;padding:7px 18px;background:white;color:#606266}
+#demoSceneTabs button[aria-pressed=true]{border-color:#409eff;background:#ecf5ff;color:#409eff}
+#demoSceneContent{padding:18px 24px 24px;overflow:auto;min-height:0}
+#demoSceneModal .demo-note{margin:0 0 16px;color:#909399;font-size:13px}
+#demoSceneModal .demo-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#demoSceneModal .demo-choices button{display:flex;flex-direction:column;gap:6px;text-align:left;padding:16px;border:1px solid #e4e7ed;border-radius:8px;background:white;color:#303133;min-height:96px}
+#demoSceneModal .demo-choices button:hover{border-color:#409eff;background:#f5faff}
+#demoSceneModal .demo-choices span{font-size:12px;color:#909399}
+#demoSceneModal footer{padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid #ebeef5;flex-shrink:0}
+#demoSceneModal footer span{font-size:12px;color:#909399}
+#demoSceneModal footer button,#demoSceneModal .demo-reset,#demoSceneModal .gl-tools button{padding:7px 14px;border:1px solid #dcdfe6;border-radius:5px;background:white;color:#606266}
+#demoSceneModal footer button{background:#409eff;border-color:#409eff;color:white}
+#demoSceneModal .demo-reset{margin-top:16px}
+#demoSceneModal .gl-tools{gap:10px;margin-bottom:12px}
+#demoSceneModal .gl-tools select{padding:6px;border:1px solid #dcdfe6;border-radius:4px;font:inherit}
+#demoSceneModal details{padding:16px;border:1px solid #ebeef5;border-radius:8px;margin:16px 0 0!important;background:#fafcff}
+#demoSceneModal summary{font-weight:600;cursor:pointer;margin-bottom:12px}
+#demoSceneModal .gl-tools button:hover{color:#409eff;border-color:#409eff}
+#demoSceneModal button:disabled{cursor:not-allowed;opacity:.5}
+#demoSceneModal #hqGoalLinkagePanel{margin:0}
+@media(max-width:700px){#demoLauncher{left:14px;bottom:16px;width:60px;height:60px}#demoSceneModal{padding:12px}#demoSceneModal .demo-choices{grid-template-columns:repeat(2,minmax(0,1fr))}#demoSceneContent{padding:16px}#demoSceneModal footer{flex-wrap:wrap}#demoSceneTabs{padding:12px 16px 0}}
+@media(max-width:420px){#demoSceneModal .demo-choices{grid-template-columns:1fr}}
