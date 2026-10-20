@@ -2909,7 +2909,7 @@ function isHighRisk(r){return riskLevelLabel(r.level)==='高风险';}
 function list(){
  const overview=active==='overview';
  const metric=overviewMetrics.find(m=>m.key===overviewMetric)||overviewMetrics[0];
-	 const acceptanceStatusOrder=['待上传资料','待陈列中台审批','待区域总审批','待补充资料','待确认开业','已开业','已作废'];
+	 const acceptanceStatusOrder=['待上传资料','待发起申请','待陈列中台审批','待区域总审批','待补充资料','待确认开业','已开业','已作废'];
  const states=overview?projectStatuses:active==='acceptance'?acceptanceStatusOrder:[...new Set(stores.map(s=>state(s)))];
  const supervisors=[...new Set(stores.map(s=>s.supervisor).filter(Boolean))];
  const regions=[...new Set(stores.map(s=>s.region).filter(Boolean))];
